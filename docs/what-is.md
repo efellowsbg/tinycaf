@@ -56,3 +56,12 @@ improved. All of these are my personal opinions and experiences.
 storage account not found (due to service endpoint not being storage.global)
 
 
+---
+docs
+---
+
+You have to re-define the objects output. This may seem a little annoying but
+I'd sell it as a feature not a bug. You may choose to hide information from
+other landingzones for example. Like.. you can choose to hide all resource
+groups, so only that landingzone has access to deploy to them.
+Also, plans may get big, so it's convenient to mark that output as sensitive.
