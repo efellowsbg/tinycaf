@@ -26,60 +26,51 @@ variable "managed_identities" {
   }))
   default = {}
 
-  # TODO: validation on keys
   # TODO: validation on ref
 }
 
-variable "state_ref" {
-  type = string
-}
+variable "config" {
+  type = object({
+    state_file = string,
+    container  = optional(string),
+    remote_states = optional(map(object({
+      state_file = string,
+      container  = optional(string),
+    })))
+  })
 
-variable "remote_states" {
-  type    = map(string)
-  default = {}
+  validation {
+    condition     = endswith(var.config.state_file, ".tfstate")
+    error_message = "State file must end with .tfstate"
+  }
+
+  validation {
+    condition     = alltrue([for _, config in coalesce(var.config.remote_states, {}) : config.container == null && var.config.container == null ? config.state_file != var.config.state_file : config.container != var.config.container])
+    error_message = "You may not refer to a state file in the same container (potential cycles)."
+  }
 }
 
 data "terraform_remote_state" "remote" {
-  for_each = var.remote_states
+  for_each = coalesce(var.config.remote_states, {})
 
+  # TODO: add support for azure, when `each.value.container` is set
   backend = "local"
   config = {
-    path = each.value
+    path = each.value.state_file
   }
 }
 
 locals {
-  # object_types = distinct(flatten([for state_ref, remote in data.terraform_remote_state.remote : keys(remote.outputs.objects)]))
   objects = {
     resource_groups    = azurerm_resource_group.main
-    # managed_identities = azurerm_user_assigned_identity.main
+    managed_identities = azurerm_user_assigned_identity.main
   }
-  # object_types = keys(local.objects)
-  # remote_objects = {
-  #   for object_type in local.object_types : object_type => {
-  #     for state_ref, remote in data.terraform_remote_state.remote :
-  #     state_ref => remote.outputs.objects[object_type]
-  #   }
-  # }
+  ref = trimsuffix(var.config.state_file, ".tfstate")
+
   remote_objects         = { for state_ref, remote in data.terraform_remote_state.remote : state_ref => remote.outputs.objects }
   remote_resource_groups = { for state_ref, remote in local.remote_objects : state_ref => remote.resource_groups }
-  all_resource_groups    = merge({ (var.state_ref) = azurerm_resource_group.main }, local.remote_resource_groups)
-  # all = {
-  #   for object_type in local.object_types : object_type => merge(
-  #     { (var.state_ref) = local.objects[object_type] },
-  #     local.remote_objects[object_type],
-  #   )
-  # }
-
-  # all_resource_groups = merge({
-  #   (var.state_ref) = azurerm_resource_group.main },
-  #   { for state_ref, objects in local.remote_objects : state_ref => objects.resource_groups }
-  # )
+  all_resource_groups    = merge({ (local.ref) = azurerm_resource_group.main }, local.remote_resource_groups)
 }
-
-# output "remote_test" {
-#   value = local.remote_objects
-# }
 
 resource "azurerm_resource_group" "main" {
   for_each = var.resource_groups
@@ -92,9 +83,9 @@ resource "azurerm_resource_group" "main" {
 resource "azurerm_user_assigned_identity" "main" {
   for_each = var.managed_identities
 
-  name = each.value.name
-  resource_group_name = local.all_resource_groups[try(each.value.resource_group.state_ref, var.state_ref)][try(each.value.resource_group.ref, each.value.resource_group_ref)].name
-  location            = local.all_resource_groups[try(each.value.resource_group.state_ref, var.state_ref)][try(each.value.resource_group.ref, each.value.resource_group_ref)].location
+  name                = each.value.name
+  resource_group_name = local.all_resource_groups[try(each.value.resource_group.state_ref, local.ref)][try(each.value.resource_group.ref, each.value.resource_group_ref)].name
+  location            = local.all_resource_groups[try(each.value.resource_group.state_ref, local.ref)][try(each.value.resource_group.ref, each.value.resource_group_ref)].location
 }
 
 output "objects" {

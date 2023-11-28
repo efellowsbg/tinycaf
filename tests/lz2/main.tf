@@ -1,17 +1,14 @@
 terraform {
+  required_version = "~> 1.6.0"
+
   backend "local" {
     path = "../lz2.tfstate"
   }
 }
 
 module "tinycaf" {
-  source = "../src"
+  source = "../../src"
 
-  remote_states = {
-    lz1 = "../lz1.tfstate",
-    # lzx = "../lz1.tfstate",
-  }
-  state_ref = "lz2"
   managed_identities = {
     id_test_01 = {
       resource_group = {
@@ -40,6 +37,16 @@ module "tinycaf" {
         "Owner"    = "drusev@efellows.bg"
         "DeadLine" = "2023-12-05"
         "Project"  = "tinycaf / eFellow Internal Infra"
+      }
+    }
+  }
+
+  config = {
+    # TODO: find a way to enforce
+    state_file = "lz2.tfstate"
+    remote_states = {
+      lz1 = {
+        state_file = "../lz1.tfstate",
       }
     }
   }
