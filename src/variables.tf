@@ -43,3 +43,4 @@ variable "config" {
   }
 }
 
+variable "users" { default = {} }

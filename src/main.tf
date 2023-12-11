@@ -10,7 +10,7 @@ locals {
 }
 
 data "terraform_remote_state" "remote" {
-  for_each = try(var.config.remote_states, {})
+  for_each = coalesce(var.config.remote_states, {})
 
   backend = can(each.value.container) ? "remote" : "local"
   config = can(each.value.container) ? {
@@ -36,6 +36,14 @@ resource "azurerm_user_assigned_identity" "main" {
   name                = each.value.name
   resource_group_name = local.all_resource_groups[try(each.value.resource_group.state_ref, local.ref)][try(each.value.resource_group.ref, each.value.resource_group_ref)].name
   location            = local.all_resource_groups[try(each.value.resource_group.state_ref, local.ref)][try(each.value.resource_group.ref, each.value.resource_group_ref)].location
+}
+
+module "users" {
+  source   = "./modules/user"
+  for_each = var.users
+
+  ref      = each.key
+  settings = each.value
 }
 
 output "objects" {
