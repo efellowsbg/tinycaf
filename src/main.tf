@@ -5,26 +5,21 @@ provider "azurerm" {
   features {}
 }
 
-data "terraform_remote_state" "remote" {
-  for_each = coalesce(var.config.remote_states, {})
-
-  # TODO: add support for azure, when `each.value.container` is set
-  backend = "local"
-  config = {
-    path = each.value.state_file
-  }
+locals {
+  ref = trimsuffix(var.config.state_file, ".tfstate")
 }
 
-locals {
-  objects = {
-    resource_groups    = azurerm_resource_group.main
-    managed_identities = azurerm_user_assigned_identity.main
-  }
-  ref = trimsuffix(var.config.state_file, ".tfstate")
+data "terraform_remote_state" "remote" {
+  for_each = try(var.config.remote_states, {})
 
-  remote_objects         = { for state_ref, remote in data.terraform_remote_state.remote : state_ref => remote.outputs.objects }
-  remote_resource_groups = { for state_ref, remote in local.remote_objects : state_ref => remote.resource_groups }
-  all_resource_groups    = merge({ (local.ref) = azurerm_resource_group.main }, local.remote_resource_groups)
+  backend = can(each.value.container) ? "remote" : "local"
+  config = can(each.value.container) ? {
+    # TODO: use a separate settings landingzone, or allow setting them explicitly
+    resource_group_name  = "rg-shd-infra"
+    storage_account_name = "stshdeflinfra"
+    container_name       = each.value.container
+    key                  = each.value.state_file
+  } : { path = each.value.state_file }
 }
 
 resource "azurerm_resource_group" "main" {
