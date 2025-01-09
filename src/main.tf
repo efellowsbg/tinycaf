@@ -10,3 +10,9 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
+module "resource_group" {
+  source   = "./modules/resource_group"
+  for_each = var.resource_groups
+  settings = each.value
+}
