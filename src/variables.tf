@@ -5,3 +5,7 @@ variable "resource_groups" {
 variable "subscription_id" {
   type = string
 }
+
+variable "managed_identities" {
+  default = {}
+}
