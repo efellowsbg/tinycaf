@@ -1,0 +1,9 @@
+# self-protection
+CODEOWNERS @mitiko
+
+# pipelines
+.github @mitiko
+.vscode @mitiko
+
+# source code
+src @mitiko
