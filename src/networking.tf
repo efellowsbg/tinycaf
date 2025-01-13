@@ -17,6 +17,6 @@ module "vnet_peering" {
   global_settings = var.global_settings
   settings = each.value
   resources = {
-    resource_groups = module.virtual_networks
+    virtual_networks = module.virtual_networks
   }
 }
