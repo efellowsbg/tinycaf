@@ -9,9 +9,9 @@ resource "azurerm_virtual_network" "vnet" {
   dynamic "subnet" {
     for_each = var.settings.subnets
     content {
-      name             = var.settings.subnet.value.name
-      address_prefixes = var.settings.subnet.address_prefixes
-      security_group   = try(var.settings.subnet.nsg_ref, null) == null ? null : var.resources.network_security_group[var.settings.subnet.nsg_ref].id
+      name             = subnet.value.name
+      address_prefixes = subnet.address_prefixes
+      security_group   = try(subnet.value.nsg_ref, null) == null ? null : var.resources.network_security_group[subnet.value.nsg_ref].id
     }
   }
 }
