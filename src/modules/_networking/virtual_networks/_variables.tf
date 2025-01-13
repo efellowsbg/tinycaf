@@ -14,3 +14,13 @@ variable "resources" {
   })
   description = "All required resources"
 }
+
+variable "direction" {
+  description = "Peering direction: '1to2', '2to1', or 'both'. Optional. Defaults to 'both' if unset."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.direction == null || contains(["1to2", "2to1", "both"], var.direction)
+    error_message = "Allowed values are '1to2', '2to1', or 'both'."
+  }
+}
