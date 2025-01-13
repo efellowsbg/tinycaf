@@ -26,3 +26,13 @@ module "managed_identities" {
     resource_groups = module.resource_group
   }
 }
+
+module "virtual_network" {
+  source   = "./modules/network/virtual_networks"
+  for_each = var.virtual_networks
+  settings = each.value
+  resources = {
+    resource_groups = module.resource_group
+    managed_identities = module.managed_identities
+  }
+}

@@ -9,3 +9,7 @@ variable "subscription_id" {
 variable "managed_identities" {
   default = {}
 }
+
+variable "virtual_networks" {
+  default = {}
+}
