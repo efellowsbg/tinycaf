@@ -9,7 +9,7 @@ resource "azurerm_subnet" "main" {
 
   dynamic "delegation" {
     for_each = can(each.value.delegation) ? [1] : []
-    
+
     content {
       name = local.delegations[each.value.delegation].name
       service_delegation {

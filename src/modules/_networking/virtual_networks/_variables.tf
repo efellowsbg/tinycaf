@@ -1,10 +1,10 @@
 variable "settings" {
-  description = "All the configuration for an RG"
+  description = "All the configuration for this resource"
 }
 
 variable "resources" {
   type = object({
-    resource_groups        = map(any)
+    resource_groups = map(any)
   })
   description = "All required resources"
 }

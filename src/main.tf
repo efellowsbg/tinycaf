@@ -12,12 +12,3 @@ module "managed_identities" {
     resource_groups = module.resource_groups
   }
 }
-
-module "virtual_networks" {
-  source   = "./modules/network/virtual_networks"
-  for_each = var.virtual_networks
-  settings = each.value
-  resources = {
-    resource_groups = module.resource_groups
-  }
-}
