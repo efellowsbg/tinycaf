@@ -1,0 +1,39 @@
+name: Lint
+
+on:
+  pull_request:
+
+jobs:
+  pre-commit:
+    name: Pre-commit checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+
+      # BEWARE: https://stackoverflow.com/questions/74668349/how-to-activate-a-virtualenv-in-a-github-action#answers
+      - name: Activate virtualenv
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Get Changed Files
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          list-files: shell
+          filters: |
+            all: ['**']
+
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: --files ${{ steps.changes.outputs.all_files }}
