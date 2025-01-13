@@ -19,7 +19,7 @@ module "resource_group" {
 }
 
 module "managed_identities" {
-  source = "./modules/managed_identity"
+  source   = "./modules/managed_identity"
   for_each = var.managed_identities
   settings = each.value
   resources = {
