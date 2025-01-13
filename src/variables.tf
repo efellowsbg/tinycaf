@@ -13,3 +13,4 @@ variable "managed_identities" {
 variable "virtual_networks" {
   default = {}
 }
+
