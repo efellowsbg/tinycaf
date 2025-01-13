@@ -1,18 +1,4 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "4.14.0"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {}
-  subscription_id = var.subscription_id
-}
-
-module "resource_group" {
+module "resource_groups" {
   source   = "./modules/resource_group"
   for_each = var.resource_groups
   settings = each.value
@@ -23,15 +9,15 @@ module "managed_identities" {
   for_each = var.managed_identities
   settings = each.value
   resources = {
-    resource_groups = module.resource_group
+    resource_groups = module.resource_groups
   }
 }
-  
-module "virtual_network" {
+
+module "virtual_networks" {
   source   = "./modules/network/virtual_networks"
   for_each = var.virtual_networks
   settings = each.value
   resources = {
-    resource_groups = module.resource_group
+    resource_groups = module.resource_groups
   }
 }
