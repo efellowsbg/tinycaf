@@ -4,9 +4,7 @@ variable "settings" {
 
 variable "resources" {
   type = object({
-    resource_groups        = optional(map(any), {})
-    network_security_group = optional(map(any), {})
+    resource_groups        = map(any)
   })
   description = "All required resources"
-  default     = {}
 }

@@ -33,6 +33,5 @@ module "virtual_network" {
   settings = each.value
   resources = {
     resource_groups = module.resource_group
-    managed_identities = module.managed_identities
   }
 }
