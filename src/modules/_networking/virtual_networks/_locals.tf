@@ -9,6 +9,20 @@ locals {
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
     var.settings.tags
   )
+  virtual_network_peering_1 = var.resources.virtual_networks[var.settings.vnet1_ref]
+  virtual_network_peering_2 = var.resources.virtual_networks[var.settings.vnet2_ref]
+  peerings = {
+    "vnet1_to_vnet2" = {
+      source_vnet = local.virtual_network_peering_1
+      target_vnet = local.virtual_network_peering_2
+      direction   = "1to2"
+    }
+    "vnet2_to_vnet1" = {
+      source_vnet = local.virtual_network_peering_2
+      target_vnet = local.virtual_network_peering_1
+      direction   = "2to1"
+    }
+  }
 }
 
 locals {
