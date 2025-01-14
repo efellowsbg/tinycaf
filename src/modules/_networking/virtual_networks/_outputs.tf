@@ -14,6 +14,6 @@ output "subnet_ids" {
   description = "IDs of all subnets grouped by VNet and Subnet"
   value = {
     for key, subnet in azurerm_subnet.main :
-    "${each.key}.${subnet.name}" => subnet.id
+    "${azurerm_virtual_network.main.name}.${subnet.name}" => subnet.id
   }
 }
