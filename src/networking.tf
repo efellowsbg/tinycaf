@@ -32,7 +32,7 @@ module "vnet_gateways" {
   resources = {
     virtual_networks = module.virtual_networks
     public_ips       = module.public_ips
-    resource_groups  = module.public_ips
+    resource_groups  = module.resource_groups
   }
 }
 
