@@ -4,7 +4,7 @@ locals {
   location = local.resource_group.location
 
   vnet = var.resources.vnets[var.settings.network.vnet_ref]
-  subnet_ids = vnets.subnet_id
+  subnet_ids = vnet.subnet
 
   tags = merge(
     var.global_settings.tags,
