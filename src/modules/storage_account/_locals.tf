@@ -4,11 +4,11 @@ locals {
   location = local.resource_group.location
 
   vnet = var.resources.virtual_networks[var.settings.network.vnet_ref]
-  subnet_id = local.vnet[var.settings.network.subnet_ref]
+  subnet_id = local.vnet.subnets[var.settings.network.subnet_ref].id
 
   tags = merge(
     var.global_settings.tags,
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
-    lookup(var.settings, "tags", {})
+    try(var.settings.tags, {})
   )
 }

@@ -10,10 +10,9 @@ output "resource_group_name" {
   value = azurerm_virtual_network.main.resource_group_name
 }
 
-output "subnet_ids" {
-  value = [for subnet in azurerm_subnet.main : subnet.id]
-}
-
-output "subnet_names" {
-  value = [for subnet in azurerm_subnet.main : subnet.name]
+output "subnets" {
+  value = {
+    for subnet_ref in var.settings.subnets :
+    subnet_ref => azurerm_subnet.main[subnet_ref]
+  }
 }
