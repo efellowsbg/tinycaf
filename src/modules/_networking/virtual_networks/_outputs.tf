@@ -13,7 +13,7 @@ output "resource_group_name" {
 output "subnet_ids" {
   description = "IDs of all subnets grouped by VNet and Subnet"
   value = {
-    for key, subnet in azurerm_subnet.main : 
-    "${subnet.virtual_network_name}.${subnet.name}" => subnet.id
+    for key, subnet in azurerm_subnet.main :
+    "${each.key}.${subnet.name}" => subnet.id
   }
 }
