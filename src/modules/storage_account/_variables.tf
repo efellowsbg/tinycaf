@@ -10,7 +10,6 @@ variable "resources" {
   type = object({
     resource_groups = map(any)
     vnets = map(any)
-    subnets = map(any)
   })
   description = "All required resources"
 }
