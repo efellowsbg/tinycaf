@@ -19,7 +19,7 @@ vnet_peerings = {
 # pre-requisites
 resource_groups = {
   rg_test = {
-    name     = "rg-test-networking-01"
+    name     = "rg-test-networking-dv-ne-01"
     location = "northeurope"
   }
 }
