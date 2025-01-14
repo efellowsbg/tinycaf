@@ -3,8 +3,8 @@ locals {
   resource_group_name = local.resource_group.name
   location = local.resource_group.location
 
-  vnet = var.resources.virtual_networks[var.settings.vnet_ref]
-  subnet_id = local.vnet[var.settings.subnet_ref]
+  vnet = var.resources.virtual_networks.vnet_ref
+  subnet_id = local.vnet[var.settings.network.subnet_ref]
 
   tags = merge(
     var.global_settings.tags,
