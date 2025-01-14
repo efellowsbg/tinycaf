@@ -11,6 +11,9 @@ output "resource_group_name" {
 }
 
 output "subnet_ids" {
-  description = "IDs of all subnets created"
-  value       = { for key, subnet in azurerm_subnet.main : key => subnet.id }
+  description = "IDs of all subnets grouped by VNet and Subnet"
+  value = {
+    for key, subnet in azurerm_subnet.main : 
+    "${subnet.virtual_network_name}.${subnet.name}" => subnet.id
+  }
 }
