@@ -1,7 +1,7 @@
 resource "azurerm_virtual_network_peering" "main" {
  for_each = {
     for key, peering in local.peerings : key => peering
-    if var.direction == "both" || var.direction == peering.direction
+    if var.settings.direction == "both" || var.settings.direction == peering.direction
   }
   name                = "${each.value.source_vnet.name}-to-${each.value.target_vnet.name}"
   resource_group_name = each.value.source_vnet.resource_group_name

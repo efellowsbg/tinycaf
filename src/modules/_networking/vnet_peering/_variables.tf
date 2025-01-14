@@ -4,6 +4,10 @@ variable "global_settings" {
 
 variable "settings" {
   description = "All the configuration for this resource"
+  validation {
+    condition     = contains(["1to2", "2to1", "both"], var.settings.direction)
+    error_message = "Allowed values for direction are '1to2', '2to1', or 'both'."
+  }
 }
 
 
