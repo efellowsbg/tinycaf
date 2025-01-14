@@ -5,5 +5,7 @@ resource "azurerm_storage_account" "main" {
   account_tier             = var.settings.account_tier
   account_replication_type = var.settings.account_replication_type
 
+  network_rules = var.settings.network_rules
+
   tags = try(local.tags, null)
 }
