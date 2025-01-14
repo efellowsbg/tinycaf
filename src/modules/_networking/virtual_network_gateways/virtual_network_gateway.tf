@@ -10,7 +10,7 @@ resource "azurerm_virtual_network_gateway" "main" {
   sku                 = try(var.settings.sku, "VpnGw1")
 
   dynamic "ip_configuration" {
-    for_each = try(var.settings.ip_configuration, {})
+    for_each = try(var.settings.ip_configurations, {})
     content {
       name                          = ip_configuration.value.name
       public_ip_address_id          = can(ip_configuration.value.public_ip_address_id) || can(ip_configuration.value.public_ip_address_key) == false ? try(ip_configuration.value.public_ip_address_id, null) : var.resources.public_ips[ip_configuration.value.public_ip_address_ref].id
