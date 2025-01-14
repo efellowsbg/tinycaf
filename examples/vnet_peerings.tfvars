@@ -1,53 +1,43 @@
-resource_groups = {
-  vnets_ne = {
-    name     = "rg-acfin-vnet-02"
-    location = "North Europe"
+vnet_peerings = {
+  peer_vnet_01_to_vnet_02_both = {
+    vnet_left_ref  = "vnet_test_01"
+    vnet_right_ref = "vnet_test_02"
+    direction      = "<->"
+  }
+  peer_vnet_01_to_vnet_03_left_to_right = {
+    vnet_left_ref  = "vnet_test_01"
+    vnet_right_ref = "vnet_test_03"
+    direction      = "->"
+  }
+  peer_vnet_01_to_vnet_03_right_to_left = {
+    vnet_left_ref  = "vnet_test_02"
+    vnet_right_ref = "vnet_test_03"
+    direction      = "<-"
   }
 }
 
+# pre-requisites
+resource_groups = {
+  rg_test = {
+    name     = "rg-test-networking-01"
+    location = "northeurope"
+  }
+}
 
 virtual_networks = {
-  vnet_test = {
+  vnet_test_01 = {
     name               = "vnet-test-01"
-    resource_group_ref = "vnets_ne"
-    cidr               = ["10.10.10.0/24"]
-    subnets = {
-      subnet1 = {
-        name       = "sdajkhsda"
-        cidr       = ["10.10.10.0/25"]
-        delegation = "sql_managed_instance"
-      }
-      subnet2 = {
-        name              = "iwoeuqiwe"
-        cidr              = ["10.10.10.128/25"]
-        service_endpoints = ["Microsoft.Storage", "Microsoft.KeyVault"]
-      }
-    }
+    resource_group_ref = "rg_test"
+    cidr               = ["10.120.0.0/24"]
   }
-  vnet_test2 = {
+  vnet_test_02 = {
     name               = "vnet-test-02"
-    resource_group_ref = "vnets_ne"
-    cidr               = ["10.10.9.0/24"]
-    subnets = {
-      subnet1 = {
-        name       = "sdajkhsda"
-        cidr       = ["10.10.9.0/25"]
-        delegation = "sql_managed_instance"
-      }
-      subnet2 = {
-        name              = "iwoeuqiwe"
-        cidr              = ["10.10.9.128/25"]
-        service_endpoints = ["Microsoft.Storage", "Microsoft.KeyVault"]
-      }
-    }
+    resource_group_ref = "rg_test"
+    cidr               = ["10.130.0.0/24"]
   }
-}
-
-
-vnet_peering = {
-  peering = {
-    vnet1_ref = "vnet_test"
-    vnet2_ref = "vnet_test2"
-    direction = "2to1"
+  vnet_test_03 = {
+    name               = "vnet-test-03"
+    resource_group_ref = "rg_test"
+    cidr               = ["10.140.0.0/24"]
   }
 }
