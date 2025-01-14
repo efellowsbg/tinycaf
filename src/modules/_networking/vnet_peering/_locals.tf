@@ -1,12 +1,4 @@
 locals {
-  tags = merge(
-  var.global_settings.tags,
-  var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
-  lookup(var.settings, "tags", {})
-)
-}
-
-locals {
   vnet1 = var.resources.virtual_networks[var.settings.vnet1_ref]
   vnet2 = var.resources.virtual_networks[var.settings.vnet2_ref]
 }
