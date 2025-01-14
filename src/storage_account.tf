@@ -7,6 +7,6 @@ module "storage_accounts" {
 
   resources = {
     resource_groups = module.resource_groups
-    vnets = module.virtual_networks
+    virtual_networks = module.virtual_networks
   }
 }
