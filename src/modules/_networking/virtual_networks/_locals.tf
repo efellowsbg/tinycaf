@@ -5,12 +5,11 @@ locals {
   location            = local.resource_group.location
 
   tags = merge(
-    var.global_settings.tags,
-    var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
-    var.settings.tags
-  )
+  var.global_settings.tags,
+  var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
+  lookup(var.settings, "tags", {})  # Fallback to an empty map if "tags" doesn't exist
+)
 }
-
 locals {
   # local object used to map short delegation refs to full delegation "objects"
   delegations = {
