@@ -9,6 +9,7 @@ variable "settings" {
 variable "resources" {
   type = object({
     resource_groups = map(any)
+    vnets = map(any)
   })
   description = "All required resources"
 }

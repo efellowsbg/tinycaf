@@ -1,8 +1,10 @@
 locals {
   resource_group = var.resources.resource_groups[var.settings.resource_group_ref]
-
   resource_group_name = local.resource_group.name
   location = local.resource_group.location
+
+  vnet = var.resources.vnets[var.settings.network.vnet_ref]
+  subnet_ids = vnets.subnet_id
 
   tags = merge(
     var.global_settings.tags,
