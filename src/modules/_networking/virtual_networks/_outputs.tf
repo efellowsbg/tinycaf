@@ -11,9 +11,9 @@ output "resource_group_name" {
 }
 
 output "subnet_id" {
-  value = azurerm_subnet.main[each.key].id
+  value = { for key, subnet in azurerm_subnet.main : key => subnet.id }
 }
 
 output "subnet_name" {
-  value = azurerm_subnet.main[each.key].name
+  value = { for key, subnet in azurerm_subnet.main : key => subnet.name }
 }
