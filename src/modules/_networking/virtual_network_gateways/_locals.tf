@@ -10,9 +10,3 @@ locals {
     try(var.settings.tags, {})
   )
 }
-
-locals {
-  vnet                 = var.resources.virtual_networks[var.settings.ip_configuration.each.value.vnet_ref]
-  subnet_id            = can(var.settings.ip_configuration.each.value.subnet_id) ? var.settings.ip_configuration.each.value.subnet_id : local.vnet.subnets[var.settings.ip_configuration.each.value.vnet_ref].id
-  public_ip_address_id = can(var.settings.ip_configuration.each.value.public_ip_address_id) ? var.settings.ip_configuration.each.value.public_ip_address_id : var.resources.public_ips[var.settings.ip_configuration.each.value.public_ip_ref].id
-}
