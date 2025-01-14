@@ -4,4 +4,4 @@ variable "managed_identities" { default = {} }
 
 variable "virtual_networks" { default = {} }
 
-variable "vnet_peering" { default = {} }
+variable "vnet_peerings" { default = {} }

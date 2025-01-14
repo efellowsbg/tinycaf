@@ -5,25 +5,14 @@ variable "global_settings" {
 variable "settings" {
   description = "All the configuration for this resource"
   validation {
-    condition     = contains(["1to2", "2to1", "both"], var.settings.direction)
-    error_message = "Allowed values for direction are '1to2', '2to1', or 'both'."
+    condition     = contains(["<-", "->", "<->"], try(var.settings.direction, "<->"))
+    error_message = "Allowed values for direction are '<-', '->', or '<->'. Defaults to '<->' if not set."
   }
 }
-
 
 variable "resources" {
   type = object({
     virtual_networks = map(any)
   })
   description = "All required resources"
-}
-
-variable "direction" {
-  description = "Peering direction: '1to2', '2to1', or 'both'. Optional. Defaults to 'both' if unset."
-  type        = string
-  default     = "both"
-  validation {
-    condition     = contains(["1to2", "2to1", "both"], var.direction)
-    error_message = "Allowed values are '1to2', '2to1', or 'both'."
-  }
 }
