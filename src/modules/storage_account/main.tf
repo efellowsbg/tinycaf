@@ -6,7 +6,7 @@ resource "azurerm_storage_account" "main" {
   account_replication_type = var.settings.account_replication_type
 
   network_rules {
-    default_action             = try(var.settings.default_action, "Deny")
+    default_action             = try(var.settings.network.default_action, "Deny")
     ip_rules                   = try(var.settings.network.allowed_ips, null)
     virtual_network_subnet_ids = local.subnet_ids
   }
