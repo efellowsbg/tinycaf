@@ -3,7 +3,7 @@ local_network_gateways = {
     name               = "local-ngw-test-01"
     resource_group_ref = "rg_test"
     gateway_address    = "12.13.14.15"
-    cidr      = ["10.0.0.0/16"]
+    cidr               = ["10.0.0.0/16"]
   }
 }
 

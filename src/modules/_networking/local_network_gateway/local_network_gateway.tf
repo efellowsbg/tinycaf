@@ -4,5 +4,5 @@ resource "azurerm_local_network_gateway" "main" {
   resource_group_name = local.resource_group_name
   gateway_address     = try(var.settings.gateway_address, null)
   address_space       = var.settings.cidr
-  gateway_fqdn = try(var.settings.gateway_fqdn, null)
+  gateway_fqdn        = try(var.settings.gateway_fqdn, null)
 }
