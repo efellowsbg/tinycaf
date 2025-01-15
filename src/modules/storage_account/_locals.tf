@@ -15,7 +15,7 @@ locals {
   subnet_id = flatten([
     for key in try(var.settings.network, []) : [
       for vnet_ref, subnet_ref in key : [
-        var.resources.virtual_networks[vnet_ref].subnets[subnet_ref].id
+        var.resources.virtual_networks[key.vnet_ref].subnets[key.subnet_ref].id
       ]
   ]])
 
