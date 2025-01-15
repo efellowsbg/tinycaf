@@ -9,8 +9,24 @@ locals {
   # subnet_id = [for config in values(local.storage_account_network) : local.virtual_networks[config.vnet_ref].subnets[config.subnet_ref].id]
   subnet_id = [
     for config in var.settings.network : 
-    var.resources.virtual_networks[var.settings.network.config.vnet_ref].subnets[var.settings.network.config.subnet_ref].id
+    var.resources.virtual_networks[each.value.config.vnet_ref].subnets[each.value.config.subnet_ref].id
   ]
+
+  # subnet_id = [
+  #   for config in var.settings.network : 
+  #   {vnet = config.vnet_ref
+    
+  #   }
+  # ]
+
+#  subnet_id = flatten([
+#     for config, account_data in var.storage_accounts : [
+#       for config_name, config in account_data.network : {
+#         vnet_ref   = config.vnet_ref
+#         subnet_ref = config.subnet_ref
+#       }
+#     ]
+#   ])
 
   tags = merge(
     var.global_settings.tags,
