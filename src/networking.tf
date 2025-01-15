@@ -1,5 +1,5 @@
 module "virtual_networks" {
-  source   = "./modules/_networking/virtual_networks"
+  source   = "./modules/_networking/virtual_network"
   for_each = var.virtual_networks
 
   settings        = each.value
@@ -19,6 +19,18 @@ module "vnet_peerings" {
 
   resources = {
     virtual_networks = module.virtual_networks
+  }
+}
+
+module "local_network_gateways" {
+  source   = "./modules/_networking/local_network_gateway"
+  for_each = var.local_network_gateways
+
+  global_settings = var.global_settings
+  settings        = each.value
+
+  resources = {
+    resource_groups = module.resource_groups
   }
 }
 
