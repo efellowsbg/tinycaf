@@ -12,12 +12,12 @@ locals {
   #   var.resources.virtual_networks[var.settings.network.config.value.vnet_ref].subnets[var.settings.network.config.value.subnet_ref].id
   # ]
 
-  subnet_id = flatten([
+  subnet_id = [
     for key in try(var.settings.network, []) : [
       for vnet_ref, subnet_ref in key : [
         var.resources.virtual_networks[key.vnet_ref].subnets[key.subnet_ref].id
       ]
-  ]])
+  ]]
 
   tags = merge(
     var.global_settings.tags,
