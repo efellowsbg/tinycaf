@@ -8,8 +8,8 @@ locals {
 
   # subnet_id = [for config in values(local.storage_account_network) : local.virtual_networks[config.vnet_ref].subnets[config.subnet_ref].id]
   subnet_ids = (
-    try(var.settings.network, null) == null ? null : [
-      for _, value in var.settings.network : (
+    try(var.settings.network.subnets, null) == null ? null : [
+      for _, value in var.settings.network.subnets : (
         can(value.subnet_id) ? value.subnet_id : var.resources.virtual_networks[value.vnet_ref].subnets[value.subnet_ref].id
       )
     ]

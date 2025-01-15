@@ -7,7 +7,7 @@ resource "azurerm_storage_account" "main" {
 
   network_rules {
     default_action             = try(var.settings.default_action, "Deny")
-    ip_rules                   = try(var.settings.ip_rules, null)
+    ip_rules                   = try(var.settings.network.allowed_ips, null)
     virtual_network_subnet_ids = local.subnet_ids
   }
 
