@@ -9,7 +9,7 @@ locals {
   # subnet_id = [for config in values(local.storage_account_network) : local.virtual_networks[config.vnet_ref].subnets[config.subnet_ref].id]
   subnet_id = [
     for config in var.settings.network : 
-    var.resources.virtual_networks[each.value.config.vnet_ref].subnets[each.value.config.subnet_ref].id
+    var.resources.virtual_networks[config.value.vnet_ref].subnets[config.value.subnet_ref].id
   ]
 
   # subnet_id = [
