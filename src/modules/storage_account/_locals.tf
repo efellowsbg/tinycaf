@@ -12,10 +12,15 @@ locals {
   #   var.resources.virtual_networks[var.settings.network.config.value.vnet_ref].subnets[var.settings.network.config.value.subnet_ref].id
   # ]
 
+  # subnet_id = flatten([
+  #   for key in try(var.settings.network, []) : [
+  #     var.resources.virtual_networks[key.vnet_ref].subnets[key.subnet_ref].id
+  #   ]
+  # ])
+
   subnet_id = flatten([
-    for key in try(var.settings.network, []) : [
-      var.resources.virtual_networks[key.vnet_ref].subnets[key.subnet_ref].id
-    ]
+    for key in try(var.settings.network, []) : 
+    var.resources.virtual_networks[key.vnet_ref].subnets[key.subnet_ref].id
   ])
 
   # subnet_id = flatten([   for key, network in try(var.settings.network, {}) : [     var.resources.virtual_networks[network.vnet_ref].subnets[network.subnet_ref].id   ] ])
