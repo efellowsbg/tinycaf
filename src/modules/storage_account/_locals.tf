@@ -3,8 +3,14 @@ locals {
   resource_group_name = local.resource_group.name
   location = local.resource_group.location
 
-  vnet = var.resources.virtual_networks[var.settings.network.vnet_ref]
-  subnet_id = local.vnet.subnets[var.settings.network.subnet_ref].id
+  # vnet = var.resources.virtual_networks[var.settings.network.config.vnet_ref]
+
+  # subnet_id = local.vnet.subnets[var.settings.network.subnet_ref].id
+  # subnet_id = [for config in values(local.storage_account_network) : local.virtual_networks[config.vnet_ref].subnets[config.subnet_ref].id]
+  subnet_id = [
+    for config in var.settings.network : 
+    var.resources.virtual_networks[config.vnet_ref].subnets[config.subnet_ref].id
+  ]
 
   tags = merge(
     var.global_settings.tags,
