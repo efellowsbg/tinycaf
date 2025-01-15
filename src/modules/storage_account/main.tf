@@ -8,10 +8,11 @@ resource "azurerm_storage_account" "main" {
   network_rules {
     default_action             = try(var.settings.default_action, "Deny")
     ip_rules                   = try(var.settings.ip_rules, null)
-    virtual_network_subnet_ids = try(var.settings.network, null) == null ? null : [
-        for key, value in var.settings.network : can(value.subnet_id) ? value.subnet_id : var.resources.virtual_networks[value.vnet_ref].subnets[value.subnet_ref].id
-      ]
-    }
+    virtual_network_subnet_ids = local.subnet_ids
+    # virtual_network_subnet_ids = try(var.settings.network, null) == null ? null : [
+    #     for key, value in var.settings.network : can(value.subnet_id) ? value.subnet_id : var.resources.virtual_networks[value.vnet_ref].subnets[value.subnet_ref].id
+    #   ]
+  }
 
   tags = try(local.tags, null)
 }

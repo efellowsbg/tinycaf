@@ -25,6 +25,14 @@ locals {
 
   # subnet_id = flatten([   for key, network in try(var.settings.network, {}) : [     var.resources.virtual_networks[network.vnet_ref].subnets[network.subnet_ref].id   ] ])
 
+  subnet_ids = (
+    try(var.settings.network, null) == null ? null : [
+      for _, value in var.settings.network : (
+        can(value.subnet_id) ? value.subnet_id : var.resources.virtual_networks[value.vnet_ref].subnets[value.subnet_ref].id
+      )
+    ]
+  )
+
   tags = merge(
     var.global_settings.tags,
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
