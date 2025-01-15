@@ -1,6 +1,6 @@
 virtual_network_gateways = {
-  gw_vpn_01 = {
-    name               = "gw-01-test"
+  vng_test_01 = {
+    name               = "vng-test-dv-ne-01"
     resource_group_ref = "rg_test"
     generation         = "Generation1"
     ip_configurations = {
@@ -50,8 +50,8 @@ virtual_networks = {
 }
 
 public_ips = {
-  pub_ip_test_1 = {
-    name               = "pub-ip-test-01"
-    resource_group_ref = "vnets_ne"
+  pip_test_01 = {
+    name               = "pip-test-dv-ne-01"
+    resource_group_ref = "rg_test"
   }
 }

@@ -22,7 +22,7 @@ module "vnet_peerings" {
   }
 }
 
-module "vnet_gateways" {
+module "virtual_network_gateways" {
   source   = "./modules/_networking/virtual_network_gateway"
   for_each = var.virtual_network_gateways
 
