@@ -28,6 +28,7 @@ module "local_network_gateways" {
 
   global_settings = var.global_settings
   settings        = each.value
+
   resources = {
     resource_groups = module.resource_groups
   }
@@ -39,6 +40,7 @@ module "public_ips" {
 
   global_settings = var.global_settings
   settings        = each.value
+
   resources = {
     resource_groups = module.resource_groups
   }
