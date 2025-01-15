@@ -21,3 +21,15 @@ module "vnet_peerings" {
     virtual_networks = module.virtual_networks
   }
 }
+
+module "public_ips" {
+  source   = "./modules/_networking/public_ip"
+  for_each = var.public_ips
+
+  global_settings = var.global_settings
+  settings        = each.value
+
+  resources = {
+    resource_groups = module.resource_groups
+  }
+}
