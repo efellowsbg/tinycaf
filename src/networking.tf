@@ -25,10 +25,20 @@ module "vnet_peerings" {
 module "local_network_gateways" {
   source   = "./modules/_networking/local_network_gateway"
   for_each = var.local_network_gateways
-
+  
   global_settings = var.global_settings
   settings        = each.value
-
+  resources = {
+    resource_groups = module.resource_groups
+  }
+}
+  
+module "public_ips" {
+  source   = "./modules/_networking/public_ip"
+  for_each = var.public_ips
+  
+  global_settings = var.global_settings
+  settings        = each.value
   resources = {
     resource_groups = module.resource_groups
   }
