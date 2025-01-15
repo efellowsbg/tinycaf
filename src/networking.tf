@@ -23,7 +23,7 @@ module "vnet_peerings" {
 }
 
 module "public_ips" {
-  source   = "./modules/_networking/public_ips"
+  source   = "./modules/_networking/public_ip"
   for_each = var.public_ips
 
   global_settings = var.global_settings
