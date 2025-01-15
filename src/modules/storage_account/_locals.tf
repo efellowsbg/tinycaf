@@ -7,24 +7,6 @@ locals {
   # subnet_id = local.vnet.subnets[var.settings.network.subnet_ref].id
 
   # subnet_id = [for config in values(local.storage_account_network) : local.virtual_networks[config.vnet_ref].subnets[config.subnet_ref].id]
-  # subnet_id = [
-  #   for config in var.settings.network :
-  #   var.resources.virtual_networks[var.settings.network.config.value.vnet_ref].subnets[var.settings.network.config.value.subnet_ref].id
-  # ]
-
-  # subnet_id = flatten([
-  #   for key in try(var.settings.network, []) : [
-  #     var.resources.virtual_networks[key.vnet_ref].subnets[key.subnet_ref].id
-  #   ]
-  # ])
-
-  # subnet_id = flatten([
-  #   for key in try(var.settings.network, []) :
-  #   var.resources.virtual_networks[key.vnet_ref].subnets[key.subnet_ref].id
-  # ])
-
-  # subnet_id = flatten([   for key, network in try(var.settings.network, {}) : [     var.resources.virtual_networks[network.vnet_ref].subnets[network.subnet_ref].id   ] ])
-
   subnet_ids = (
     try(var.settings.network, null) == null ? null : [
       for _, value in var.settings.network : (
