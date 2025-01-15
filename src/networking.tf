@@ -1,5 +1,5 @@
 module "virtual_networks" {
-  source   = "./modules/_networking/virtual_networks"
+  source   = "./modules/_networking/virtual_network"
   for_each = var.virtual_networks
 
   settings        = each.value
