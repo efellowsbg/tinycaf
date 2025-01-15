@@ -11,14 +11,5 @@ resource "azurerm_storage_account" "main" {
     virtual_network_subnet_ids = [local.subnet_id]
   }
 
-  # dynamic "network_rules" {
-  #   for_each = try(var.settings.network, {})
-  #   content {
-  #     default_action             = try(var.settings.default_action, "Deny")
-  #     ip_rules                   = try(var.settings.ip_rules, null)
-  #     virtual_network_subnet_ids = local.subnet_id
-  #   }
-  # }
-
   tags = try(local.tags, null)
 }
