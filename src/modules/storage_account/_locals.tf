@@ -8,8 +8,8 @@ locals {
   # subnet_id = local.vnet.subnets[var.settings.network.subnet_ref].id
   # subnet_id = [for config in values(local.storage_account_network) : local.virtual_networks[config.vnet_ref].subnets[config.subnet_ref].id]
   subnet_id = [
-    for config, sub_config in var.settings.network : 
-    var.resources.virtual_networks[var.settings.network.config[sub_config].vnet_ref].subnets[var.settings.network.config[sub_config].subnet_ref].id
+    for config in var.settings.network : 
+    var.resources.virtual_networks[var.settings.network.config.vnet_ref].subnets[var.settings.network.config.subnet_ref].id
   ]
 
   tags = merge(
