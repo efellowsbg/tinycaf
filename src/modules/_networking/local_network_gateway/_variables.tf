@@ -6,8 +6,8 @@ variable "settings" {
   description = "All the configuration for this resource"
   validation {
   condition = (
-    (!isnull(try(var.settings.gateway_address, null)) && try(var.settings.gateway_address, "") != "" && isnull(try(var.settings.gateway_fqdn, null))) ||
-    (!isnull(try(var.settings.gateway_fqdn, null)) && try(var.settings.gateway_fqdn, "") != "" && isnull(try(var.settings.gateway_address, null)))
+    (try(var.settings.gateway_address, null) != null && try(var.settings.gateway_address, "") != "" && try(var.settings.gateway_fqdn, null) == null) ||
+    (try(var.settings.gateway_fqdn, null) != null && try(var.settings.gateway_fqdn, "") != "" && try(var.settings.gateway_address, null) == null)
   )
   error_message = "You must specify **either** 'gateway_address' **or** 'gateway_fqdn', but not both and not neither."
 }
