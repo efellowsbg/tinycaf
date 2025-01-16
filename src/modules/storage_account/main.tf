@@ -2,6 +2,7 @@ resource "azurerm_storage_account" "main" {
   name                = var.settings.name
   resource_group_name = local.resource_group_name
   location            = local.location
+  tags                = local.tags
 
   account_kind             = try(var.settings.account_kind, null) # defaults to StorageV2
   account_tier             = try(var.settings.account_tier, "Standard")
@@ -23,13 +24,11 @@ resource "azurerm_storage_account" "main" {
   # TODO: sas_policy block
 
   network_rules {
-    default_action             = try(var.settings.network.default_action, "Deny")
-    bypass                     = try(var.settings.network.bypass, null)
-    ip_rules                   = try(var.settings.network.allowed_ips, null)
+    default_action             = try(var.settings.network_rules.default_action, "Deny")
+    bypass                     = try(var.settings.network_rules.bypass, null)
+    ip_rules                   = try(var.settings.network_rules.allowed_ips, null)
     virtual_network_subnet_ids = local.subnet_ids
 
     # TODO: private_link_access block
   }
-
-  tags = local.tags
 }
