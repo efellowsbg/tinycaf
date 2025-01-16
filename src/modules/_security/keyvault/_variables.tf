@@ -6,6 +6,10 @@ variable "tenant_id" {
   description = "Tenant ID"
 }
 
+variable "client_config" {
+  description = "Client configuration object (see module README.md)."
+}
+
 variable "settings" {
   description = "All the configuration for this resource"
 }
