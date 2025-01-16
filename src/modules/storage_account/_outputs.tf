@@ -1,3 +1,3 @@
 output "id" {
-  value = azurerm_storage_container.main.id
+  value = azurerm_storage_account.main.id
 }
