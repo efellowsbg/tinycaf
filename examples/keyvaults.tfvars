@@ -7,12 +7,10 @@ keyvaults = {
       allowed_ips    = ["10.10.10.10", "20.20.20.20"]
       subnets = {
         subnet1 = {
-          vnet_ref   = "vnet_test"
-          subnet_ref = "snet_sqlmi"
+          subnet_ref = "vnet_test/snet_sqlmi"
         }
         subnet2 = {
-          vnet_ref   = "vnet_test"
-          subnet_ref = "snet_private_endpoints"
+          subnet_ref = "vnet_test/snet_private_endpoints"
         }
       }
     }
