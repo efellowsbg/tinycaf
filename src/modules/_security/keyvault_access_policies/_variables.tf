@@ -15,15 +15,6 @@ variable "access_policies" {
   }
 }
 
-variable "client_config" {
-  description = "Client configuration object (see module README.md)."
-}
-variable "azuread_groups" {
-  default = {}
-}
-variable "azuread_apps" {
-  default = {}
-}
 variable "resources" {
   default = {}
 }

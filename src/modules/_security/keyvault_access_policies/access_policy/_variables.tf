@@ -1,4 +1,4 @@
 variable "keyvault_id" {}
 variable "tenant_id" {}
 variable "object_id" {}
-variable "access_policies" {}
+variable "access_policy" {}
