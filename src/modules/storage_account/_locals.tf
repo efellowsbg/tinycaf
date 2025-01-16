@@ -18,3 +18,7 @@ locals {
     try(var.settings.tags, {})
   )
 }
+
+locals {
+  storage_account_id = var.resources.storage_accounts[var.settings.storage_account_ref].id
+}
