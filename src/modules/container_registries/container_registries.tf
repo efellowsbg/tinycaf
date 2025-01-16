@@ -12,7 +12,7 @@ resource "azurerm_container_registry" "main" {
     for_each = var.settings.georeplications
 
     content {
-      location                = georeplications.value.name
+      location                = georeplications.value.location
       zone_redundancy_enabled = try(georeplications.value.zone_redundancy_enabled, false)
       tags                    = try(georeplications.value.tags, null)
     }
