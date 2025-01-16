@@ -1,18 +1,22 @@
 storage_accounts = {
   st_test = {
-    name               = "sttestdvne01"
-    resource_group_ref = "rg_test"
+    name                     = "sttestdvne01"
+    resource_group_ref       = "rg_test"
+    account_replication_type = "LRS"
     network_rules = {
+      default_action = "Allow"
+      allowed_ips    = ["10.10.10.10"]
+      bypass         = ["AzureServices", "Logging"]
       subnets = {
-        allow_snet_app = {
-          default_action = "Deny"
-          bypass         = ["AzureServices", "Logging"]
-          subnet_ref     = "vnet_test/snet_app"
+        subnet_config_1 = {
+          subnet_ref = "vnet_test/snet_app"
         }
-        allow_office_ip = {
-          default_action = "Deny"
-          allowed_ips    = ["11.12.13.14"]
-        }
+      }
+    }
+    containers = {
+      container_test_1 = {
+        name                  = "vhds1"
+        container_access_type = "private"
       }
     }
   }
