@@ -1,6 +1,7 @@
 variable "keyvaults" {
   default = {}
 }
+
 variable "keyvault_key" {
   default = null
 }
