@@ -5,7 +5,8 @@ resource "azurerm_container_registry" "main" {
   tags                = local.tags
   sku                 = var.settings.sku
 
-  admin_enabled = try(var.settings.admin_enabled, false)
+  public_network_access_enabled = try(var.settings.public_network_access_enabled, false)
+  admin_enabled                 = try(var.settings.admin_enabled, false)
 
   dynamic "georeplications" {
     for_each = var.settings.georeplications
