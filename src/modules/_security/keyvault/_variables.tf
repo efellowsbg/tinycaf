@@ -2,14 +2,6 @@ variable "global_settings" {
   description = "Global settings for tinycaf"
 }
 
-variable "tenant_id" {
-  description = "Tenant ID"
-}
-
-variable "client_config" {
-  description = "Client configuration object (see module README.md)."
-}
-
 variable "settings" {
   description = "All the configuration for this resource"
 }
@@ -19,6 +11,7 @@ variable "resources" {
     resource_groups  = map(any)
     virtual_networks = map(any)
     managed_identities = map(any)
+    keyvaults = map(any)
   })
   description = "All required resources"
 }
@@ -31,4 +24,33 @@ variable "enable_policy_update_delay" {
 
 variable "managed_identities" {
   default = {}
+}
+
+
+
+
+variable "keyvaults" {
+  default = {}
+}
+
+variable "keyvault_key" {
+  default = null
+}
+variable "keyvault_id" {
+  default = null
+}
+
+variable "tenant_id" {
+  default = {}
+}
+
+variable "access_policies" {
+  validation {
+    condition     = length(var.access_policies) <= 16
+    error_message = "A maximun of 16 access policies can be set."
+  }
+}
+
+variable "client_config" {
+  description = "Client configuration object (see module README.md)."
 }
