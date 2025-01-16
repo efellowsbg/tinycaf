@@ -8,8 +8,5 @@ locals {
     tenant_id               = data.azurerm_client_config.current.tenant_id
   } : map(var.client_config)
 
-  object_id = coalesce(
-  var.logged_user_objectId,
-  try(data.azuread_client_config.current.object_id, null)
-)
+  object_id = try(var.logged_user_objectId, null )
 }
