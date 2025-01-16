@@ -13,5 +13,3 @@ variable "virtual_network_gateways" { default = {} }
 variable "public_ips" { default = {} }
 
 variable "keyvaults" { default = {} }
-
-variable "keyvault_access_policies" { default = {} }
