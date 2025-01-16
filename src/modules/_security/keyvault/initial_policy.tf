@@ -22,7 +22,7 @@ resource "time_sleep" "initial_policy_delay" {
 module "logged_in_user" {
   source = "../keyvault_access_policies/access_policy"
   for_each = {
-    for key, access_policy in var.settings.access_policies : key => access_policy
+    for key, access_policy in var.access_policies : key => access_policy
     if key == "logged_in_user" && var.client_config.logged_user_objectId != null
   }
 
@@ -36,7 +36,7 @@ module "logged_in_user" {
 module "object_id" {
   source = "../keyvault_access_policies/access_policy"
   for_each = {
-    for key, access_policy in var.settings.access_policies : key => access_policy
+    for key, access_policy in var.access_policies : key => access_policy
     if try(access_policy.object_id, null) != null && var.client_config.logged_aad_app_objectId != null
   }
 
@@ -50,7 +50,7 @@ module "object_id" {
 module "managed_identity" {
   source = "../keyvault_access_policies/access_policy"
   for_each = {
-    for key, access_policy in var.settings.access_policies : key => access_policy
+    for key, access_policy in var.access_policies : key => access_policy
     if try(access_policy.managed_identity_key, null) != null
   }
 
