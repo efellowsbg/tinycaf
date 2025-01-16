@@ -2,14 +2,14 @@ module "logged_in_user" {
   source = "./access_policy"
   for_each = {
     for key, access_policy in var.access_policies : key => access_policy
-    if key == "logged_in_user" && var.client_config.logged_user_objectId != null
+    if key == "logged_in_user" && local.client_config.logged_user_objectId != null
   }
 
   keyvault_id = var.keyvault_id == null ? var.resources.keyvaults[var.keyvault_key].id : var.keyvault_id
 
   access_policy = each.value
-  tenant_id     = var.client_config.tenant_id
-  object_id     = var.client_config.object_id
+  tenant_id     = local.client_config.tenant_id
+  object_id     = local.client_config.object_id
 }
 
 module "object_id" {
