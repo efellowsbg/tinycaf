@@ -1,7 +1,8 @@
 module "keyvaults" {
   source   = "./modules/_security/keyvault"
   for_each = var.keyvaults
-
+  
+  client_config = var.client_config
   settings        = each.value
   global_settings = var.global_settings
   resources = {
