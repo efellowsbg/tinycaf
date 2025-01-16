@@ -9,7 +9,7 @@ resource "azurerm_key_vault_access_policy" "logged_in_user" {
 
 resource "azurerm_key_vault_access_policy" "managed_identity" {
   for_each = {
-    for access_policy_ref, config in var.settngs.access_policies :
+    for access_policy_ref, config in var.settings.access_policies :
     access_policy_ref => config
     if can(config.managed_identity_ref)
   }
