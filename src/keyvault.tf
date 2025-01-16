@@ -19,7 +19,6 @@ module "keyvault_access_policies" {
   keyvault_key    = each.key
   keyvault_id     = try(each.value.keyvault_id, null)
   access_policies = each.value
-  client_config   = local.client_config
   resources = {
     managed_identities          = module.managed_identities
   }
