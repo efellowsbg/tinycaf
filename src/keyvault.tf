@@ -4,6 +4,7 @@ module "keyvaults" {
 
   settings        = each.value
   global_settings = var.global_settings
+  client_config      = local.client_config
   tenant_id       = var.tenant_id
   resources = {
     resource_groups  = module.resource_groups
