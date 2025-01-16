@@ -1,5 +1,5 @@
 output "id" {
-  value = azurerm_storage_account.main[each.key].id
+  value = azurerm_storage_account.main.id
 }
 
 output "containers" {
