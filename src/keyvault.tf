@@ -13,7 +13,7 @@ module "keyvaults" {
 
 
 module "keyvault_access_policies" {
-  source   = "./_modules/security/keyvault_access_policies"
+  source   = "./_modules/_security/keyvault_access_policies"
   for_each = var.keyvault_access_policies
 
   keyvault_key    = each.key
