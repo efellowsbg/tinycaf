@@ -17,3 +17,9 @@ variable "resources" {
   })
   description = "All required resources"
 }
+
+variable "enable_policy_update_delay" {
+  description = "(Optional) Enable a delay after Key Vault access policy updates"
+  type        = bool
+  default     = false
+}
