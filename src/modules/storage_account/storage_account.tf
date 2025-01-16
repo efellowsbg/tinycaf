@@ -1,5 +1,7 @@
 resource "azurerm_storage_account" "main" {
-  name                = var.settings.name
+  for_each = try(var.settings, {})
+
+  name                = each.value.name
   resource_group_name = local.resource_group_name
   location            = local.location
   tags                = local.tags
