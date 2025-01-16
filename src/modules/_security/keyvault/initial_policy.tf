@@ -5,7 +5,7 @@ module "initial_policy" {
   access_policies = var.settings.creation_policies
   client_config   = var.client_config
   resources = {
-    managed_identity = module.managed_identity
+    managed_identities = var.managed_identities
   }
 }
 

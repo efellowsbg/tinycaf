@@ -28,3 +28,7 @@ variable "enable_policy_update_delay" {
   type        = bool
   default     = false
 }
+
+variable "managed_identities" {
+  default = {}
+}
