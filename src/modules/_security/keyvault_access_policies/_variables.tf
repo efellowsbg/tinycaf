@@ -8,6 +8,10 @@ variable "keyvault_id" {
   default = null
 }
 
+variable "tenant_id" {
+  default = {}
+}
+
 variable "access_policies" {
   validation {
     condition     = length(var.access_policies) <= 16
