@@ -14,4 +14,4 @@ variable "public_ips" { default = {} }
 
 variable "keyvaults" { default = {} }
 
-variable "keyvault_access_policies" { default = {} }
+variable "storage_accounts" { default = {} }
