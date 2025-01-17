@@ -9,7 +9,7 @@ locals {
   #   )
   # ]
 
-  subnet_id = each.value.var.settings.private_endpoints.var.resources.virtual_networks[split("/", subnet_ref)[0]].subnets[split("/", subnet_ref)[1]].id
+  subnet_id = var.settings.private_endpoint.var.resources.virtual_networks[split("/", subnet_ref)[0]].subnets[split("/", subnet_ref)[1]].id
 
   tags = merge(
     var.global_settings.tags,
