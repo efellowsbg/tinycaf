@@ -13,3 +13,5 @@ variable "virtual_network_gateways" { default = {} }
 variable "public_ips" { default = {} }
 
 variable "storage_accounts" { default = {} }
+
+variable "linux_virtual_machine" { default = {} }
