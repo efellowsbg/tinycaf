@@ -9,6 +9,8 @@ locals {
     )
   ]
 
+  # subnet_id = var.settings.private_endpoints.var.resources.virtual_networks[split("/", config.subnet_ref)[0]].subnets[split("/", config.subnet_ref)[1]].id
+
   tags = merge(
     var.global_settings.tags,
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},

@@ -1,10 +1,10 @@
-resource "azurerm_private_endpoint" "example" {
+resource "azurerm_private_endpoint" "main" {
   for_each = try(var.settings.private_endpoints, {})
 
   name                = each.value.name
   resource_group_name = local.resource_group_name
   location            = local.location
-  subnet_id           = local.subnet_id
+  subnet_id           = each.value
 
   tags = local.tags
 
