@@ -1,6 +1,4 @@
 resource "azurerm_key_vault_secret" "main" {
-  depends_on = [azurerm_key_vault_access_policy.logged_in_user]
-
   for_each = {
     for key, value in try(var.settings.secrets, {}) : key => value
     if try(value.ignore_changes, false) == false
