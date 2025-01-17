@@ -12,7 +12,7 @@ output "public_ip_addresses" {
 
 output "nics" {
   value = {
-    for nic_ref, _ in try(var.settings.network_interface_ids) :
+    for _, nic_ref in try(var.settings.network_interface_ids) :
     nic_ref => azurerm_network_interface.main[nic_ref]
   }
 }
