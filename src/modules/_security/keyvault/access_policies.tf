@@ -17,6 +17,8 @@ resource "azurerm_key_vault_access_policy" "managed_identity" {
   tenant_id    = var.global_settings.tenant_id
   object_id    = var.resources.managed_identities[each.value.managed_identity_ref].principal_id
 
+  # this is a bit of a hack to allow `secret_permissions` to be a string when "All" and otherwise a list
+  # the tfvars allows it, but the module needs us to convert it to list explicitly to get around the type errors
   secret_permissions = try(each.value.secret_permissions, null) == "All" ? local.all_secret_permissions : try(tolist(each.value.secret_permissions), [])
   key_permissions    = try(each.value.key_permissions, null) == "All" ? local.all_key_permissions : try(tolist(each.value.key_permissions), [])
 }
