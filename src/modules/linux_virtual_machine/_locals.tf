@@ -5,6 +5,8 @@ locals {
 
   network_interface_ids = [for nics_ref, config in var.settings.network_interface_ids : config.nic_ref]
 
+  # subnet_id = var.settings.network_interfaces.var.resources.virtual_networks[split("/", var.settings.network_interfaces.subnet_ref)[0]].subnets[split("/", config.subnet_ref)[1]].id
+
   tags = merge(
     var.global_settings.tags,
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
