@@ -1,10 +1,10 @@
 resource "azurerm_key_vault_secret" "main" {
   for_each = {
-    for key, value in try(var.settings.secrets, {}) : 
+    for key, value in try(var.settings.secrets, {}) :
     key => value
   }
   name         = each.value.name
-  value           = each.value.value
+  value        = each.value.value
   key_vault_id = azurerm_key_vault.main.id
 
   lifecycle {
