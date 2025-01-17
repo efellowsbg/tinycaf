@@ -10,7 +10,7 @@ resource "azurerm_private_endpoint" "example" {
 
   private_service_connection {
     name                           = var.settings.private_service_connection.name
-    private_connection_resource_id = var.settings.private_service_connection.azurerm_container_registry.main.id
+    private_connection_resource_id = azurerm_container_registry.main.id
 
     is_manual_connection              = try(var.settings.private_service_connection.is_manual_connection, false)
     private_connection_resource_alias = try(var.settings.private_service_connection.private_connection_resource_alias, null)
