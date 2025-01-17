@@ -4,7 +4,7 @@ resource "azurerm_private_endpoint" "main" {
   name                = each.value.name
   resource_group_name = local.resource_group_name
   location            = local.location
-  subnet_id           = each.value
+  subnet_id           = local.subnet_id
 
   tags = local.tags
 
