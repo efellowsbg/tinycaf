@@ -3,14 +3,6 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
-  # subnet_id = [
-  #   for private_endpoint, config in try(var.settings.private_endpoints, {}) : (
-  #     var.resources.virtual_networks[split("/", config.subnet_ref)[0]].subnets[split("/", config.subnet_ref)[1]].id
-  #   )
-  # ]
-
-  # subnet_id = var.settings.private_endpoint.var.resources.virtual_networks[split("/", subnet_ref)[0]].subnets[split("/", subnet_ref)[1]].id
-
   subnet_id = var.resources.virtual_networks[
     split("/", var.settings.private_endpoint.subnet_ref)[0]
     ].subnets[
