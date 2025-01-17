@@ -1,15 +1,15 @@
 keyvaults = {
-  kv-test = {
+  kv_test = {
     name               = "kv-test-dv-ne-01"
     resource_group_ref = "rg_test"
-    network = {
+    network_rules = {
       default_action = "Deny"
       allowed_ips    = ["10.10.10.10", "20.20.20.20"]
       subnets = {
-        subnet1 = {
-          subnet_ref = "vnet_test/snet_sqlmi"
+        allow_app1 = {
+          subnet_ref = "vnet_test/snet_app1"
         }
-        subnet2 = {
+        allow_private_endpoints = {
           subnet_ref = "vnet_test/snet_private_endpoints"
         }
       }
@@ -26,14 +26,13 @@ virtual_networks = {
     cidr               = ["10.10.10.0/24"]
     subnets = {
       snet_sqlmi = {
-        name       = "snet-sql-managed-instance"
+        name       = "snet-app1"
         cidr       = ["10.10.10.0/25"]
-        delegation = "sql_managed_instance"
       }
       snet_private_endpoints = {
         name              = "snet-private-endpoints"
         cidr              = ["10.10.10.128/25"]
-        service_endpoints = ["Microsoft.Storage", "Microsoft.KeyVault"]
+        service_endpoints = ["Microsoft.KeyVault"]
       }
     }
   }
