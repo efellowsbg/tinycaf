@@ -10,20 +10,20 @@ locals {
   )
   vnet_ids = {
     for vnet in var.settings.vnet_ref :
-     vnet => {
+    vnet => {
       name = var.resources.virtual_networks[vnet].name
-      id = var.resources.virtual_networks[vnet].id
+      id   = var.resources.virtual_networks[vnet].id
+    }
   }
-}
 }
 locals {
   # local object used to map possible private dns zoone names
   zone_names = {
-    "storage_blob" = "privatelink.blob.core.windows.net"
+    "storage_blob"   = "privatelink.blob.core.windows.net"
     "storage_tables" = "privatelink.table.core.windows.net"
     "storage_queues" = "privatelink.queue.core.windows.net"
-    "storage_files" = "privatelink.file.core.windows.net"
-    "function_apps" = "privatelink.azurewebsites.net"
-    "keyvaults" = "privatelink.vaultcore.azure.net"
+    "storage_files"  = "privatelink.file.core.windows.net"
+    "function_apps"  = "privatelink.azurewebsites.net"
+    "keyvaults"      = "privatelink.vaultcore.azure.net"
   }
 }
