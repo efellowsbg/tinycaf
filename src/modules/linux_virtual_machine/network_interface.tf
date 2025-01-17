@@ -6,12 +6,8 @@ resource "azurerm_network_interface" "main" {
   location            = local.location
 
   ip_configuration {
-    name = each.value.ip_configuration.name
-    subnet_id = var.resources.virtual_networks[
-      split("/", each.value.ip_configuration.subnet_ref)[0]
-      ].subnets[
-      split("/", each.value.ip_configuration.subnet_ref)[1]
-    ].id
+    name                          = each.value.ip_configuration.name
+    subnet_id                     = local.subnet_id
     private_ip_address_allocation = each.value.ip_configuration.private_ip_address_allocation
   }
 }
