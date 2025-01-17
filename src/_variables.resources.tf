@@ -16,4 +16,4 @@ variable "keyvaults" { default = {} }
 
 variable "storage_accounts" { default = {} }
 
-variable "private_dns_zone" { default = {} }
+variable "private_dns_zones" { default = {} }
