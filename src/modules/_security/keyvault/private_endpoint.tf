@@ -1,4 +1,5 @@
 resource "azurerm_private_endpoint" "main" {
+  count               = var.settings.private_endpoint != null ? 1 : 0
   name                = "pe-${azurerm_key_vault.main.name}"
   resource_group_name = azurerm_key_vault.main.resource_group_name
   location            = azurerm_key_vault.main.location
