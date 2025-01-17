@@ -26,8 +26,8 @@ virtual_networks = {
     cidr               = ["10.10.10.0/24"]
     subnets = {
       snet_sqlmi = {
-        name       = "snet-app1"
-        cidr       = ["10.10.10.0/25"]
+        name = "snet-app1"
+        cidr = ["10.10.10.0/25"]
       }
       snet_private_endpoints = {
         name              = "snet-private-endpoints"
