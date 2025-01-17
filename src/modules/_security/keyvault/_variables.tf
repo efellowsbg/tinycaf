@@ -11,6 +11,8 @@ variable "resources" {
     resource_groups    = map(any)
     virtual_networks   = map(any)
     managed_identities = map(any)
+    private_dns_zones = map(any)
+
   })
   description = "All required resources"
 }

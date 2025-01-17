@@ -53,3 +53,19 @@ locals {
     "SetRotationPolicy",
   ]
 }
+
+locals {
+  subnet_id = var.resources.virtual_networks[
+    split("/", var.settings.private_endpoint.subnet_ref)[0]
+    ].subnets[
+    split("/", var.settings.private_endpoint.subnet_ref)[1]
+  ].id
+}
+
+
+locals {
+  dns_zone_ids = [
+    for zone in var.settings.private_endpoint.dns_zones_ref :
+    var.resources.private_dns_zones[zone].id
+  ]
+}
