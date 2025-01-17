@@ -58,8 +58,8 @@ locals {
 }
 
 locals {
-  dns_zone_ids = [
+  dns_zone_ids = try([
     for zone in var.settings.private_endpoint.dns_zones_ref :
     var.resources.private_dns_zones[zone].id
-  ]
+  ], [])
 }
