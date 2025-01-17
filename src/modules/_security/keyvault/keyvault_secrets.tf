@@ -4,7 +4,7 @@ resource "azurerm_key_vault_secret" "main" {
     if try(value.ignore_changes, false) == false
   }
   name         = each.value.name
-  value        = ""
+  value        = "default"
   key_vault_id = azurerm_key_vault.main.id
 
   lifecycle {
