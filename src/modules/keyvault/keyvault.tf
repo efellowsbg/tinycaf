@@ -21,16 +21,18 @@ resource "azurerm_key_vault" "main" {
 }
 
 
-module "access_policies" {
-  source          = "./keyvault_access_policy"
-  for_each        = try(var.settings.access_policies, {})
-  settings        = var.settings
-  global_settings = var.global_settings
-  resources = {
-    keyvaults          = { var.settings.name => azurerm_key_vault.main }
-    virtual_networks   = var.resources.virtual_networks
-    managed_identities = var.resources.managed_identities
-    resource_groups    = var.resources.resource_groups
-    private_dns_zones  = var.resources.private_dns_zones
+module "logged_in_user" {
+  source = "./keyvault_access_policy"
+  for_each = {
+    for key, access_policy in var.access_policies : key => access_policy
+    if key == "logged_in_user" && var.global_settings.object_id != null
   }
+
+  keyvault_id = var.keyvault_id == null ? var.resources.keyvaults[var.keyvault_key].id : var.keyvault_id
+
+  access_policy = each.value
+  tenant_id     = var.global_settings.tenant_id
+  object_id     = var.global_settings.object_id
+  settings = var.settings
+  resources = var.resources
 }

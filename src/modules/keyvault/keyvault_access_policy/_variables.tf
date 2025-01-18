@@ -1,7 +1,3 @@
-variable "global_settings" {
-  description = "Global settings for tinycaf"
-}
-
 variable "settings" {
   description = "All the configuration for this resource"
 }
@@ -17,3 +13,8 @@ variable "resources" {
   })
   description = "All required resources"
 }
+
+variable "keyvault_id" {}
+variable "tenant_id" {}
+variable "object_id" {}
+variable "access_policy" {}

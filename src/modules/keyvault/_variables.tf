@@ -12,7 +12,28 @@ variable "resources" {
     virtual_networks   = map(any)
     managed_identities = map(any)
     private_dns_zones  = map(any)
+    keyvaults = map(any)
 
   })
   description = "All required resources"
+}
+variable "client_config" {
+  description = "Client configuration object (see module README.md)."
+}
+
+variable "keyvaults" {
+  default = {}
+}
+variable "keyvault_key" {
+  default = null
+}
+variable "keyvault_id" {
+  default = null
+}
+
+variable "access_policies" {
+  validation {
+    condition     = length(var.access_policies) <= 16
+    error_message = "A maximun of 16 access policies can be set."
+  }
 }
