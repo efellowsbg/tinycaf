@@ -8,6 +8,6 @@ module "logged_in_user" {
   keyvault_id = var.keyvault_id == null
 
   access_policy = each.value
-  tenant_id     = local.global_settings.tenant_id
-  object_id     = local.global_settings.object_id
+  tenant_id     = var.global_settings.tenant_id
+  object_id     = var.global_settings.object_id
 }
