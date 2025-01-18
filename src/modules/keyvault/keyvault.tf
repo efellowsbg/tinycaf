@@ -28,7 +28,7 @@ module "logged_in_user" {
     if key == "logged_in_user" && var.global_settings.object_id != null
   }
 
-  keyvault_id = var.keyvault_id == null ? var.resources.keyvaults[var.keyvault_key].id : var.keyvault_id
+  keyvault_id = var.keyvault_id != null ? var.keyvault_id : var.resources.keyvaults[var.keyvault_key].id
 
   access_policy = each.value
   tenant_id     = var.global_settings.tenant_id

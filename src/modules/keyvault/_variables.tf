@@ -29,8 +29,7 @@ variable "keyvault_id" {
 }
 
 variable "access_policies" {
-  validation {
-    condition     = length(var.access_policies) <= 16
-    error_message = "A maximun of 16 access policies can be set."
-  }
+  description = "Map of access policies for the Key Vault"
+  type        = map(any)
+  default     = {}
 }
