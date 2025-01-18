@@ -21,7 +21,7 @@ resource "azurerm_key_vault" "main" {
 }
 
 
-module "access_policy" {
+module "access_policies" {
   source          = "./keyvault_access_policy"
   for_each        = try(var.settings.access_policies, {})
   settings        = var.settings
