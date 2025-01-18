@@ -1,4 +1,5 @@
 resource "azurerm_key_vault" "main" {
+  for_each            = var.keyvaults
   name                = var.settings.name
   resource_group_name = local.resource_group_name
   location            = local.location
@@ -28,7 +29,7 @@ module "logged_in_user" {
     if key == "logged_in_user" && var.global_settings.object_id != null
   }
 
-  keyvault_id = azurerm_key_vault.main.id
+  keyvault_id = azurerm_key_vault.main[each.key].id
 
   access_policy = each.value
   tenant_id     = var.global_settings.tenant_id
