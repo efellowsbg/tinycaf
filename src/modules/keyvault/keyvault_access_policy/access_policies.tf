@@ -1,5 +1,5 @@
 resource "azurerm_key_vault_access_policy" "logged_in_user" {
-  key_vault_id = var.resources.keyvaults[var.settings.name].id
+  key_vault_id = var.resources.keyvaults[each.key].id
   tenant_id    = var.global_settings.tenant_id
   object_id    = var.global_settings.object_id
 
