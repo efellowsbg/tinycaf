@@ -7,4 +7,5 @@ module "initial_policy" {
   access_policies = each.value
   policy_name =     each.key
   global_settings = var.global_settings
+  resources = var.resources
 }
