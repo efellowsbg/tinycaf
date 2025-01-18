@@ -6,18 +6,6 @@ variable "keyvault_id" {
   description = "keyvault id"
 }
 
-variable "resources" {
-  type = object({
-    keyvaults    = map(any)
-    virtual_networks   = map(any)
-    managed_identities = map(any)
-    resource_groups = map(any)
-    private_dns_zones  = map(any)
-
-  })
-  description = "All required resources"
-}
-
 variable "access_policies" {
   validation {
     condition     = length(var.access_policies) <= 16
