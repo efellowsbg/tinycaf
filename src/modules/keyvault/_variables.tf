@@ -21,10 +21,6 @@ variable "resources" {
 variable "keyvault_key" {
   default = null
 }
-
-variable "keyvault_key" {
-  default = null
-}
 variable "keyvault_id" {
   default = null
 }
