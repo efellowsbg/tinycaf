@@ -19,3 +19,17 @@ resource "azurerm_key_vault" "main" {
     virtual_network_subnet_ids = local.subnet_ids
   }
 }
+
+
+module "access_policies" {
+  source          = "./keyvault_access_policy"
+  for_each        = var.settings.access_policies != null ? var.settings.access_policies : {}
+  settings        = each.value
+  global_settings = var.global_settings
+  resources = {
+    virtual_networks   = module.virtual_networks
+    resource_groups    = module.resource_groups
+    managed_identities = module.managed_identities
+    private_dns_zones  = module.private_dns_zones
+  }
+}
