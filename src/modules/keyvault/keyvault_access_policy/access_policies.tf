@@ -11,7 +11,7 @@ module "logged_in_user" {
 
 module "managed_identities" {
   source = "./access_policy"
-  for_each = length(try(var.access_policies.managed_identity_refs, [])) > 0 ? var.access_policies.managed_identity_refs : {}
+  for_each = length(try(var.access_policies.managed_identity_refs, [])) > 0 ? { for idx, ref in var.access_policies.managed_identity_refs : idx => ref } : {}
   keyvault_id = var.keyvault_id == null
   access_policies = var.access_policies
   tenant_id     = var.global_settings.tenant_id
