@@ -1,13 +1,14 @@
-resource "azurerm_key_vault_access_policy" "main" {
+resource "azurerm_key_vault_access_policy" "this" {
   for_each = {
-    for key, value in var.resources.keyvaults :
-    "${key}-${lookup(value.access_policies, "managed_identity_ref", "logged_in_user")}" => value.access_policies
-    if contains(keys(value), "access_policies")
+    for kv_name, kv in var.resources.keyvaults :
+    kv_name => kv.access_policies
+    if length(try(kv.access_policies, {})) > 0
   }
 
-  key_vault_id = var.resources.keyvaults[each.key].id
+  key_vault_id = each.value.key_vault_id
   tenant_id    = var.global_settings.tenant_id
 
+  # ✅ Correct object_id handling for managed identity
   object_id = try(
     each.value.managed_identity_ref != null
       ? var.resources.managed_identities[each.value.managed_identity_ref].principal_id
@@ -15,10 +16,10 @@ resource "azurerm_key_vault_access_policy" "main" {
     var.global_settings.object_id
   )
 
-  secret_permissions      = try(each.value.secret_permissions == "All" ? local.all_secret_permissions : tolist(each.value.secret_permissions), [])
-  key_permissions         = try(each.value.key_permissions == "All" ? local.all_key_permissions : tolist(each.value.key_permissions), [])
-  certificate_permissions = try(each.value.certificate_permissions, [])
-  storage_permissions     = try(each.value.storage_permissions, [])
+  secret_permissions      = try(each.value.policy_details.secret_permissions == "All" ? local.all_secret_permissions : tolist(each.value.policy_details.secret_permissions), [])
+  key_permissions         = try(each.value.policy_details.key_permissions == "All" ? local.all_key_permissions : tolist(each.value.policy_details.key_permissions), [])
+  certificate_permissions = try(each.value.policy_details.certificate_permissions, [])
+  storage_permissions     = try(each.value.policy_details.storage_permissions, [])
 }
 # resource "azurerm_key_vault_access_policy" "managed_identity" {
 #   for_each = {
