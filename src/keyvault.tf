@@ -9,6 +9,7 @@ module "keyvaults" {
     resource_groups    = module.resource_groups
     managed_identities = module.managed_identities
     private_dns_zones  = module.private_dns_zones
+    keyvaults = { for key, kv in azurerm_key_vault.main : key => kv }
   }
 }
 module "keyvault_access_policies" {

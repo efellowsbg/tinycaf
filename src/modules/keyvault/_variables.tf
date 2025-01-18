@@ -18,9 +18,6 @@ variable "resources" {
   description = "All required resources"
 }
 
-variable "keyvaults" {
-  default = {}
-}
 variable "keyvault_key" {
   default = null
 }
