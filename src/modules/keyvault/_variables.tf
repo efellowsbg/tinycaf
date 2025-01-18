@@ -16,8 +16,6 @@ variable "resources" {
     virtual_networks   = map(any)
     managed_identities = map(any)
     private_dns_zones  = map(any)
-    keyvaults = map(any)
-
   })
   description = "All required resources"
 }
@@ -27,6 +25,9 @@ variable "keyvault_key" {
 }
 variable "keyvault_id" {
   default = null
+}
+output "keyvaults" {
+  value = { for kv, data in azurerm_key_vault.main : kv => data }
 }
 
 variable "access_policies" {
