@@ -1,16 +1,22 @@
-resource "azurerm_key_vault_access_policy" "this" {
+resource "azurerm_key_vault_access_policy" "main" {
   for_each = {
     for key, value in var.resources.keyvaults :
-    key => value.access_policies
+    "${key}-${lookup(value.access_policies, "managed_identity_ref", "logged_in_user")}" => value.access_policies
     if contains(keys(value), "access_policies")
   }
 
   key_vault_id = var.resources.keyvaults[each.key].id
   tenant_id    = var.global_settings.tenant_id
-  object_id    = var.object_id
 
-  secret_permissions      = try(each.value.secret_permissions, [])
-  key_permissions         = try(each.value.key_permissions, [])
+  object_id = try(
+    each.value.managed_identity_ref != null
+      ? var.resources.managed_identities[each.value.managed_identity_ref].principal_id
+      : var.global_settings.object_id,
+    var.global_settings.object_id
+  )
+
+  secret_permissions      = try(each.value.secret_permissions == "All" ? local.all_secret_permissions : tolist(each.value.secret_permissions), [])
+  key_permissions         = try(each.value.key_permissions == "All" ? local.all_key_permissions : tolist(each.value.key_permissions), [])
   certificate_permissions = try(each.value.certificate_permissions, [])
   storage_permissions     = try(each.value.storage_permissions, [])
 }
