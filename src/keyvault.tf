@@ -11,7 +11,7 @@ module "keyvaults" {
     managed_identities = module.managed_identities
     private_dns_zones  = module.private_dns_zones
     keyvaults = {
-      for key, kv in azurerm_key_vault.main : key => kv
+      for key, kv in keyvualts : key => kv
     }
   }
 }
