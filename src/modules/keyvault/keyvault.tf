@@ -35,4 +35,5 @@ module "logged_in_user" {
   object_id     = var.global_settings.object_id
   settings = var.settings
   resources = var.resources
+  global_settings = var.global_settings
 }
