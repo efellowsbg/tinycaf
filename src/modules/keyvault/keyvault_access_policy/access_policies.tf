@@ -1,12 +1,13 @@
-resource "azurerm_key_vault_access_policy" "logged_in_user" {
-  key_vault_id = var.resources.keyvaults[each.key].id
-  tenant_id    = var.global_settings.tenant_id
-  object_id    = var.global_settings.object_id
+resource "azurerm_key_vault_access_policy" "this" {
+  key_vault_id = var.keyvault_id
+  tenant_id    = var.tenant_id
+  object_id    = var.object_id
 
-  secret_permissions = local.all_secret_permissions
-  key_permissions    = local.all_key_permissions
+  secret_permissions = try(var.access_policy.secret_permissions, [])
+  key_permissions    = try(var.access_policy.key_permissions, [])
+  certificate_permissions = try(var.access_policy.certificate_permissions, [])
+  storage_permissions     = try(var.access_policy.storage_permissions, [])
 }
-
 # resource "azurerm_key_vault_access_policy" "managed_identity" {
 #   for_each = {
 #     for access_policy_ref, config in var.settings.access_policies :
