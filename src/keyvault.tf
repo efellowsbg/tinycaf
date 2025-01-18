@@ -24,7 +24,7 @@ module "keyvault_access_policies" {
 
   access_policy = each.value
 
-  tenant_id      = var.global_settings.tenant_id
+  tenant_id      = local.global_settings.tenant_id
   settings        = each.value
   # ✅ Conditionally set the object_id based on the policy type
   object_id = contains(keys(each.value), "logged_in_user") ? var.global_settings.object_id : module.managed_identities[each.value.managed_identity_ref].principal_id
@@ -35,5 +35,5 @@ module "keyvault_access_policies" {
     private_dns_zones  = module.private_dns_zones
     keyvaults = module.keyvaults
   }
-  global_settings = var.global_settings
+  global_settings = local.global_settings
 }
