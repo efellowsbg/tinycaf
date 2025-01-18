@@ -59,3 +59,15 @@ module "local_network_gateways" {
     resource_groups = module.resource_groups
   }
 }
+
+module "private_dns_zones" {
+  source   = "./modules/_networking/private_dns_zone"
+  for_each = var.private_dns_zones
+
+  global_settings = var.global_settings
+  settings        = each.value
+  resources = {
+    resource_groups  = module.resource_groups
+    virtual_networks = module.virtual_networks
+  }
+}
