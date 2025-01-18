@@ -24,17 +24,19 @@ resource "azurerm_key_vault" "main" {
 
 module "logged_in_user" {
   source = "./keyvault_access_policy"
+
   for_each = {
     for key, access_policy in var.access_policies : key => access_policy
     if key == "logged_in_user" && var.global_settings.object_id != null
   }
 
-  keyvault_id = var.resources.keyvaults[each.key].id
+  # ✅ Directly reference the Key Vault without using outputs
+  keyvault_id = azurerm_key_vault.main[each.key].id
 
-  access_policy = each.value
-  tenant_id     = var.global_settings.tenant_id
-  object_id     = var.global_settings.object_id
-  settings = var.settings
-  resources = var.resources
+  access_policy  = each.value
+  tenant_id      = var.global_settings.tenant_id
+  object_id      = var.global_settings.object_id
+  settings       = var.settings
+  resources      = var.resources
   global_settings = var.global_settings
 }
