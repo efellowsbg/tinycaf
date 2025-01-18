@@ -1,6 +1,6 @@
-module "logged_in_user" {
+module "managed_identity" {
   source = "./access_policy"
-  for_each = var.settings
+  count = local.has_logged_in_key ? 1 : 0
 
   keyvault_id = var.keyvault_id == null
 
