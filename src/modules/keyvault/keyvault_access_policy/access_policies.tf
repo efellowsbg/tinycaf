@@ -1,5 +1,5 @@
 resource "azurerm_key_vault_access_policy" "logged_in_user" {
-  key_vault_id = var.resources.keyvaults.id
+  key_vault_id = var.resources.keyvaults[var.settings.name].id
   tenant_id    = var.global_settings.tenant_id
   object_id    = var.global_settings.object_id
 
@@ -13,7 +13,7 @@ resource "azurerm_key_vault_access_policy" "managed_identity" {
     access_policy_ref => config
     if can(config.managed_identity_ref)
   }
-  key_vault_id = var.resources.keyvaults.id
+  key_vault_id = var.resources.keyvaults[var.settings.name].id
   tenant_id    = var.global_settings.tenant_id
   object_id    = var.resources.managed_identities[each.value.managed_identity_ref].principal_id
 
