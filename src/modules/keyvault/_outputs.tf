@@ -17,7 +17,3 @@ output "location" {
 output "name" {
   value = azurerm_key_vault.main.name
 }
-
-output "key_vaults" {
-  value = { for key, kv in azurerm_key_vault.main : key => kv }
-}
