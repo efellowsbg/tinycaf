@@ -1,6 +1,5 @@
 resource "azurerm_key_vault" "main" {
-  for_each            = var.keyvaults
-  name                = each.value.name
+  name                = var.settings.name
   resource_group_name = local.resource_group_name
   location            = local.location
   tags                = local.tags
