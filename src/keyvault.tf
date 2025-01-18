@@ -9,6 +9,6 @@ module "keyvaults" {
     resource_groups    = module.resource_groups
     managed_identities = module.managed_identities
     private_dns_zones  = module.private_dns_zones
-    keyvaults          = module.keyvaults[each.key].key_vaults
+    keyvaults = module.keyvaults.key_vault
   }
 }
