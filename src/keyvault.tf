@@ -4,6 +4,7 @@ module "keyvaults" {
 
   settings        = each.value
   global_settings = local.global_settings
+  managed_identities = var.managed_identities
   resources = {
     virtual_networks   = module.virtual_networks
     resource_groups    = module.resource_groups
