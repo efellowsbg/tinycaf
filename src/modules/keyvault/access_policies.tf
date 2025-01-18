@@ -6,7 +6,7 @@ module "initial_policy" {
   keyvault_id     = azurerm_key_vault.main.id
   access_policies = var.settings.access_policies
   resources = {
-    managed_identities = module.managed_identities
+    managed_identities = var.managed_identities
   }
   global_settings = var.global_settings
 }
