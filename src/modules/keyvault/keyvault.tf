@@ -26,5 +26,11 @@ module "access_policy" {
   for_each        = try(var.settings.access_policies, {})
   settings        = var.settings
   global_settings = var.global_settings
-  resources       = var.resources
+  resources = {
+    keyvaults          = { (var.settings.name) = azurerm_key_vault.main }
+    virtual_networks   = var.resources.virtual_networks
+    managed_identities = var.resources.managed_identities
+    resource_groups    = var.resources.resource_groups
+    private_dns_zones  = var.resources.private_dns_zones
+  }
 }
