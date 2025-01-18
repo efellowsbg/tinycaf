@@ -15,3 +15,12 @@ variable "access_policies" {
 variable "global_settings" {
   description = "Global settings for tinycaf"
 }
+
+variable "policy_name" {
+  description = "The name of the access policy (e.g., policy1, policy2)"
+  type        = string
+}
+
+variable "resources" {
+  description = "All the configuration for this resource"
+}

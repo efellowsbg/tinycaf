@@ -14,15 +14,12 @@ resource "azurerm_key_vault_access_policy" "logged_in_user" {
 }
 
 
-resource "azurerm_key_vault_access_policy" "example" {
-  for_each = {
-    for idx, mi in var.settings.access_policies.managed_identity.managed_identity_refs : "${idx}" => mi
-  }
-
+resource "azurerm_key_vault_access_policy" "main" { # Using the policy key in the resource name
   key_vault_id = var.keyvault_id
-  tenant_id    = var.tenant_id
-  object_id    = var.resources.managed_identities[each.value].id
 
-  key_permissions    = try(var.settings.access_policies.managed_identity.key_permissions,null)
-  secret_permissions = try(var.settings.access_policies.managed_identity.secret_permissions,null)
+  tenant_id    = var.tenant_id
+  object_id    = var.object_id
+
+  key_permissions    = var.access_policies.key_permissions
+  secret_permissions = var.access_policies.secret_permissions
 }
