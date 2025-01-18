@@ -11,15 +11,11 @@ module "logged_in_user" {
 
 module "managed_identities" {
   source = "./access_policy"
-  for_each = (
-    contains(keys(var.access_policies), "managed_identity_refs") && length(var.access_policies.managed_identity_refs) > 0
-    ? var.access_policies.managed_identity_refs
-    : {}
-  )
+  for_each = length(try(var.access_policies.managed_identity_refs, [])) > 0 ? var.access_policies.managed_identity_refs : {}
   keyvault_id = var.keyvault_id == null
   access_policies = var.access_policies
   tenant_id     = var.global_settings.tenant_id
   object_id     = var.resources.managed_identities[each.value].id
-  key_permissions = try(var.access_policies.key_permissions,null)
-  secret_permissions = try(var.access_policies.key_permissions,null)
+  key_permissions = local.effective_key_permissions
+  secret_permissions = local.effective_secret_permissions
 }
