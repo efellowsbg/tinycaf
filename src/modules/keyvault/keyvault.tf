@@ -19,10 +19,3 @@ resource "azurerm_key_vault" "main" {
     virtual_network_subnet_ids = local.subnet_ids
   }
 }
-
-
-resource "null_resource" "debug_settings" {
-  provisioner "local-exec" {
-    command = "echo ${jsonencode(var.settings)}"
-  }
-}
