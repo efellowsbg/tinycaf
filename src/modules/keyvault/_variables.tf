@@ -20,16 +20,6 @@ variable "resources" {
   description = "All required resources"
 }
 
-variable "keyvault_key" {
-  default = null
-}
-variable "keyvault_id" {
-  default = null
-}
-output "keyvaults" {
-  value = { for kv, data in azurerm_key_vault.main : kv => data }
-}
-
 variable "access_policies" {
   description = "Map of access policies for the Key Vault"
   type        = map(any)
