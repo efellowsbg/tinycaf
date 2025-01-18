@@ -6,10 +6,6 @@ variable "settings" {
   description = "All the configuration for this resource"
 }
 
-variable "managed_identities" {
-  description = "All the configuration for this resource"
-}
-
 variable "resources" {
   type = object({
     resource_groups    = map(any)
