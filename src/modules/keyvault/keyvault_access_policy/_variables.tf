@@ -17,7 +17,7 @@ variable "global_settings" {
 }
 
 variable "policy_name" {
-  description = "The name of the access policy (e.g., policy1, policy2)"
+  description = "The key of the access policy."
   type        = string
 }
 
