@@ -9,6 +9,6 @@ module "keyvaults" {
     resource_groups    = module.resource_groups
     managed_identities = module.managed_identities
     private_dns_zones  = module.private_dns_zones
-    keyvaults          = { for k in var.keyvaults: k => azurerm_key_vault.main }
+    keyvaults = { for key, value in var.keyvaults : key => azurerm_key_vault.main[key] }
   }
 }
