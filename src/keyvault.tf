@@ -1,5 +1,5 @@
 module "keyvaults" {
-  source   = "./modules/_security/keyvault"
+  source   = "./modules/keyvault"
   for_each = var.keyvaults
 
   settings        = each.value
