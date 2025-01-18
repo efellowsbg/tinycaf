@@ -33,3 +33,7 @@ locals {
     "SetRotationPolicy",
   ]
 }
+
+locals {
+  debug_settings = var.settings
+}
