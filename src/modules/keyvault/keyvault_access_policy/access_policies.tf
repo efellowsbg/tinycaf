@@ -20,6 +20,6 @@ module "managed_identities" {
   access_policies = var.access_policies
   tenant_id     = var.global_settings.tenant_id
   object_id     = var.resources.managed_identities[each.value].id
-  key_permissions = try(var.access.key_permissions,null)
-  secret_permissions = try(var.access.key_permissions,null)
+  key_permissions = try(var.access_policies.key_permissions,null)
+  secret_permissions = try(var.access_policies.key_permissions,null)
 }
