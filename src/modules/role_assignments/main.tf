@@ -2,7 +2,7 @@ module "built_in_roles" {
   source = "./built_in_roles"
 
   for_each = {
-    for resource_type, roles in try(var.role_assignments.built_in_roles, {}) : resource_type => {
+    for resource_type, roles in try(var.settings.built_in_roles, {}) : resource_type => {
       resource_type = resource_type
       roles         = roles
     }
