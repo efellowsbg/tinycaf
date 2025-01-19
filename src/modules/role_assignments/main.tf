@@ -8,7 +8,6 @@ module "built_in_roles" {
       roles         = roles
     }
   }
-  new_settings = var.settings
   settings        = each.value.roles
   resource_type   = each.value.resource_type
   global_settings = var.global_settings
