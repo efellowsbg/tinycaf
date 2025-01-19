@@ -1,10 +1,12 @@
 module "keyvault_endpoint" {
-  source          = "./keyvault_private_endpoint"
-  for_each        = var.settings.private_endpoint != null ? tomap({ for k, v in var.settings.private_endpoint : k => v }) : {}
-  settings = var.settings
+  source = "./keyvault_private_endpoint"
+
+  count = var.settings.private_endpoint != null ? 1 : 0
+
+  settings        = var.settings
   keyvault_id     = azurerm_key_vault.main.id
-  subnet_ref      = each.value.subnet_ref
-  dns_zones_ref   = each.value.dns_zones_ref
+  subnet_ref      = var.settings.private_endpoint.subnet_ref
+  dns_zones_ref   = var.settings.private_endpoint.dns_zones_ref
   global_settings = var.global_settings
   resources       = var.resources
 }
