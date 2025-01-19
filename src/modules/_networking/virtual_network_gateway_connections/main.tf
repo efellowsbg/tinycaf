@@ -10,8 +10,10 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
   use_policy_based_traffic_selectors = try(var.settings.use_policy_based_traffic_selectors, true)
 
   shared_key = var.settings.shared_key != null ? var.settings.shared_key : (
-    length(data.azurerm_key_vault_secret.main) > 0 ? data.azurerm_key_vault_secret.main[0].value : null
-  )
+      length(data.azurerm_key_vault_secret.main) > 0
+      ? data.azurerm_key_vault_secret.main[0].value
+      : null
+    )
 
   dynamic "ipsec_policy" {
     for_each = try(var.settings.use_policy_based_traffic_selectors, true) ? [1] : []
