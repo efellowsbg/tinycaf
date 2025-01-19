@@ -6,6 +6,10 @@ variable "settings" {
   description = "All the configuration for this resource"
 }
 
+variable "keyvault_id" {
+  description = "id of the keyvault"
+}
+
 variable "resources" {
   type = object({
     keyvaults    = map(any)
@@ -15,4 +19,16 @@ variable "resources" {
 
   })
   description = "All required resources"
+}
+
+variable "resources" {
+  description = "All the configuration for this resource"
+}
+
+variable "subnet_ref" {
+  description = "All the configuration for this resource"
+}
+
+variable "dns_zones_ref" {
+  description = "All the configuration for this resource"
 }
