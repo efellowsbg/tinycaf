@@ -1,7 +1,7 @@
 module "keyvault_endpoint" {
   source = "./keyvault_private_endpoint"
 
-  count = var.settings.private_endpoint != null ? 1 : 0
+  count = try(var.settings.private_endpoint != null, false) ? 1 : 0
 
   settings        = var.settings
   keyvault_id     = azurerm_key_vault.main.id
