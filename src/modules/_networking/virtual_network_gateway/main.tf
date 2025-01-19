@@ -4,7 +4,7 @@ resource "azurerm_virtual_network_gateway" "main" {
   location            = local.location
   tags                = local.tags
 
-  sku  = var.settings.sku
+  sku  = try(var.settings.sku, "VpnGw1")
   type = try(var.settings.type, "Vpn")
 
   generation    = try(var.settings.generation, null)
