@@ -9,3 +9,8 @@ variable "settings" {
 variable "resources" {
   description = "All required resources"
 }
+
+variable "resource_type" {
+  description = "The type of resource being processed (e.g., keyvaults)"
+  type        = string
+}
