@@ -1,5 +1,5 @@
 resource "azurerm_private_endpoint" "main" {
-  name                = "pe-${var.settings.name}}"
+  name                = "pe-${var.settings.name}"
   resource_group_name = local.resource_group_name
   location            = local.location
   subnet_id           = local.subnet_id
