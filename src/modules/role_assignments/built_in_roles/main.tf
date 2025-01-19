@@ -9,16 +9,15 @@ resource "azurerm_role_assignment" "main" {
             resource_type        = var.resource_type
             principal_type       = principal_type
             principal            = principal
+            unique_key           = "${role_definition_name}-${resource_key}-${principal_type}-${principal}" # Ensure keys are unique
           }
         ]
       ]
     ]
   ]))
 
-  # Resolve the scope dynamically
   scope = try(var.resources[each.value.resource_type][each.value.resource_key].id, null)
 
-  # Resolve principal_id dynamically
   principal_id = try(var.resources[each.value.principal_type][each.value.principal].id, null)
 
   role_definition_name = each.value.role_definition_name
