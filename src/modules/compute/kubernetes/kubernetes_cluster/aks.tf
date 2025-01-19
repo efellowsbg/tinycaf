@@ -11,5 +11,8 @@ resource "azurerm_kubernetes_cluster" "main" {
     max_pods = try(var.settings.default_node_pool.max_pods, "VirtualMachineScaleSets")
     vnet_subnet_id = local.vnet_subnet_id
   }
+  identity {
+    type = "SystemAssigned"
+  }
   tags = local.tags
 }
