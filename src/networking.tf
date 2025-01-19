@@ -71,3 +71,18 @@ module "private_dns_zones" {
     virtual_networks = module.virtual_networks
   }
 }
+
+module "virtual_network_gateway_connections" {
+  source   = "./modules/_networking/virtual_network_gateway_connections"
+  for_each = var.virtual_network_gateway_connections
+
+  global_settings = var.global_settings
+  settings        = each.value
+  resources = {
+    resource_groups  = module.resource_groups
+    virtual_networks = module.virtual_networks
+    keyvaults = module.keyvaults
+    local_network_gateways = module.local_network_gateways
+    virtual_network_gateways = module.virtual_network_gateways
+  }
+}
