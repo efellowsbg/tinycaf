@@ -6,7 +6,7 @@ resource "azurerm_role_assignment" "main" {
           for principal in principals : {
             role_definition_name = role_definition_name
             resource_key         = resource_key
-            resource_type        = var.resource_type # Passed dynamically
+            resource_type        = var.resource_type
             principal_type       = principal_type
             principal            = principal
           }
