@@ -1,6 +1,6 @@
 module "keyvault_endpoint" {
   source          = "./keyvault_private_endpoint"
-  for_each        = try(var.settings.private_endpoint != null ? { for k, v in var.settings.private_endpoint : k => v } : {})
+  for_each        = var.settings.private_endpoint != null ? tomap({ for k, v in var.settings.private_endpoint : k => v }) : {}
   settings = var.settings
   keyvault_id     = azurerm_key_vault.main.id
   subnet_ref      = each.value.subnet_ref
