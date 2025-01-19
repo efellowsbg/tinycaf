@@ -6,10 +6,6 @@ variable "settings" {
   description = "All the configuration for a storage account"
 }
 
-variable "new_settings" {
-  description = "All the configuration for a storage account"
-}
-
 variable "resources" {
   description = "All required resources"
 }
