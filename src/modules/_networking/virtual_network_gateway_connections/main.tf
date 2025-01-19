@@ -14,7 +14,13 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
         ? data.azurerm_key_vault_secret.main[0].value
         : null
       )
-
+  dynamic "traffic_selector_policy" {
+    for_each = (try(var.settings.local_address_cidrs, null) != null && try(var.settings.remote_address_cidrs, null) != null) ? [1] : []
+    content {
+      local_address_cidrs  = try(var.settings.local_address_cidrs, [])
+      remote_address_cidrs = try(var.settings.remote_address_cidrs, [])
+    }
+  }
   dynamic "ipsec_policy" {
     for_each = try(var.settings.use_policy_based_traffic_selectors, true) ? [1] : []
     content {
