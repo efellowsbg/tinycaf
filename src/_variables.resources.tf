@@ -21,3 +21,5 @@ variable "private_dns_zones" { default = {} }
 variable "virtual_network_gateway_connections" { default = {} }
 
 variable "kubernetes_clusters" { default = {} }
+
+variable "role_assignments" { default = {} }
