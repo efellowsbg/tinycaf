@@ -11,17 +11,6 @@ variable "keyvault_id" {
 }
 
 variable "resources" {
-  type = object({
-    keyvaults    = map(any)
-    virtual_networks   = map(any)
-    managed_identities = map(any)
-    private_dns_zones  = map(any)
-
-  })
-  description = "All required resources"
-}
-
-variable "resources" {
   description = "All the configuration for this resource"
 }
 
