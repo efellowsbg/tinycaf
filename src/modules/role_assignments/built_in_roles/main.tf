@@ -1,6 +1,6 @@
 resource "azurerm_role_assignment" "keyvault_roles" {
   for_each = tomap(flatten([
-    for role, kv_refs in try(var.settings.keyvaults, {}) : [
+    for role, kv_refs in try(var.role_assignments.built_in_roles.keyvaults, {}) : [
       for kv_ref, kv_data in try(kv_refs, {}) : [
         for identity in try(kv_data.managed_identity_refs, []) : {
           role_definition_name = role
