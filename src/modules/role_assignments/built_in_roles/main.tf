@@ -1,6 +1,6 @@
 resource "azurerm_role_assignment" "main" {
   for_each = tomap(flatten([
-    for resource_type, roles in try(var.settings.built_in_roles, {}) : [
+    for resource_type, roles in try(var.new_settings.built_in_roles, {}) : [
       for role_definition_name, resources in try(roles, {}) : [
         for resource_key, resource_details in try(resources, {}) : [
           for principal in try(resource_details.managed_identities, []) : {
