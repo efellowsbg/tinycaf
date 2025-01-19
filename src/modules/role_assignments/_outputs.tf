@@ -1,3 +1,5 @@
-output "debug" {
-  value = var.settings.built_in_roles
+resource "null_resource" "debug" {
+  triggers = {
+    resource_type = jsonencode(var.settings)
+  }
 }
