@@ -6,8 +6,13 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
   type                       = try(var.settings.type, "IPsec")
   virtual_network_gateway_id = local.virtual_network_gateway_id
   local_network_gateway_id   = local.local_network_gateway_id
-  connection_protocol = try(var.settings.connection_protocol, "IKEv2")
-  use_policy_based_traffic_selectors = try(var.settings.use_policy_based_traffic_selectors, true )
+  connection_protocol        = try(var.settings.connection_protocol, "IKEv2")
+  use_policy_based_traffic_selectors = try(var.settings.use_policy_based_traffic_selectors, true)
+
+  shared_key = var.settings.shared_key != null ? var.settings.shared_key : (
+    length(data.azurerm_key_vault_secret.main) > 0 ? data.azurerm_key_vault_secret.main[0].value : null
+  )
+
   dynamic "ipsec_policy" {
     for_each = try(var.settings.use_policy_based_traffic_selectors, true) ? [1] : []
     content {
@@ -20,6 +25,4 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
       sa_lifetime       = try(var.settings.ipsec_policy.sa_lifetime, "28800")
     }
   }
-  tags = local.tags
-  shared_key = var.settings.shared_key != null ? var.settings.shared_key : (data.azurerm_key_vault_secret.main.count > 0 ? data.azurerm_key_vault_secret.main[0].value : null)
 }
