@@ -5,6 +5,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   node_resource_group = local.node_resource_group_name
   sku_tier            = try(var.settings.sku_tier, "Free")
   kubernetes_version  = try(var.settings.kubernetes_version, null)
+  dns_prefix = try(var.settings.dns_prefix, "default")
 
   default_node_pool {
     name                 = try(var.settings.default_node_pool.name, "default")
