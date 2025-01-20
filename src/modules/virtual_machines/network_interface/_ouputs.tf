@@ -4,3 +4,7 @@ output "nics" {
     nic.nic_ref => azurerm_network_interface.main[nic.nic_ref]
   }
 }
+
+output "nic_id" {
+  value = azurerm_network_interface.main.id
+}
