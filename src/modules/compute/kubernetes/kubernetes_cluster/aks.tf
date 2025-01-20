@@ -21,20 +21,17 @@ resource "azurerm_kubernetes_cluster" "main" {
   }
 
   network_profile {
-    network_plugin    = try(var.settings.network_profile.network_plugin, "azure")
-    network_mode      = try(var.settings.network_profile.network_mode, "bridge")
-    network_policy    = try(var.settings.network_profile.network_policy, "calico")
-    load_balancer_sku = try(var.settings.network_profile.load_balancer_sku, "standard")
-
-    network_data_plane  = local.validated_network_data_plane
-    network_plugin_mode = try(var.settings.network_profile.network_plugin_mode, "overlay")
-    outbound_type       = try(var.settings.network_profile.outbound_type, "loadBalancer") # "loadBalancer", "userDefinedRouting", "managedNATGateway", "userAssignedNATGateway"
-
-    dns_service_ip = try(var.settings.network_profile.dns_service_ip, null) # E.g., "10.0.0.10"
-    service_cidr   = try(var.settings.network_profile.service_cidr, null)   # E.g., "10.0.0.0/16"
-    service_cidrs  = try(var.settings.network_profile.service_cidrs, null)  # For dual-stack networking, e.g., ["10.0.0.0/16", "fd02::/112"]
-
-    pod_cidr = local.validated_pod_cidr
+    network_plugin      = local.effective_network_profile.network_plugin
+    network_mode        = local.effective_network_profile.network_mode
+    network_policy      = local.effective_network_profile.network_policy
+    load_balancer_sku   = local.effective_network_profile.load_balancer_sku
+    network_data_plane = local.validated_network_data_plane
+    network_plugin_mode = local.effective_network_profile.network_plugin_mode
+    outbound_type       = local.effective_network_profile.outbound_type
+    dns_service_ip      = local.effective_network_profile.dns_service_ip
+    service_cidr        = local.effective_network_profile.service_cidr
+    service_cidrs       = local.effective_network_profile.service_cidrs
+    pod_cidr            = local.validated_pod_cidr
   }
 
   private_cluster_enabled             = try(var.settings.private_cluster_enabled, false)

@@ -22,6 +22,24 @@ locals {
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
     try(var.settings.tags, {})
   )
-  validated_pod_cidr = var.settings.network_profile.network_plugin == "azure" && var.settings.network_profile.pod_cidr != null && var.settings.network_profile.network_plugin_mode != "overlay" ? error("Error: When network_plugin is 'azure', pod_cidr must not be set unless network_plugin_mode is 'overlay'.") : try(var.settings.network_profile.pod_cidr, null)
+  validated_pod_cidr = local.effective_network_profile.network_plugin == "azure" && local.effective_network_profile.pod_cidr != null && local.effective_network_profile.network_plugin_mode != "overlay" ? error("Error: When network_plugin is 'azure', pod_cidr must not be set unless network_plugin_mode is 'overlay'.") : local.effective_network_profile.pod_cidr
 
+}
+
+
+locals {
+  effective_network_profile = {
+    network_plugin       = try(var.settings.network_profile.network_plugin, "azure")
+    network_mode         = try(var.settings.network_profile.network_mode, "bridge")
+    network_policy       = try(var.settings.network_profile.network_policy, "calico")
+    load_balancer_sku    = try(var.settings.network_profile.load_balancer_sku, "standard")
+    network_data_plane   = try(var.settings.network_profile.network_data_plane, "calico")
+    network_plugin_mode  = try(var.settings.network_profile.network_plugin_mode, "overlay")
+    outbound_type        = try(var.settings.network_profile.outbound_type, "loadBalancer")
+    dns_service_ip       = try(var.settings.network_profile.dns_service_ip, null)
+    service_cidr         = try(var.settings.network_profile.service_cidr, null)
+    service_cidrs        = try(var.settings.network_profile.service_cidrs, null)
+    pod_cidr             = try(var.settings.network_profile.pod_cidr, null)
+  }
+validated_network_data_plane = local.effective_network_profile.network_policy == "cilium" && local.effective_network_profile.network_data_plane != "cilium" ? error("Error: When network_policy is set to 'cilium', the network_data_plane must also be set to 'cilium'.") : local.effective_network_profile.network_data_plane
 }
