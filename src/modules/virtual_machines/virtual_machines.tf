@@ -9,8 +9,8 @@ module "linux_virtual_machine" {
 }
 
 module "network_interface" {
-  source   = "./linux_virtual_machine"
-  for_each = var.settings.linux_virtual_machine
+  source   = "./network_interface"
+  for_each = var.settings.network_interface
 
   settings        = var.settings
   global_settings = var.global_settings
