@@ -11,7 +11,7 @@ locals {
   #   split("/", var.settings.network_interfaces.ip_configuration.subnet_ref)[1]
   # ].id
 
-  subnet_ids = {
+  subnet_id = {
     for nic_name, nic in var.settings.network_interfaces :
     nic_name => var.resources.virtual_networks[
       split("/", nic.ip_configuration.subnet_ref)[0]
