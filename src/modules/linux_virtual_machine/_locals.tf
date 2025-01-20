@@ -3,10 +3,15 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
-  network_interface_ids = [for nics_ref, config in var.settings.network_interface_ids : config.nic_ref]
+  # network_interface_ids = [for nics_ref, config in var.settings.network_interface_ids : config.nic_ref]
+
+  network_interface_ids = {
+    for nic, nic_name in try(var.settings.network_interface_ids) :
+    nic => azurerm_network_interface.main[nic_name.nic_ref].id
+  }
 
   subnet_id = {
-    for nic, config in var.settings.network_interfaces :
+    for nic, config in try(var.settings.network_interfaces) :
     nic => var.resources.virtual_networks[
       split("/", config.ip_configuration.subnet_ref)[0]
       ].subnets[
