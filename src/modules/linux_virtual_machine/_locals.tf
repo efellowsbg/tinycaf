@@ -6,9 +6,9 @@ locals {
   network_interface_ids = [for nics_ref, config in var.settings.network_interface_ids : config.nic_ref]
 
   subnet_id = var.resources.virtual_networks[
-    split("/", var.settings.network_interfaces.each.value.ip_configuration.subnet_ref)[0]
+    split("/", each.value.var.settings.network_interfaces.ip_configuration.subnet_ref)[0]
     ].subnets[
-    split("/", var.settings.network_interfaces.each.value.ip_configuration.subnet_ref)[1]
+    split("/", each.value.var.settings.network_interfaces.each.value.ip_configuration.subnet_ref)[1]
   ].id
 
   # subnet_id = {
