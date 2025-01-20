@@ -3,7 +3,7 @@ module "initial_policy" {
   for_each        = try(var.settings.access_policies, {})
 
   settings        = var.settings
-  keyvault_id     = module.keyvaults.id
+  keyvault_id     = module.keyvaults[each.key].id
   access_policies = each.value
   policy_name =     each.key
   global_settings = var.global_settings
