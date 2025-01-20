@@ -1,7 +1,7 @@
 module "logged_in_user" {
   source = "./access_policy"
   count = var.policy_name == "logged_in_user" ? 1 : 0
-  keyvault_id = var.keyvault_id == null
+  keyvault_id = var.keyvault_id
   tenant_id     = var.global_settings.tenant_id
   access_policies = try(var.access_policies,null)
   object_id     = var.global_settings.object_id
