@@ -7,7 +7,7 @@ locals {
 
   network_interface_ids = {
     for nic, nic_name in try(var.settings.network_interface_ids) :
-    nic => azurerm_network_interface.main[nic_name.nic_ref].id
+    nic => azurerm_network_interface.main[var.settings.network_interface_ids[nic].nic_ref].id
   }
 
   subnet_id = {
