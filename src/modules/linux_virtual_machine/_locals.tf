@@ -19,7 +19,7 @@ locals {
     ].id
   }
 
-  public_key = tls_private_key.main[var.settings.admin_ssh_key.main[public_key_ref]].public_key_openssh
+  public_key = tls_private_key.main[var.settings.admin_ssh_key.public_key_ref].public_key_openssh
   # public_key = tls_private_key.main.public_key_openssh
 
   tags = merge(
