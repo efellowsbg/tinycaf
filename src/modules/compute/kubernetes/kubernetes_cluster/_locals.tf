@@ -1,6 +1,5 @@
 locals {
   resource_group = var.resources.resource_groups[var.settings.resource_group_ref]
-  validated_network_data_plane = var.settings.network_profile.network_policy == "cilium" && var.settings.network_profile.network_data_plane != "cilium" ? error("Error: When network_policy is set to 'cilium', the network_data_plane must also be set to 'cilium'.") : var.settings.network_profile.network_data_plane
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
   node_resource_group = var.resources.resource_groups[var.settings.node_resource_group_ref]
