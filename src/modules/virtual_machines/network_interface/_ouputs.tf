@@ -5,6 +5,6 @@ output "nics" {
   }
 }
 
-output "nic_id" {
-  value = azurerm_network_interface.main.id
-}
+# output "nic_id" {
+#   value = azurerm_network_interface.main.id
+# }

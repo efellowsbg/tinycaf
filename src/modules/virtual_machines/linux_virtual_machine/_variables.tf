@@ -10,6 +10,6 @@ variable "resources" {
   description = "All required resources"
 }
 
-variable "nic_id" {
-  description = "All required nic ids for this resource"
-}
+# variable "nic_id" {
+#   description = "All required nic ids for this resource"
+# }
