@@ -17,7 +17,7 @@ module "managed_identities" {
   keyvault_id = var.keyvault_id
   access_policies = var.access_policies
   tenant_id     = var.global_settings.tenant_id
-  object_id     = var.resources.managed_identities[each.value].id
+  object_id     = var.resources.managed_identities[each.value].principal_id
   key_permissions = local.effective_key_permissions
   secret_permissions = local.effective_secret_permissions
 }
