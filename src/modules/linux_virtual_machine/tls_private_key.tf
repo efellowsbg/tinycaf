@@ -1,4 +1,6 @@
 resource "tls_private_key" "main" {
-  algorithm = var.settings.public_key_openssh.test_key.algorithm
-  rsa_bits  = var.settings.public_key_openssh.test_key.rsa_bits
+  for_each = var.settings.public_key_openssh
+
+  algorithm = each.value.algorithm
+  rsa_bits  = each.value.rsa_bits
 }
