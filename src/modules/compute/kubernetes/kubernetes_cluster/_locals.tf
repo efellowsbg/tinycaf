@@ -22,6 +22,6 @@ locals {
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
     try(var.settings.tags, {})
   )
-  validated_pod_cidr = var.settings.network_profile.network_plugin == "azure" && var.settings.network_profile.pod_cidr != null && var.settings.network_profile.network_plugin_mode != "overlay" ? error("Error: When network_plugin is 'azure', pod_cidr must not be set unless network_plugin_mode is 'overlay'.") : var.settings.network_profile.pod_cidr
+  validated_pod_cidr = var.settings.network_profile.network_plugin == "azure" && var.settings.network_profile.pod_cidr != null && var.settings.network_profile.network_plugin_mode != "overlay" ? error("Error: When network_plugin is 'azure', pod_cidr must not be set unless network_plugin_mode is 'overlay'.") : try(var.settings.network_profile.pod_cidr, null)
 
 }

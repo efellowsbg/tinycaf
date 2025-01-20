@@ -5,7 +5,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   node_resource_group = local.node_resource_group_name
   sku_tier            = try(var.settings.sku_tier, "Free")
   kubernetes_version  = try(var.settings.kubernetes_version, null)
-  dns_prefix = try(var.settings.dns_prefix, "default")
+  dns_prefix          = try(var.settings.dns_prefix, "default")
 
   default_node_pool {
     name                 = try(var.settings.default_node_pool.name, "default")
@@ -35,7 +35,6 @@ resource "azurerm_kubernetes_cluster" "main" {
     service_cidrs  = try(var.settings.network_profile.service_cidrs, null)  # For dual-stack networking, e.g., ["10.0.0.0/16", "fd02::/112"]
 
     pod_cidr = local.validated_pod_cidr
-
   }
 
   private_cluster_enabled             = try(var.settings.private_cluster_enabled, false)
