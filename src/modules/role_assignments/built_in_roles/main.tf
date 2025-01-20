@@ -1,11 +1,13 @@
 resource "azurerm_role_assignment" "main" {
   for_each = tomap({
-    # Iterate through the resources and create a map for all roles
     for item in flatten([
       for role_definition_name, resources in var.settings : [
         for resource_key, resource_details in resources : [
           for principal_type, principals in try(resource_details, {}) : [
-            for principal in principals : {
+            for principal in (
+              # Handle cases where the principal is a list (like object_ids) or a single value
+              can(principals) && length(principals) > 0 ? principals : []
+            ) : {
               role_definition_name = role_definition_name
               resource_key         = resource_key
               resource_type        = var.resource_type
@@ -16,7 +18,7 @@ resource "azurerm_role_assignment" "main" {
         ]
       ]
     ]) :
-    # Generate keys dynamically, include object_ids logic
+    # Ensure unique keys for each role assignment
     "${item.role_definition_name}-${item.resource_key}-${item.principal_type}-${item.principal}" => item
   })
 
@@ -26,9 +28,9 @@ resource "azurerm_role_assignment" "main" {
   )
 
   principal_id = try(
-    # If the resource_key is "object_ids", assign the list directly
-    each.value.resource_key == "object_ids"
-      ? join(",", each.value.principal)
+    # If principal is directly an ID (like object_ids), use it. Otherwise, resolve via var.resources.
+    each.value.principal_type == "object_ids"
+      ? each.value.principal
       : var.resources[each.value.principal_type][each.value.principal].id,
     null
   )
