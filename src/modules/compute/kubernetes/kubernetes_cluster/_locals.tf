@@ -3,7 +3,6 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
   node_resource_group = var.resources.resource_groups[var.settings.node_resource_group_ref]
-
   node_resource_group_name = local.node_resource_group.name
   node_location            = local.node_resource_group.location
   subnet_ids = [
@@ -32,7 +31,7 @@ locals {
     network_mode         = try(var.settings.network_profile.network_mode, "bridge")
     network_policy       = try(var.settings.network_profile.network_policy, "calico")
     load_balancer_sku    = try(var.settings.network_profile.load_balancer_sku, "standard")
-    network_data_plane   = try(var.settings.network_profile.network_data_plane, "calico")
+    network_data_plane   = try(var.settings.network_profile.network_data_plane, "azure")
     network_plugin_mode  = try(var.settings.network_profile.network_plugin_mode, "overlay")
     outbound_type        = try(var.settings.network_profile.outbound_type, "loadBalancer")
     dns_service_ip       = try(var.settings.network_profile.dns_service_ip, null)
