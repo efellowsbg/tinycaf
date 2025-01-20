@@ -6,7 +6,8 @@ module "virtual_machines" {
   global_settings = var.global_settings
 
   resources = {
-    resource_groups  = module.resource_groups
-    virtual_networks = module.virtual_networks
+    resource_groups   = module.resource_groups
+    virtual_networks  = module.virtual_networks
+    network_interface = module.network_interface
   }
 }
