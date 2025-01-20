@@ -6,7 +6,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   admin_username      = var.settings.admin_username
   size                = var.settings.size
 
-  network_interface_ids = local.network_interface_ids
+  network_interface_ids = var.nic_ids
 
   admin_ssh_key {
     username   = var.settings.admin_ssh_key.username
