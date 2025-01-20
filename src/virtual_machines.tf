@@ -1,6 +1,6 @@
-module "linux_virtual_machine" {
-  source   = "./modules/linux_virtual_machine"
-  for_each = var.linux_virtual_machine
+module "virtual_machines" {
+  source   = "./modules/virtual_machines"
+  for_each = var.virtual_machines
 
   settings        = each.value
   global_settings = var.global_settings

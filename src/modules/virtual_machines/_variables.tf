@@ -3,13 +3,9 @@ variable "global_settings" {
 }
 
 variable "settings" {
-  description = "All the configuration for an Linux VM"
+  description = "All the configuration for this resource"
 }
 
 variable "resources" {
-  type = object({
-    resource_groups  = map(any)
-    virtual_networks = map(any)
-  })
   description = "All required resources"
 }
