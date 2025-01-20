@@ -3,9 +3,10 @@ module "initial_policy" {
   for_each        = try(var.settings.access_policies, {})
 
   settings        = var.settings
-  keyvault_id     = module.keyvaults[each.key].id
+  keyvault_id     = azurerm_key_vault.main.id
   access_policies = each.value
   policy_name =     each.key
   global_settings = var.global_settings
   resources = var.resources
 }
+
