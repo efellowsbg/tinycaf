@@ -8,6 +8,14 @@ locals {
   #   var.resources.network_interface[config.nic_ref].id
   # ]
 
+  # network_interface_ids = [
+  #   for nics_ref, config in var.settings.network_interface_ids :
+  #   # var.resources.network_interface[config.nic_ref].id
+  #   module.network_interface.id
+  #   azurerm_network_interface.main.id
+  # ]
+
+
   # subnet_id = {
   #   for nic, config in try(var.settings.network_interfaces) :
   #   nic => var.resources.virtual_networks[

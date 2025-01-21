@@ -1,11 +1,11 @@
 module "linux_virtual_machine" {
-  source = "./linux_virtual_machine"
-  # for_each = var.settings.linux_virtual_machine
+  source   = "./linux_virtual_machine"
+  for_each = var.settings.linux_virtual_machine
 
   settings        = var.settings
   global_settings = var.global_settings
 
-  nic_ids = module.network_interface.nic_ids
+  nics = [for key, value in module.network_interface : value.id]
 
   resources = var.resources
 }
