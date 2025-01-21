@@ -7,17 +7,6 @@ module "linux_virtual_machine" {
   resources = var.resources
 }
 
-# module "network_interface" {
-#   source          = "./network_interface"
-#   for_each        = var.settings.network_interfaces
-#   global_settings = var.global_settings
-#   all_settings    = var.settings
-#   settings        = each.value
-
-
-#   resources = var.resources
-# }
-
 # module "windows_virtual_machine" {
 #   source   = "./modules/linux_virtual_machine"
 #   for_each = var.linux_virtual_machine
