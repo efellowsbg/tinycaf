@@ -8,7 +8,7 @@ locals {
   #   module.network_interface[config.nic_ref].id
   # ]
   network_interface_ids = [
-    module.network_interface.id
+    module.network_interface.ids
   ]
   # network_interface_ids = [
   #   for nics_ref, config in var.settings.network_interface_ids :
