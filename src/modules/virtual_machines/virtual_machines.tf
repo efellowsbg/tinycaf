@@ -4,8 +4,6 @@ module "linux_virtual_machine" {
   settings        = var.settings
   global_settings = var.global_settings
 
-  nics = [for key, value in module.network_interface : value.id]
-
   resources = var.resources
 }
 
