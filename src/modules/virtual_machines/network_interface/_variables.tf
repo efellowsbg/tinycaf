@@ -9,3 +9,7 @@ variable "settings" {
 variable "resources" {
   description = "All required resources"
 }
+
+variable "all_settings" {
+  description = "All the configuration for this resource"
+}
