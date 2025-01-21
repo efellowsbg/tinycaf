@@ -1,20 +1,20 @@
 keyvaults = {
-  kv-acfin-01 = {
-    name                          = "kv-acfin-ne-01"
-    resource_group_ref            = "acfin2"
+  kv-test = {
+    name                          = "kv-test-dev-01"
+    resource_group_ref            = "rg-test"
     public_network_access_enabled = true
     network_rules = {
       default_action = "Allow"
-      allowed_ips    = ["95.43.223.55"]
+      allowed_ips    = ["10.10.10.10"]
       subnets = {
         subnet1 = {
-          subnet_ref = "vnet_acfin_prod_01/sn-resources"
+          subnet_ref = "vnet_test/snet_private_endpoints"
         }
       }
     }
     access_policies = {
       managed_identity = {
-        managed_identity_refs = ["id_acfin_01"]
+        managed_identity_refs = ["id_test"]
         secret_permissions    = "All"
         key_permissions       = ["Get", "List"]
       }
@@ -23,14 +23,14 @@ keyvaults = {
         key_permissions    = "All"
       }
       object_ids = {
-        object_ids         = ["7c265d5c-6e52-4a53-b3a9-90c663567c64"]
+        object_ids         = ["xxxxxxxxxxx-xxxxxxxxxxxxxxx"]
         secret_permissions = "All"
         key_permissions    = "All"
       }
     }
     secrets = {
       secret-skey = {
-        name           = "SharedKey"
+        name           = "SecretKey"
         value          = "default"
         ignore_changes = true
       }
@@ -63,5 +63,12 @@ resource_groups = {
   rg_test = {
     name     = "rg-test-dv-ne-01"
     location = "northeurope"
+  }
+}
+
+managed_identities = {
+  id_test = {
+    name   = "id-test-dv-ne-01"
+    rg_ref = "rg_test"
   }
 }
