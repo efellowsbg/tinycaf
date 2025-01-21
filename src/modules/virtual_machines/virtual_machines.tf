@@ -1,8 +1,8 @@
 module "linux_virtual_machine" {
-  source = "./linux_virtual_machine"
-  # for_each = var.settings.virtual_machines
+  source   = "./linux_virtual_machine"
+  for_each = var.settings.virtual_machines
 
-  settings        = var.settings
+  settings        = each.value
   global_settings = var.global_settings
 
   nics = [for key, value in module.network_interface : value.id]
@@ -14,7 +14,7 @@ module "network_interface" {
   source   = "./network_interface"
   for_each = var.settings.network_interfaces
 
-  settings        = var.settings
+  settings        = each.value
   global_settings = var.global_settings
 
   resources = var.resources
