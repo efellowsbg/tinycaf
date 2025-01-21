@@ -3,13 +3,13 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
-  network_interface_ids = [
-    for nics_ref, config in var.settings.network_interface_ids :
-    azurerm_network_interface.main[config.nic_ref].id
-  ]
   # network_interface_ids = [
-  #   module.network_interface.ids
+  #   for nics_ref, config in var.settings.network_interface_ids :
+  #   azurerm_network_interface.main[config.nic_ref].id
   # ]
+  network_interface_ids = [
+    module.network_interface.ids
+  ]
   # network_interface_ids = [
   #   for nics_ref, config in var.settings.network_interface_ids :
   #   # var.resources.network_interface[config.nic_ref].id
