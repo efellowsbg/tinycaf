@@ -7,8 +7,5 @@ variable "settings" {
 }
 
 variable "resources" {
-  type = object({
-    resource_groups = map(any)
-  })
   description = "All required resources"
 }
