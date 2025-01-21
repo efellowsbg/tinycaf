@@ -1,17 +1,38 @@
 keyvaults = {
-  kv_test = {
-    name               = "kv-test-dv-ne-01"
-    resource_group_ref = "rg_test"
+  kv-test = {
+    name                          = "kv-test-dev-01"
+    resource_group_ref            = "rg-test"
+    public_network_access_enabled = true
     network_rules = {
-      default_action = "Deny"
-      allowed_ips    = ["10.10.10.10", "20.20.20.20"]
+      default_action = "Allow"
+      allowed_ips    = ["10.10.10.10"]
       subnets = {
-        allow_app1 = {
-          subnet_ref = "vnet_test/snet_app1"
-        }
-        allow_private_endpoints = {
+        subnet1 = {
           subnet_ref = "vnet_test/snet_private_endpoints"
         }
+      }
+    }
+    access_policies = {
+      managed_identity = {
+        managed_identity_refs = ["id_test"]
+        secret_permissions    = "All"
+        key_permissions       = ["Get", "List"]
+      }
+      logged_in_user = {
+        secret_permissions = "All"
+        key_permissions    = "All"
+      }
+      object_ids = {
+        object_ids         = ["xxxxxxxxxxx-xxxxxxxxxxxxxxx"]
+        secret_permissions = "All"
+        key_permissions    = "All"
+      }
+    }
+    secrets = {
+      secret-skey = {
+        name           = "SecretKey"
+        value          = "default"
+        ignore_changes = true
       }
     }
   }
@@ -42,5 +63,12 @@ resource_groups = {
   rg_test = {
     name     = "rg-test-dv-ne-01"
     location = "northeurope"
+  }
+}
+
+managed_identities = {
+  id_test = {
+    name   = "id-test-dv-ne-01"
+    rg_ref = "rg_test"
   }
 }
