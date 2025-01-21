@@ -1,12 +1,12 @@
 resource "azurerm_linux_virtual_machine" "main" {
-  name                = var.settings.name
-  resource_group_name = local.resource_group_name
-  location            = local.location
-  tags                = local.tags
-  admin_username      = var.settings.admin_username
-  size                = var.settings.size
-
+  name                  = var.settings.name
+  resource_group_name   = local.resource_group_name
+  location              = local.location
+  admin_username        = var.settings.admin_username
+  size                  = var.settings.size
   network_interface_ids = try(local.network_interface_ids, null)
+
+  tags = local.tags
 
   admin_ssh_key {
     username   = var.settings.admin_ssh_key.username
