@@ -1,21 +1,17 @@
 module "linux_virtual_machine" {
   source = "./linux_virtual_machine"
 
-  for_each = { for key, vm in var.settings : key => vm if vm.type == "linux" }
-
-  settings        = each.value
+  count           = var.settings.type == "linux" ? 1 : 0
+  settings        = var.settings
   global_settings = var.global_settings
-
-  resources = var.resources
+  resources       = var.resources
 }
 
 module "windows_virtual_machine" {
   source = "./windows_virtual_machine"
 
-  for_each = { for key, vm in var.settings : key => vm if vm.type == "windows" }
-
-  settings        = each.value
+  count           = var.settings.type == "windows" ? 1 : 0
+  settings        = var.settings
   global_settings = var.global_settings
-
-  resources = var.resources
+  resources       = var.resources
 }
