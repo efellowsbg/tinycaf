@@ -10,7 +10,7 @@ locals {
 
   subnet_id = [
     for nic, config in try(var.settings.network_interfaces, {}) : (
-      var.resources.virtual_networks[split("/", config.subnet_ref)[0]].subnets[split("/", config.subnet_ref)[1]].id
+      var.resources.virtual_networks[split("/", config.ip_configuration.subnet_ref)[0]].subnets[split("/", config.ip_configuration.subnet_ref)[1]].id
     )
   ]
 
