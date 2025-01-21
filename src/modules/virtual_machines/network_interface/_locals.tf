@@ -13,7 +13,7 @@ locals {
   #   )
   # ]
 
-  subnet_id = var.resources.virtual_networks[split("/", each.value.ip_configuration.subnet_ref)[0]].subnets[split("/", each.value.ip_configuration.subnet_ref)[1]].id
+  # subnet_id = var.resources.virtual_networks[split("/", each.value.ip_configuration.subnet_ref)[0]].subnets[split("/", each.value.ip_configuration.subnet_ref)[1]].id
 
   # public_key = tls_private_key.main[var.settings.admin_ssh_key.public_key_ref].public_key_openssh
 
