@@ -5,7 +5,7 @@ resource "azurerm_network_interface" "main" {
 
   ip_configuration {
     name                          = var.settings.ip_configuration.name
-    subnet_id                     = local.subnet_id[each.key]
+    subnet_id                     = local.subnet_id
     private_ip_address_allocation = try(var.settings.ip_configuration.private_ip_address_allocation, "Dynamic")
   }
 }
