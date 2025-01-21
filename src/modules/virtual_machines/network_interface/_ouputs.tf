@@ -6,5 +6,5 @@
 # }
 
 output "nics" {
-  value = azurerm_network_interface.main[each.key].id
+  value = azurerm_network_interface.main.id
 }
