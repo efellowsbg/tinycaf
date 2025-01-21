@@ -1,17 +1,38 @@
 keyvaults = {
-  kv_test = {
-    name               = "kv-test-dv-ne-01"
-    resource_group_ref = "rg_test"
+  kv-acfin-01 = {
+    name                          = "kv-acfin-ne-01"
+    resource_group_ref            = "acfin2"
+    public_network_access_enabled = true
     network_rules = {
-      default_action = "Deny"
-      allowed_ips    = ["10.10.10.10", "20.20.20.20"]
+      default_action = "Allow"
+      allowed_ips    = ["95.43.223.55"]
       subnets = {
-        allow_app1 = {
-          subnet_ref = "vnet_test/snet_app1"
+        subnet1 = {
+          subnet_ref = "vnet_acfin_prod_01/sn-resources"
         }
-        allow_private_endpoints = {
-          subnet_ref = "vnet_test/snet_private_endpoints"
-        }
+      }
+    }
+    access_policies = {
+      managed_identity = {
+        managed_identity_refs = ["id_acfin_01"]
+        secret_permissions    = "All"
+        key_permissions       = ["Get", "List"]
+      }
+      logged_in_user = {
+        secret_permissions = "All"
+        key_permissions    = "All"
+      }
+      object_ids = {
+        object_ids         = ["7c265d5c-6e52-4a53-b3a9-90c663567c64"]
+        secret_permissions = "All"
+        key_permissions    = "All"
+      }
+    }
+    secrets = {
+      secret-skey = {
+        name           = "SharedKey"
+        value          = "default"
+        ignore_changes = true
       }
     }
   }
