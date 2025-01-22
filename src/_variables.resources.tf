@@ -15,3 +15,5 @@ variable "public_ips" { default = {} }
 variable "storage_accounts" { default = {} }
 
 variable "virtual_machines" { default = {} }
+
+variable "keyvaults" { default = {} }
