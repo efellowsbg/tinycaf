@@ -49,13 +49,13 @@ resource "azurerm_kubernetes_cluster" "main" {
   run_command_enabled = try(var.settings.run_command_enabled, true)
 
   identity {
-    type         = try(var.settings.identity, "SystemAssigned")
-    identity_ids = try(var.settings.identity == "UserAssigned" ? local.managed_identity.id : null, null)
+    type         = try(var.settings.identity.type, "SystemAssigned")
+    identity_ids = try(var.settings.identity.type == "UserAssigned" ? local.managed_identity.id : null, null)
   }
   kubelet_identity {
-    client_id                 = try(var.settings.identity == "UserAssigned" ? local.managed_identity.client_id : null, null)
-    object_id                 = try(var.settings.identity == "UserAssigned" ? local.managed_identity.principal_id : null, null)
-    user_assigned_identity_id = try(var.settings.identity == "UserAssigned" ? local.managed_identity.id : null, null)
+    client_id                 = try(var.settings.identity.type == "UserAssigned" ? local.managed_identity.client_id : null, null)
+    object_id                 = try(var.settings.identity.type == "UserAssigned" ? local.managed_identity.principal_id : null, null)
+    user_assigned_identity_id = try(var.settings.identity.type == "UserAssigned" ? local.managed_identity.id : null, null)
   }
 
   oidc_issuer_enabled       = try(var.settings.oidc_issuer_enabled, false)

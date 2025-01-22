@@ -14,7 +14,7 @@ locals {
     var.resources.virtual_networks[split("/", var.settings.default_node_pool.subnet_ref)[0]].subnets[split("/", var.settings.default_node_pool.subnet_ref)[1]].id,
     null
   )
-  managed_identity    = can(var.resources.managed_identities[var.settings.managed_identity_ref]) ? var.resources.managed_identities[var.settings.managed_identity_ref] : null
+  managed_identity    = can(var.resources.managed_identities[var.settings.identity.managed_identity_ref]) ? var.resources.managed_identities[var.settings.identity.managed_identity_ref] : null
   tags = merge(
     var.global_settings.tags,
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
