@@ -7,6 +7,8 @@ locals {
     module.network_interface.ids
   ]
 
+  key_vault_id = var.resources.keyvaults[var.settings.keyvault_ref].id
+
   public_key = tls_private_key.main[var.settings.admin_ssh_key.public_key_ref].public_key_openssh
 
   tags = merge(
