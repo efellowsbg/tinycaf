@@ -31,6 +31,7 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
       ipsec_integrity   = try(var.settings.ipsec_policy.ipsec_integrity, "SHA256")
       pfs_group         = try(var.settings.ipsec_policy.pfs_group, "PFS2048")
       sa_lifetime       = try(var.settings.ipsec_policy.sa_lifetime, "28800")
+      sa_datasize      = try(var.settings.ipsec_policy.sa_datasize, "102400000")
     }
   }
 }
