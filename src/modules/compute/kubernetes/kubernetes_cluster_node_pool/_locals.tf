@@ -10,7 +10,7 @@ locals {
     )
   ]
   vnet_subnet_id = try(
-    var.resources.virtual_networks[split("/", var.settings.subnet_ref)[0]].subnets[split("/", var.settings.subnet_ref)[1]].id,
+    var.resources.virtual_networks[split("/", var.all_settings.subnet_ref)[0]].subnets[split("/", var.all_settings.subnet_ref)[1]].id,
     null
   )
   tags = merge(

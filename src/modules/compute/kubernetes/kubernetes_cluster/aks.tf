@@ -53,13 +53,13 @@ resource "azurerm_kubernetes_cluster" "main" {
     identity_ids = try(var.settings.identity.type == "UserAssigned" ? [local.managed_identity.id] : null, null)
   }
   kubelet_identity {
-    client_id                 = try(var.settings.identity.type == "UserAssigned" ? local.managed_identity.client_id : null, null)
-    object_id                 = try(var.settings.identity.type == "UserAssigned" ? local.managed_identity.principal_id : null, null)
-    user_assigned_identity_id = try(var.settings.identity.type == "UserAssigned" ? local.managed_identity.id : null, null)
+    client_id                 = try(var.settings.kubelet_identity.type == "UserAssigned" ? local.kubelet_identity.client_id : null, null)
+    object_id                 = try(var.settings.kubelet_identity.type == "UserAssigned" ? local.kubelet_identity.principal_id : null, null)
+    user_assigned_identity_id = try(var.settings.kubelet_identity.type == "UserAssigned" ? local.kubelet_identity.id : null, null)
   }
 
   oidc_issuer_enabled       = try(var.settings.oidc_issuer_enabled, false)
-  workload_identity_enabled = try(var.settings.oidc_issuer_enabled ? var.settings.workload_identity_enabled_ref : false, false)
+  workload_identity_enabled = try(var.settings.oidc_issuer_enabled ? var.settings.workload_identity_enabled: false, false)
   open_service_mesh_enabled = try(var.settings.open_service_mesh_enabled, false)
 
   tags = local.tags

@@ -15,6 +15,7 @@ locals {
     null
   )
   managed_identity    = can(var.resources.managed_identities[var.settings.identity.managed_identity_ref]) ? var.resources.managed_identities[var.settings.identity.managed_identity_ref] : null
+  kubelet_identity    = can(var.resources.managed_identities[var.settings.kubelet_identity.managed_identity_ref]) ? var.resources.managed_identities[var.settings.kubelet_identity.managed_identity_ref] : null
   tags = merge(
     var.global_settings.tags,
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
