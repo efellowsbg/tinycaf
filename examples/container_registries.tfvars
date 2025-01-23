@@ -17,12 +17,15 @@ container_registries = {
     }
 
     private_endpoint = {
-      name       = "test-endpoint"
+      name       = "pe-acrtestdevne01"
       subnet_ref = "vnet_test/snet_private_endpoint_1"
+
+      # This block is needed only if you need name different than the default
       private_service_connection = {
-        name                 = "test-privateserviceconnection"
-        is_manual_connection = true
+        name = "test-privateserviceconnection"
       }
+
+      private_dns_zone_group_ref = "container_registries"
     }
   }
 }
@@ -32,6 +35,14 @@ resource_groups = {
   rg_test = {
     name     = "rg-test-dv-ne-01"
     location = "northeurope"
+  }
+}
+
+private_dns_zones = {
+  container_registries = {
+    resource_kind      = "container_registries"
+    resource_group_ref = "rg_test"
+    vnet_ref           = ["vnet_test"]
   }
 }
 
