@@ -50,7 +50,7 @@ resource "azurerm_kubernetes_cluster" "main" {
 
   identity {
     type         = try(var.settings.identity.type, "SystemAssigned")
-    identity_ids = try(var.settings.identity.type == "UserAssigned" ? local.managed_identity.id : null, null)
+    identity_ids = try(var.settings.identity.type == "UserAssigned" ? [local.managed_identity.id] : null, null)
   }
   kubelet_identity {
     client_id                 = try(var.settings.identity.type == "UserAssigned" ? local.managed_identity.client_id : null, null)
