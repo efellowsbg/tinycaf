@@ -18,6 +18,7 @@ resource "azurerm_kubernetes_cluster" "main" {
     min_count            = try(var.settings.default_node_pool.node_type == "VirtualMachineScaleSets" ? var.settings.default_node_pool.min_count : null, null)
     max_count            = try(var.settings.default_node_pool.node_type == "VirtualMachineScaleSets" ? var.settings.default_node_pool.max_count : null, null)
     vnet_subnet_id       = local.vnet_subnet_id
+    temporary_name_for_rotation = try(var.settings.default_node_pool.temporary_name_for_rotation, null)
   }
 
   network_profile {
@@ -34,6 +35,13 @@ resource "azurerm_kubernetes_cluster" "main" {
     pod_cidr            = local.validated_pod_cidr
   }
 
+  storage_profile {
+    blob_driver_enabled      = try(var.settings.storage_profile.blob_driver_enabled,false)
+    disk_driver_enabled        = try(var.settings.storage_profile.disk_driver_enabled,true)
+    file_driver_enabled      = try(var.settings.storage_profile.file_driver_enabled,true)
+    snapshot_controller_enabled   = try(var.settings.storage_profile.snapshot_controller_enabled,true)
+  }
+
   private_cluster_enabled             = try(var.settings.private_cluster_enabled, false)
   private_dns_zone_id                 = try(var.settings.private_dns_zone_id, "System")
   private_cluster_public_fqdn_enabled = try(var.settings.private_cluster_public_fqdn_enabled, false)
@@ -47,7 +55,10 @@ resource "azurerm_kubernetes_cluster" "main" {
     azure_rbac_enabled     = try(var.settings.azure_rbac_enabled, true)
   }
   run_command_enabled = try(var.settings.run_command_enabled, true)
-
+  key_vault_secrets_provider {
+    secret_rotation_enabled = try(var.settings.key_vault_secrets_provider.secret_rotation_enabled, null)
+    secret_rotation_interval = try(var.settings.key_vault_secrets_provider.secret_rotation_interval, null)
+  }
   identity {
     type         = try(var.settings.identity.type, "SystemAssigned")
     identity_ids = try(var.settings.identity.type == "UserAssigned" ? [local.managed_identity.id] : null, null)

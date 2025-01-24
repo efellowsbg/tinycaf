@@ -9,8 +9,12 @@ locals {
       var.resources.virtual_networks[split("/", config.subnet_ref)[0]].subnets[split("/", config.subnet_ref)[1]].id
     )
   ]
+  pod_subnet_id = try(
+    var.resources.virtual_networks[split("/", var.settings.pod_subnet_ref)[0]].subnets[split("/", var.settings.pod_subnet_ref)[1]].id,
+    null
+  )
   vnet_subnet_id = try(
-    var.resources.virtual_networks[split("/", var.all_settings.subnet_ref)[0]].subnets[split("/", var.all_settings.subnet_ref)[1]].id,
+    var.resources.virtual_networks[split("/", var.settings.vnet_subnet_ref)[0]].subnets[split("/", var.settings.vnet_subnet_ref)[1]].id,
     null
   )
   tags = merge(
