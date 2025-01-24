@@ -13,7 +13,7 @@ resource "azurerm_kubernetes_cluster" "main" {
     vm_size                     = try(var.settings.default_node_pool.vm_size, "Standard_D2s_v3")
     type                        = try(var.settings.default_node_pool.node_type, "VirtualMachineScaleSets")
     max_pods                    = try(var.settings.default_node_pool.max_pods, null)
-    zones                       = try(var.settings.default_node_pool.node_zones, null)
+    zones                       = try(var.settings.default_node_pool.zones, null)
     auto_scaling_enabled        = try(var.settings.default_node_pool.node_type == "VirtualMachineScaleSets" ? var.settings.default_node_pool.node_scalling : false, false)
     min_count                   = try(var.settings.default_node_pool.node_type == "VirtualMachineScaleSets" ? var.settings.default_node_pool.min_count : null, null)
     max_count                   = try(var.settings.default_node_pool.node_type == "VirtualMachineScaleSets" ? var.settings.default_node_pool.max_count : null, null)
