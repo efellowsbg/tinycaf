@@ -62,8 +62,8 @@ resource "azurerm_kubernetes_cluster" "main" {
   dynamic "key_vault_secrets_provider" {
     for_each = try(var.settings.key_vault_secrets_provider, null) == null ? [] : [1]
     content {
-      secret_rotation_enabled  = try(key_vault_secrets_provider.secret_rotation_enabled, null)
-      secret_rotation_interval = try(key_vault_secrets_provider.secret_rotation_interval, null)
+      secret_rotation_enabled  = try(key_vault_secrets_provider.value.secret_rotation_enabled, null)
+      secret_rotation_interval = try(key_vault_secrets_provider.value.secret_rotation_interval, null)
     }
   }
   identity {
