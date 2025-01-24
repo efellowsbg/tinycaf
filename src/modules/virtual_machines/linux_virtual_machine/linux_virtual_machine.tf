@@ -4,7 +4,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   location              = local.location
   admin_username        = var.settings.admin_username
   size                  = var.settings.size
-  network_interface_ids = try(local.network_interface_ids, null)
+  network_interface_ids = local.network_interface_ids
 
   tags = local.tags
 

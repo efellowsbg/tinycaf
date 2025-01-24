@@ -5,7 +5,7 @@ resource "azurerm_windows_virtual_machine" "main" {
   admin_username        = var.settings.admin_username
   admin_password        = var.settings.admin_password
   size                  = var.settings.size
-  network_interface_ids = try(local.network_interface_ids, null)
+  network_interface_ids = local.network_interface_ids
 
   tags = local.tags
 
