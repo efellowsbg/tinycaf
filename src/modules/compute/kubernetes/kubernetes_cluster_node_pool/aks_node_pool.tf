@@ -17,6 +17,5 @@ resource "azurerm_kubernetes_cluster_node_pool" "main" {
   vnet_subnet_id              = try(local.vnet_subnet_id, null)
   os_type                     = try(var.settings.os_type, null)
   ultra_ssd_enabled           = try(var.settings.ultra_ssd_enabled, false)
-  temporary_name_for_rotation = try(var.settings.temporary_name_for_rotation, null)
   tags                        = local.tags
 }
