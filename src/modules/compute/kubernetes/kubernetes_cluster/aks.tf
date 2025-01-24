@@ -42,10 +42,10 @@ resource "azurerm_kubernetes_cluster" "main" {
   dynamic "storage_profile" {
     for_each = try(var.settings.storage_profile[*], {})
     content {
-      blob_driver_enabled         = try(storage_profile.blob_driver_enabled, false)
-      disk_driver_enabled         = try(storage_profile.disk_driver_enabled, true)
-      file_driver_enabled         = try(storage_profile.file_driver_enabled, true)
-      snapshot_controller_enabled = try(storage_profile.snapshot_controller_enabled, true)
+      blob_driver_enabled         = try(storage_profile.value.blob_driver_enabled, false)
+      disk_driver_enabled         = try(storage_profile.value.disk_driver_enabled, true)
+      file_driver_enabled         = try(storage_profile.value.file_driver_enabled, true)
+      snapshot_controller_enabled = try(storage_profile.value.snapshot_controller_enabled, true)
     }
   }
 
@@ -55,7 +55,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   dynamic "api_server_access_profile" {
     for_each = try(var.settings.api_server_access_profile[*], {})
     content {
-      authorized_ip_ranges = try(api_server_access_profile.authorized_ip_ranges, null)
+      authorized_ip_ranges = try(api_server_access_profile.value.authorized_ip_ranges, null)
     }
   }
   role_based_access_control_enabled = try(var.settings.role_based_access_control_enabled, true)
@@ -63,8 +63,8 @@ resource "azurerm_kubernetes_cluster" "main" {
     for_each = try(var.settings.azure_active_directory_role_based_access_control[*], {})
     content {
       tenant_id              = try(var.global_settings.tenant_id, null)
-      admin_group_object_ids = try(azure_active_directory_role_based_access_control.admin_group_object_ids, null)
-      azure_rbac_enabled     = try(azure_active_directory_role_based_access_control.azure_rbac_enabled, true)
+      admin_group_object_ids = try(azure_active_directory_role_based_access_control.value.admin_group_object_ids, null)
+      azure_rbac_enabled     = try(azure_active_directory_role_based_access_control.value.azure_rbac_enabled, true)
     }
   }
   run_command_enabled = try(var.settings.run_command_enabled, true)
