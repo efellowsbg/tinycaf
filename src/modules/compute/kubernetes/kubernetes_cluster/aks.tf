@@ -73,10 +73,13 @@ resource "azurerm_kubernetes_cluster" "main" {
     type         = try(var.settings.identity.type, "SystemAssigned")
     identity_ids = try(var.settings.identity.type == "UserAssigned" ? [local.managed_identity.id] : null, null)
   }
-  kubelet_identity {
-    client_id                 = try(var.settings.kubelet_identity.type == "UserAssigned" ? local.kubelet_identity.client_id : null, null)
-    object_id                 = try(var.settings.kubelet_identity.type == "UserAssigned" ? local.kubelet_identity.principal_id : null, null)
-    user_assigned_identity_id = try(var.settings.kubelet_identity.type == "UserAssigned" ? local.kubelet_identity.id : null, null)
+  dynamic "kubelet_identity" {
+    for_each = try(var.settings.kubelet_identity[*], {})
+    content {
+      client_id                 = try(kubelet_identity.value.type == "UserAssigned" ? local.kubelet_identity.client_id : null, null)
+      object_id                 = try(kubelet_identity.value.type == "UserAssigned" ? local.kubelet_identity.principal_id : null, null)
+      user_assigned_identity_id = try(kubelet_identity.value.type == "UserAssigned" ? local.kubelet_identity.id : null, null)
+    }
   }
 
   oidc_issuer_enabled       = try(var.settings.oidc_issuer_enabled, false)
