@@ -17,7 +17,11 @@ resource "azurerm_kubernetes_cluster" "main" {
     auto_scaling_enabled = try(var.settings.default_node_pool.node_type == "VirtualMachineScaleSets" ? var.settings.default_node_pool.node_scalling : false, false)
     min_count            = try(var.settings.default_node_pool.node_type == "VirtualMachineScaleSets" ? var.settings.default_node_pool.min_count : null, null)
     max_count            = try(var.settings.default_node_pool.node_type == "VirtualMachineScaleSets" ? var.settings.default_node_pool.max_count : null, null)
+    os_disk_type = try(var.settings.default_node_pool.os_disk_type, null)
+    os_disk_size_gb = try(var.settings.default_node_pool.os_disk_size_gb, null)
+    os_sku = try(var.settings.default_node_pool.os_sku, null)
     vnet_subnet_id       = local.vnet_subnet_id
+    pod_subnet_id = local.vnet_subnet_id
     temporary_name_for_rotation = try(var.settings.default_node_pool.temporary_name_for_rotation, null)
   }
 
