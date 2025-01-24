@@ -33,7 +33,7 @@ locals {
     network_policy       = try(var.settings.network_profile.network_policy, "calico")
     load_balancer_sku    = try(var.settings.network_profile.load_balancer_sku, "standard")
     network_data_plane   = try(var.settings.network_profile.network_data_plane, "azure")
-    network_plugin_mode  = try(var.settings.network_profile.network_plugin_mode, "overlay")
+    network_plugin_mode  = try(var.settings.network_profile.network_plugin_mode, null)
     outbound_type        = try(var.settings.network_profile.outbound_type, "loadBalancer")
     dns_service_ip       = try(var.settings.network_profile.dns_service_ip, null)
     service_cidr         = try(var.settings.network_profile.service_cidr, null)
