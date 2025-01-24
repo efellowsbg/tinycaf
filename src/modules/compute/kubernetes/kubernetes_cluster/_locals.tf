@@ -2,9 +2,6 @@ locals {
   resource_group = var.resources.resource_groups[var.settings.resource_group_ref]
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
-  node_resource_group = var.resources.resource_groups[var.settings.node_resource_group_ref]
-  node_resource_group_name = local.node_resource_group.name
-  node_location            = local.node_resource_group.location
   subnet_ids = [
     for network_rule_ref, config in try(var.settings.network_rules.subnets, {}) : (
       var.resources.virtual_networks[split("/", config.subnet_ref)[0]].subnets[split("/", config.subnet_ref)[1]].id

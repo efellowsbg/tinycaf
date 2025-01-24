@@ -2,7 +2,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   name                = var.settings.cluster_name
   resource_group_name = local.resource_group_name
   location            = local.location
-  node_resource_group = local.node_resource_group_name
+  node_resource_group = try(var.settings.node_resource_group_name,null)
   sku_tier            = try(var.settings.sku_tier, "Free")
   kubernetes_version  = try(var.settings.kubernetes_version, null)
   dns_prefix          = try(var.settings.dns_prefix, "default")
