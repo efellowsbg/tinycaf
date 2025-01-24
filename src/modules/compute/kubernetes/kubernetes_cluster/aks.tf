@@ -59,9 +59,12 @@ resource "azurerm_kubernetes_cluster" "main" {
     azure_rbac_enabled     = try(var.settings.azure_rbac_enabled, true)
   }
   run_command_enabled = try(var.settings.run_command_enabled, true)
-  key_vault_secrets_provider {
-    secret_rotation_enabled = try(var.settings.key_vault_secrets_provider.secret_rotation_enabled, null)
-    secret_rotation_interval = try(var.settings.key_vault_secrets_provider.secret_rotation_interval, null)
+  dynamic "key_vault_secrets_provider" {
+    for_each = var.settings.key_vault_secrets_provider != null && var.settings.key_vault_secrets_provider.secret_rotation_enabled != null ? [var.settings.key_vault_secrets_provider] : []
+    content {
+      secret_rotation_enabled  = try(key_vault_secrets_provider.value.secret_rotation_enabled, null)
+      secret_rotation_interval = try(key_vault_secrets_provider.value.secret_rotation_interval, null)
+    }
   }
   identity {
     type         = try(var.settings.identity.type, "SystemAssigned")
