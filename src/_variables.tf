@@ -10,10 +10,10 @@ variable "global_settings" {
 
   default = {
     tags = {
-      owner      = "Borislav Raynov"
-      project    = "Test CAF Modules"
-      deadline   = "01/31/2025"
-      deploydate = "01/24/2025"
+      Owner      = "Borislav Raynov",
+      Project    = "Test CAF Modules",
+      DeadLine   = "01/31/2025",
+      DeployDate = "01/24/2025"
     }
     inherit_resource_group_tags = false
   }
