@@ -3,9 +3,7 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
-  network_interface_ids = [
-    module.network_interface.ids
-  ]
+  network_interface_ids = module.network_interface.ids
 
   tags = merge(
     var.global_settings.tags,
