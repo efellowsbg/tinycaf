@@ -29,7 +29,7 @@ locals {
 locals {
   effective_network_profile = {
     network_plugin       = try(var.settings.network_profile.network_plugin, "azure")
-    network_mode         = try(var.settings.network_profile.network_mode, "bridge")
+    network_mode         = try(var.settings.network_profile.network_mode, "transparent")
     network_policy       = try(var.settings.network_profile.network_policy, "calico")
     load_balancer_sku    = try(var.settings.network_profile.load_balancer_sku, "standard")
     network_data_plane   = try(var.settings.network_profile.network_data_plane, "azure")
