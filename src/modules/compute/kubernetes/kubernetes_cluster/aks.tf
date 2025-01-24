@@ -52,10 +52,10 @@ resource "azurerm_kubernetes_cluster" "main" {
   private_cluster_enabled             = try(var.settings.private_cluster_enabled, false)
   private_dns_zone_id                 = try(var.settings.private_dns_zone_id, "System")
   private_cluster_public_fqdn_enabled = try(var.settings.private_cluster_public_fqdn_enabled, false)
-  dynamic "api_server_access_profile " {
+  dynamic "api_server_access_profile" {
     for_each = try(var.settings.api_server_access_profile[*], {})
     content {
-      authorized_ip_ranges = try(var.settings.authorized_ip_ranges, null)
+      authorized_ip_ranges = try(api_server_access_profile.authorized_ip_ranges, null)
     }
   }
   role_based_access_control_enabled = try(var.settings.role_based_access_control_enabled, true)
