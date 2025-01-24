@@ -39,18 +39,24 @@ resource "azurerm_kubernetes_cluster" "main" {
     pod_cidr            = local.validated_pod_cidr
   }
 
-  storage_profile {
-    blob_driver_enabled         = try(var.settings.storage_profile.blob_driver_enabled, false)
-    disk_driver_enabled         = try(var.settings.storage_profile.disk_driver_enabled, true)
-    file_driver_enabled         = try(var.settings.storage_profile.file_driver_enabled, true)
-    snapshot_controller_enabled = try(var.settings.storage_profile.snapshot_controller_enabled, true)
+  dynamic "storage_profile" {
+    for_each = try(var.settings.storage_profile[*], {})
+    content {
+      blob_driver_enabled         = try(storage_profile.blob_driver_enabled, false)
+      disk_driver_enabled         = try(storage_profile.disk_driver_enabled, true)
+      file_driver_enabled         = try(storage_profile.file_driver_enabled, true)
+      snapshot_controller_enabled = try(storage_profile.snapshot_controller_enabled, true)
+    }
   }
 
   private_cluster_enabled             = try(var.settings.private_cluster_enabled, false)
   private_dns_zone_id                 = try(var.settings.private_dns_zone_id, "System")
   private_cluster_public_fqdn_enabled = try(var.settings.private_cluster_public_fqdn_enabled, false)
-  api_server_access_profile {
-    authorized_ip_ranges = try(var.settings.authorized_ip_ranges, null)
+  dynamic "api_server_access_profile " {
+    for_each = try(var.settings.api_server_access_profile[*], {})
+    content {
+      authorized_ip_ranges = try(var.settings.authorized_ip_ranges, null)
+    }
   }
   role_based_access_control_enabled = try(var.settings.role_based_access_control_enabled, true)
   dynamic "azure_active_directory_role_based_access_control" {
