@@ -57,8 +57,8 @@ resource "azurerm_kubernetes_cluster" "main" {
     for_each = try(var.settings.azure_active_directory_role_based_access_control[*], {})
     content {
       tenant_id              = try(var.global_settings.tenant_id, null)
-      admin_group_object_ids = try(var.settings.admin_group_object_ids, null)
-      azure_rbac_enabled     = try(var.settings.azure_rbac_enabled, true)
+      admin_group_object_ids = try(azure_active_directory_role_based_access_control.admin_group_object_ids, null)
+      azure_rbac_enabled     = try(azure_active_directory_role_based_access_control.azure_rbac_enabled, true)
     }
   }
   run_command_enabled = try(var.settings.run_command_enabled, true)
