@@ -60,7 +60,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   }
   run_command_enabled = try(var.settings.run_command_enabled, true)
   dynamic "key_vault_secrets_provider" {
-    for_each = var.settings.key_vault_secrets_provider != null && var.settings.key_vault_secrets_provider.secret_rotation_enabled != null ? [var.settings.key_vault_secrets_provider] : []
+    for_each = try(var.settings.key_vault_secrets_provider, null) == null ? [] : [1]
     content {
       secret_rotation_enabled  = try(key_vault_secrets_provider.value.secret_rotation_enabled, null)
       secret_rotation_interval = try(key_vault_secrets_provider.value.secret_rotation_interval, null)
