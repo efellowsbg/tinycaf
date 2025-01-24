@@ -13,7 +13,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "main" {
   os_disk_type                = try(var.settings.os_disk_type, null)
   os_disk_size_gb             = try(var.settings.os_disk_size_gb, null)
   os_sku                      = try(var.settings.os_sku, null)
-  pod_subnet_id               = try(local.pod_subnet_id, null)
+  pod_subnet_id               = try(var.settings.pod_subnet_id, null)
   vnet_subnet_id              = try(local.vnet_subnet_id, null)
   os_type                     = try(var.settings.os_type, null)
   ultra_ssd_enabled           = try(var.settings.ultra_ssd_enabled, false)

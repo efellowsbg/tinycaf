@@ -21,7 +21,7 @@ resource "azurerm_kubernetes_cluster" "main" {
     os_disk_size_gb             = try(var.settings.default_node_pool.os_disk_size_gb, null)
     os_sku                      = try(var.settings.default_node_pool.os_sku, null)
     vnet_subnet_id              = local.vnet_subnet_id
-    pod_subnet_id               = local.vnet_subnet_id
+    pod_subnet_id               = try(var.settings.default_node_pool.pod_subnet_id, null)
     temporary_name_for_rotation = try(var.settings.default_node_pool.temporary_name_for_rotation, null)
   }
 
