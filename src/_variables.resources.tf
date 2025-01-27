@@ -26,4 +26,6 @@ variable "kubernetes_clusters" { default = {} }
 
 variable "role_assignments" { default = {} }
 
+variable "container_registries" { default = {} }
+
 variable "managed_disks" { default = {} }
