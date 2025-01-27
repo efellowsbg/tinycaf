@@ -11,7 +11,7 @@ container_registries = {
         tags                    = { Owner = "prod" }
       }
       georeplication_test_2 = {
-        location                = "East US"
+        location                = "Nort Europe"
         zone_redundancy_enabled = true
       }
     }

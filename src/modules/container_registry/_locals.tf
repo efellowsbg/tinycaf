@@ -7,11 +7,11 @@ locals {
   dns_zone_group_name  = local.dns_zone_group.name
   private_dns_zone_ids = [local.dns_zone_group.id]
 
-  subnet_id = var.resources.virtual_networks[
+  subnet_id = try(var.resources.virtual_networks[
     split("/", var.settings.private_endpoint.subnet_ref)[0]
     ].subnets[
     split("/", var.settings.private_endpoint.subnet_ref)[1]
-  ].id
+  ].id, null)
 
   tags = merge(
     var.global_settings.tags,

@@ -1,13 +1,8 @@
 locals {
-  resource_group = var.resources.resource_groups[var.settings.resource_group_ref]
-
+  resource_group      = var.resources.resource_groups[var.settings.resource_group_ref]
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
-  tags = merge(
-    var.global_settings.tags,
-    var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
-    try(var.settings.tags, {})
-  )
+
   vnet_ids = {
     for vnet in var.settings.vnet_ref :
     vnet => {
@@ -15,7 +10,14 @@ locals {
       id   = var.resources.virtual_networks[vnet].id
     }
   }
+
+  tags = merge(
+    var.global_settings.tags,
+    var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
+    try(var.settings.tags, {})
+  )
 }
+
 locals {
   # local object used to map possible private dns zoone names
   zone_names = {

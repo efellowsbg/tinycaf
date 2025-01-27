@@ -1,9 +1,9 @@
-module "container_registries" {
-  source   = "./modules/container_registries"
-  for_each = var.container_registries
+module "container_registry" {
+  source   = "./modules/container_registry"
+  for_each = var.container_registry
 
   settings        = each.value
-  global_settings = var.global_settings
+  global_settings = local.global_settings
 
   resources = {
     resource_groups   = module.resource_groups
