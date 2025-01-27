@@ -4,7 +4,7 @@ resource "azurerm_storage_account" "main" {
   location            = local.location
   tags                = local.tags
 
-  account_kind             = try(var.settings.account_kind, null) # defaults to StorageV2
+  account_kind             = try(var.settings.account_kind, "StorageV2")
   account_tier             = try(var.settings.account_tier, "Standard")
   account_replication_type = var.settings.account_replication_type
 
@@ -28,7 +28,5 @@ resource "azurerm_storage_account" "main" {
     bypass                     = try(var.settings.network_rules.bypass, null)
     ip_rules                   = try(var.settings.network_rules.allowed_ips, null)
     virtual_network_subnet_ids = local.subnet_ids
-
-    # TODO: private_link_access block
   }
 }
