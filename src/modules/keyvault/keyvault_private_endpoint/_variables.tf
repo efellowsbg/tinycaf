@@ -6,7 +6,18 @@ variable "settings" {
   description = "All the configuration for this resource"
 }
 
+variable "keyvault_id" {
+  description = "id of the keyvault"
+}
 
 variable "resources" {
+  description = "All the configuration for this resource"
+}
+
+variable "subnet_ref" {
+  description = "All the configuration for this resource"
+}
+
+variable "dns_zones_ref" {
   description = "All the configuration for this resource"
 }
