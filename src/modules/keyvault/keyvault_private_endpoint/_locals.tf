@@ -1,5 +1,5 @@
 locals {
-    subnet_ids = [
+  subnet_ids = [
     for network_rule_ref, config in try(var.settings.network_rules.subnets, {}) : (
       var.resources.virtual_networks[split("/", config.subnet_ref)[0]].subnets[split("/", config.subnet_ref)[1]].id
     )
