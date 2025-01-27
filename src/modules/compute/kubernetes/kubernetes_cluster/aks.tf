@@ -2,7 +2,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   name                = var.settings.cluster_name
   resource_group_name = local.resource_group_name
   location            = local.location
-  node_resource_group = try(var.settings.node_resource_group_name,null)
+  node_resource_group = try(var.settings.node_resource_group_name, null)
   sku_tier            = try(var.settings.sku_tier, "Free")
   kubernetes_version  = try(var.settings.kubernetes_version, null)
   dns_prefix          = try(var.settings.dns_prefix, "default")
@@ -23,7 +23,15 @@ resource "azurerm_kubernetes_cluster" "main" {
     vnet_subnet_id              = local.vnet_subnet_id
     pod_subnet_id               = try(var.settings.default_node_pool.pod_subnet_id, null)
     temporary_name_for_rotation = try(var.settings.default_node_pool.temporary_name_for_rotation, null)
-    host_encryption_enabled = try(var.settings.default_node_pool.host_encryption_enabled, false)
+    host_encryption_enabled     = try(var.settings.default_node_pool.host_encryption_enabled, false)
+    dynamic "upgrade_settings" {
+      for_each = try(var.settings.default_node_pool.upgrade_settings[*], {})
+      content {
+        drain_timeout_in_minutes      = try(upgrade_settings.value.drain_timeout_in_minutes, null)
+        node_soak_duration_in_minutes = try(upgrade_settings.value.node_soak_duration_in_minutes, null)
+        max_surge                     = try(upgrade_settings.value.max_surge, null)
+      }
+    }
   }
 
   network_profile {
@@ -57,14 +65,6 @@ resource "azurerm_kubernetes_cluster" "main" {
     for_each = try(var.settings.api_server_access_profile[*], {})
     content {
       authorized_ip_ranges = try(api_server_access_profile.value.authorized_ip_ranges, null)
-    }
-  }
-  dynamic "upgrade_settings" {
-    for_each = try(var.settings.upgrade_settings[*], {})
-    content {
-      drain_timeout_in_minutes = try(upgrade_settings.value.drain_timeout_in_minutes, null)
-      node_soak_duration_in_minutes = try(upgrade_settings.value.node_soak_duration_in_minutes, null)
-      max_surge = try(upgrade_settings.value.max_surge, null)
     }
   }
   role_based_access_control_enabled = try(var.settings.role_based_access_control_enabled, true)
