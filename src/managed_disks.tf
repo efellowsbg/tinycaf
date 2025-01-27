@@ -6,6 +6,6 @@ module "managed_disks" {
   global_settings = local.global_settings
 
   resources = {
-    resource_groups     = module.resource_groups
+    resource_groups = module.resource_groups
   }
 }

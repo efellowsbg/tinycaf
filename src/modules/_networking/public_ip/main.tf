@@ -4,5 +4,5 @@ resource "azurerm_public_ip" "main" {
   location            = local.location
   allocation_method   = try(var.settings.allocation_method, "Static")
   tags                = local.tags
-  zones = try(var.settings.zones,null)
+  zones               = try(var.settings.zones, null)
 }

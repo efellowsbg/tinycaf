@@ -8,8 +8,8 @@ module "built_in_roles" {
       roles         = roles
     }
   }
-  settings        = each.value.roles    # Pass the roles for the current resource type
-  resource_type   = each.value.resource_type    # Pass the resource type dynamically
+  settings        = each.value.roles         # Pass the roles for the current resource type
+  resource_type   = each.value.resource_type # Pass the resource type dynamically
   global_settings = var.global_settings
   resources       = var.resources
 }
