@@ -10,14 +10,14 @@ module "virtual_networks" {
   }
 }
 
-module "private_dns_zones" {
-  source   = "./modules/_networking/private_dns_zone"
-  for_each = var.private_dns_zones
+module "vnet_peerings" {
+  source   = "./modules/_networking/vnet_peering"
+  for_each = var.vnet_peerings
 
-  global_settings = local.global_settings
   settings        = each.value
+  global_settings = local.global_settings
+
   resources = {
-    resource_groups  = module.resource_groups
     virtual_networks = module.virtual_networks
   }
 }
