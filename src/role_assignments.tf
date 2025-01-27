@@ -9,5 +9,6 @@ module "role_assignments" {
     resource_groups   = module.resource_groups
     keyvaults         = module.keyvaults
     managed_identities = module.managed_identities
+    kubernetes_clusters = module.kubernetes_clusters
   }
 }
