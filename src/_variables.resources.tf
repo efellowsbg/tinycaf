@@ -9,3 +9,11 @@ variable "private_dns_zones" { default = {} }
 variable "keyvaults" { default = {} }
 
 variable "storage_accounts" { default = {} }
+
+variable "managed_identities" { default = {} }
+
+variable "virtual_network_gateways" { default = {} }
+
+variable "public_ips" { default = {} }
+
+variable "local_network_gateways" { default = {} }

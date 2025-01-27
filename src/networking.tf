@@ -19,6 +19,7 @@ module "private_dns_zones" {
   resources = {
     resource_groups  = module.resource_groups
     virtual_networks = module.virtual_networks
+  }
 }
 
 module "virtual_network_gateways" {
