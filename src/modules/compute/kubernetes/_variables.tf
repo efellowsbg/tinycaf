@@ -8,5 +8,5 @@ variable "settings" {
 
 
 variable "resources" {
-  description = "All the configuration for this resource"
+  description = "All required resources"
 }

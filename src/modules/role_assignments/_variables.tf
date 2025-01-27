@@ -3,10 +3,9 @@ variable "global_settings" {
 }
 
 variable "settings" {
-  description = "All the configuration for this resource"
+  description = "All the configuration for a storage account"
 }
 
-
 variable "resources" {
-  description = "All the configuration for this resource"
+  description = "All required resources"
 }

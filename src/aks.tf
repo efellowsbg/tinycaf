@@ -1,6 +1,6 @@
-module "keyvaults" {
-  source   = "./modules/keyvault"
-  for_each = var.keyvaults
+module "kubernetes_clusters" {
+  source   = "./modules/compute/kubernetes"
+  for_each = var.kubernetes_clusters
 
   settings        = each.value
   global_settings = local.global_settings
