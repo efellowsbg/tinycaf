@@ -10,10 +10,6 @@ container_registries = {
         zone_redundancy_enabled = true
         tags                    = { Owner = "prod" }
       }
-      georeplication_test_2 = {
-        location                = "Nort Europe"
-        zone_redundancy_enabled = true
-      }
     }
 
     private_endpoint = {
