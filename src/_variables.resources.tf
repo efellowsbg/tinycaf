@@ -18,6 +18,8 @@ variable "public_ips" { default = {} }
 
 variable "local_network_gateways" { default = {} }
 
+variable "virtual_machines" { default = {} }
+
 variable "private_dns_zones" { default = {} }
 
 variable "virtual_network_gateway_connections" { default = {} }

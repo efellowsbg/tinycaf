@@ -5,5 +5,5 @@ resource "azurerm_virtual_network" "main" {
 
   address_space = var.settings.cidr
 
-  tags = try(local.tags, null)
+  tags = local.tags
 }

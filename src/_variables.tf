@@ -9,7 +9,9 @@ variable "global_settings" {
   })
 
   default = {
-    tags                        = {}
+    tags = {
+
+    }
     inherit_resource_group_tags = false
   }
 }
