@@ -10,6 +10,7 @@ resource "azurerm_private_endpoint" "main" {
     name                           = try(var.settings.private_endpoint.private_service_connection.name, "psc-${var.settings.name}")
     private_connection_resource_id = azurerm_container_registry.main.id
     is_manual_connection           = try(var.settings.private_endpoint.private_service_connection.is_manual_connection, false)
+    subresource_names              = ["registry"]
   }
 
   private_dns_zone_group {
