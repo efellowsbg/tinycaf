@@ -59,6 +59,14 @@ resource "azurerm_kubernetes_cluster" "main" {
       authorized_ip_ranges = try(api_server_access_profile.value.authorized_ip_ranges, null)
     }
   }
+  dynamic "upgrade_settings" {
+    for_each = try(var.settings.upgrade_settings[*], {})
+    content {
+      drain_timeout_in_minutes = try(upgrade_settings.value.drain_timeout_in_minutes, null)
+      node_soak_duration_in_minutes = try(upgrade_settings.value.node_soak_duration_in_minutes, null)
+      max_surge = try(upgrade_settings.value.max_surge, null)
+    }
+  }
   role_based_access_control_enabled = try(var.settings.role_based_access_control_enabled, true)
   dynamic "azure_active_directory_role_based_access_control" {
     for_each = try(var.settings.azure_active_directory_role_based_access_control[*], {})
