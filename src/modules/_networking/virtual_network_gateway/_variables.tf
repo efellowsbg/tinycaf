@@ -7,10 +7,5 @@ variable "settings" {
 }
 
 variable "resources" {
-  type = object({
-    resource_groups  = map(any)
-    virtual_networks = map(any)
-    public_ips       = map(any)
-  })
-  description = "All required resources"
+  description = "All the configuration for this resource"
 }
