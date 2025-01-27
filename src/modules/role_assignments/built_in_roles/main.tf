@@ -4,10 +4,10 @@ resource "azurerm_role_assignment" "main" {
       for role_definition_name, resources in var.settings : [
         for resource_key, resource_details in resources : [
           for principal_type, principals in try(resource_details, {}) : [
-            for principal in (
+            for principal in(
               # Handle cases where the principal is a list (like object_ids) or a single value
               can(principals) && length(principals) > 0 ? principals : []
-            ) : {
+              ) : {
               role_definition_name = role_definition_name
               resource_key         = resource_key
               resource_type        = var.resource_type
@@ -30,8 +30,8 @@ resource "azurerm_role_assignment" "main" {
   principal_id = try(
     # If principal is directly an ID (like object_ids), use it. Otherwise, resolve via var.resources.
     each.value.principal_type == "object_ids"
-      ? each.value.principal
-      : var.resources[each.value.principal_type][each.value.principal].principal_id,
+    ? each.value.principal
+    : var.resources[each.value.principal_type][each.value.principal].principal_id,
     null
   )
 

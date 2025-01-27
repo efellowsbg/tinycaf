@@ -24,6 +24,6 @@ locals {
 }
 
 locals {
-  local_network_gateway_id = try(var.resources.local_network_gateways[var.settings.local_network_gateway_ref].id , null)
-  virtual_network_gateway_id = try(var.resources.virtual_network_gateways[var.settings.virtual_network_gateway_ref].id , null)
+  local_network_gateway_id   = try(var.resources.local_network_gateways[var.settings.local_network_gateway_ref].id, null)
+  virtual_network_gateway_id = try(var.resources.virtual_network_gateways[var.settings.virtual_network_gateway_ref].id, null)
 }
