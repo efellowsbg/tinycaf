@@ -1,9 +1,19 @@
 variable "resource_groups" { default = {} }
 
+variable "managed_identities" { default = {} }
+
 variable "virtual_networks" { default = {} }
 
-variable "virtual_machines" { default = {} }
+variable "vnet_peerings" { default = {} }
+
+variable "local_network_gateways" { default = {} }
+
+variable "virtual_network_gateways" { default = {} }
+
+variable "public_ips" { default = {} }
 
 variable "keyvaults" { default = {} }
 
 variable "storage_accounts" { default = {} }
+
+variable "virtual_machines" { default = {} }
