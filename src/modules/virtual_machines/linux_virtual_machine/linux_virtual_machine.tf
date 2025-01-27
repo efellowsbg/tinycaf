@@ -8,9 +8,12 @@ resource "azurerm_linux_virtual_machine" "main" {
 
   tags = local.tags
 
-  admin_ssh_key {
-    username   = var.settings.admin_ssh_key.username
-    public_key = local.public_key
+  dynamic "admin_ssh_key" {
+    for_each = try(var.settings.admin_ssh_key[*], {})
+    content {
+      username   = try(admin_ssh_key.value.username, null)
+      public_key = try(admin_ssh_key.value.public_key, null)
+    }
   }
 
   os_disk {
