@@ -5,3 +5,7 @@ variable "virtual_networks" { default = {} }
 variable "container_registry" { default = {} }
 
 variable "private_dns_zones" { default = {} }
+
+variable "keyvaults" { default = {} }
+
+variable "storage_accounts" { default = {} }
