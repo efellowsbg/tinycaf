@@ -25,3 +25,5 @@ variable "virtual_network_gateway_connections" { default = {} }
 variable "kubernetes_clusters" { default = {} }
 
 variable "role_assignments" { default = {} }
+
+variable "managed_disks" { default = {} }
