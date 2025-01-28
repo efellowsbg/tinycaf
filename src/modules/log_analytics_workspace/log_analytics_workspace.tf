@@ -26,7 +26,7 @@ resource "azurerm_log_analytics_workspace" "main" {
   )
 
   dynamic "identity" {
-    for_each = try(var.settings.identities, null)
+    for_each = try(var.settings.identities[*], {})
 
     content {
       type         = try(identity.type, null)
@@ -35,7 +35,7 @@ resource "azurerm_log_analytics_workspace" "main" {
   }
 
   dynamic "timeouts" {
-    for_each = try(var.settings.timeouts, null)
+    for_each = try(var.settings.timeouts[*], {})
 
     content {
       read   = try(timeouts.read, "5m")
