@@ -4,7 +4,7 @@ locals {
   location            = local.resource_group.location
 
   identity_ids = flatten([
-    for key, value in try(var.settings.identity, {}) : [
+    for key, value in try(var.settings.identity, []) : [
       for id_ref in value.identity_ids_ref : var.resources.managed_identities[id_ref].id
     ]
   ])
