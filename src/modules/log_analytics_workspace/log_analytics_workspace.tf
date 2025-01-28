@@ -20,7 +20,8 @@ resource "azurerm_log_analytics_workspace" "main" {
 
   daily_quota_gb = try(
     var.settings.daily_quota_gb,
-    var.settings.sku == "Free" ? "0.5" : null
+    var.settings.sku == "Free" ? "0.5" : null,
+    null
   )
 
   reservation_capacity_in_gb_per_day = try(
@@ -33,8 +34,12 @@ resource "azurerm_log_analytics_workspace" "main" {
     for_each = try(var.settings.identities[*], {})
 
     content {
-      type         = try(identity.type, null)
-      identity_ids = try(identity.identity_ids, null)
+      type = try(identity.type, "SystemAssigned")
+      identity_ids = (
+        identity.type == "UserAssigned" ?
+        (try(identity.identity_ids, null) != null ? identity.identity_ids : null) :
+        null
+      )
     }
   }
 
