@@ -25,7 +25,7 @@ resource "azurerm_log_analytics_workspace" "main" {
     for_each = try(var.settings.identities[*], {})
 
     content {
-      type = try(identity.type, "SystemAssigned")
+      type = try(identity.type, null)
       identity_ids = (
         identity.type == "UserAssigned" ?
         (try(identity.identity_ids, null) != null ? identity.identity_ids : null) :
