@@ -22,7 +22,7 @@ resource "azurerm_log_analytics_workspace" "main" {
   )
 
   dynamic "identity" {
-    for_each = try(var.settings.identity[*], {})
+    for_each = try(var.settings.identity, {})
 
     content {
       type         = try(identity.value.type, null)
