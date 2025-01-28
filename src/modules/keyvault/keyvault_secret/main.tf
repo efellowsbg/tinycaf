@@ -4,6 +4,6 @@ resource "azurerm_key_vault_secret" "main" {
   key_vault_id = var.keyvault_id
 
   lifecycle {
-    ignore_changes = ["value"]
+    ignore_changes = [value]
   }
 }
