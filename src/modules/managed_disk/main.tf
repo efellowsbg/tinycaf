@@ -6,5 +6,6 @@ resource "azurerm_managed_disk" "main" {
   create_option        = try(var.settings.create_option, "Empty")
   disk_size_gb         = try(var.settings.disk_size_gb, "20")
   zone                 = try(var.settings.zone, null)
+  tier                 = try(var.settings.tier, null)
   tags                 = local.tags
 }
