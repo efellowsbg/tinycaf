@@ -3,8 +3,6 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
-  # identity_ids = [for id_ref in identity.value.identity_ids_ref : var.resources.managed_identities[id_ref].id]
-
   identity_ids = flatten([
     for key, value in try(var.settings.identity, {}) : [
       for id_ref in value.identity_ids_ref : var.resources.managed_identities[id_ref].id

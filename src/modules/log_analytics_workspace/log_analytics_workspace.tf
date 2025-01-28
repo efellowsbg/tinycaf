@@ -26,7 +26,7 @@ resource "azurerm_log_analytics_workspace" "main" {
 
     content {
       type         = try(identity.value.type, null)
-      identity_ids = local.identity_ids
+      identity_ids = try(local.identity_ids, null)
     }
   }
 
