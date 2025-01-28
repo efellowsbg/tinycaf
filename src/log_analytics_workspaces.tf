@@ -1,0 +1,11 @@
+module "log_analytics_workspaces" {
+  source   = "./modules/log_analytics_workspace"
+  for_each = var.log_analytics_workspaces
+
+  settings        = each.value
+  global_settings = var.global_settings
+
+  resources = {
+    resource_groups = module.resource_groups
+  }
+}
