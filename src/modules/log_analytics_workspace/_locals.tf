@@ -5,11 +5,11 @@ locals {
 
   # identity_ids = [for id_ref in identity.value.identity_ids_ref : var.resources.managed_identities[id_ref].id]
 
-  identity_ids = [
-    for key, value in try(var.settings.identity, {}) : (
-      var.resources.managed_identities[value.identity_ids_ref].id
-    )
-  ]
+  identity_ids = flatten([
+    for key, value in try(var.settings.identity, {}) : [
+      for id_ref in value.identity_ids_ref : var.resources.managed_identities[id_ref].id
+    ]
+  ])
 
   tags = merge(
     var.global_settings.tags,
