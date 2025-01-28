@@ -38,10 +38,10 @@ resource "azurerm_log_analytics_workspace" "main" {
     for_each = try(var.settings.timeouts[*], {})
 
     content {
-      read   = try(timeouts.read, "5m")
-      create = try(timeouts.create, "30m")
-      update = try(timeouts.update, "30m")
-      delete = try(timeouts.delete, "30m")
+      read   = try(timeouts.value.read, "5m")
+      create = try(timeouts.value.create, "30m")
+      update = try(timeouts.value.update, "30m")
+      delete = try(timeouts.value.delete, "30m")
     }
   }
 }
