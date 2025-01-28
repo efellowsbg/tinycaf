@@ -3,7 +3,7 @@ module "log_analytics_workspaces" {
   for_each = var.log_analytics_workspaces
 
   settings        = each.value
-  global_settings = var.global_settings
+  global_settings = local.global_settings
 
   resources = {
     resource_groups = module.resource_groups
