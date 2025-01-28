@@ -9,10 +9,10 @@ locals {
   #   ]
   # ])
 
-  identity_ids = flatten([
+  identity_ids = [
     for id_ref in try(var.settings.identity.identity_ids_ref, []) :
     var.resources.managed_identities[id_ref].id
-  ])
+  ]
 
   tags = merge(
     var.global_settings.tags,
