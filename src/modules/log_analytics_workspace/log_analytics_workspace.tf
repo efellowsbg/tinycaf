@@ -27,7 +27,7 @@ resource "azurerm_log_analytics_workspace" "main" {
     content {
       type = try(identity.value.type, null)
       identity_ids = (
-        identity.type == "UserAssigned" ?
+        identity.value.type == "UserAssigned" ?
         (try(identity.value.identity_ids, null) != null ? identity.value.identity_ids : null) :
         null
       )
