@@ -10,8 +10,6 @@ locals {
 
   destination_resource_id = var.resources.storage_accounts[var.settings.storage_account_ref].id
 
-  data_collection_rule_id = var.resources.storage_accounts[var.settings.storage_account_ref].id
-
   tags = merge(
     var.global_settings.tags,
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
