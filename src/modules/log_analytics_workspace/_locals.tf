@@ -8,7 +8,7 @@ locals {
     var.resources.managed_identities[id_ref].id
   ]
 
-  destination_resource_id = var.resources.storage_accounts[var.settings.storage_account_ref].id
+  destination_resource_id = module.storage_accounts[var.settings.storage_account_ref].id
 
   tags = merge(
     var.global_settings.tags,
