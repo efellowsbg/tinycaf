@@ -8,8 +8,6 @@ locals {
     var.resources.managed_identities[id_ref].id
   ]
 
-  destination_resource_id = module.storage_accounts[var.settings.storage_account_ref].id
-
   tags = merge(
     var.global_settings.tags,
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
