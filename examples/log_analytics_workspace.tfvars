@@ -2,7 +2,6 @@ log_analytics_workspaces = {
   log_workspace_test1 = {
     name               = "acctest-01"
     resource_group_ref = "rg_test"
-    sku                = "CapacityReservation"
 
     identity = {
       type             = "UserAssigned"
@@ -12,6 +11,16 @@ log_analytics_workspaces = {
     timeouts = {
       read = "6m"
     }
+
+    # This is example is if rule is created from inside this module
+    # rules = {
+    #   rule_test1 = {
+    #     name                = "dataExport1"
+    #     storage_account_ref = "st_test"
+    #     table_names         = ["Heartbeat"]
+    #     enabled             = true
+    #   }
+    # }
   }
 }
 
