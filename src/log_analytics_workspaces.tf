@@ -9,5 +9,6 @@ module "log_analytics_workspaces" {
     resource_groups                 = module.resource_groups
     managed_identities              = module.managed_identities
     log_analytics_data_export_rules = module.log_analytics_data_export_rules
+    storage_accounts                = module.storage_accounts
   }
 }

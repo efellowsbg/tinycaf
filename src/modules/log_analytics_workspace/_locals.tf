@@ -8,7 +8,9 @@ locals {
     var.resources.managed_identities[id_ref].id
   ]
 
-  data_collection_rule_id = try(var.resources.log_analytics_data_export_rule[var.settings.data_collection_rule_ref].id, null)
+  destination_resource_id = var.resources.storage_accounts[var.settings.storage_account_ref].id
+
+  data_collection_rule_id = var.resources.storage_accounts[var.settings.storage_account_ref].id
 
   tags = merge(
     var.global_settings.tags,
