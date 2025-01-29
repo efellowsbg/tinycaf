@@ -9,6 +9,8 @@ resource "azurerm_log_analytics_data_export_rule" "main" {
 
   enabled = try(each.value.enabled, false)
 
+  depends_on = [azurerm_log_analytics_workspace.main]
+
   dynamic "timeouts" {
     for_each = try(each.value.timeouts[*], {})
 
