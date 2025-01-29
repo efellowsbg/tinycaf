@@ -29,3 +29,5 @@ variable "role_assignments" { default = {} }
 variable "container_registries" { default = {} }
 
 variable "managed_disks" { default = {} }
+
+variable "log_analytics_workspaces" { default = {} }

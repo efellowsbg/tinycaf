@@ -10,6 +10,6 @@ module "role_assignments" {
     keyvaults           = module.keyvaults
     managed_identities  = module.managed_identities
     kubernetes_clusters = module.kubernetes_clusters
-    virtual_networks = module.virtual_networks
+    virtual_networks    = module.virtual_networks
   }
 }
