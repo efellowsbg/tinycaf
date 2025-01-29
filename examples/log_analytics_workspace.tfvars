@@ -2,7 +2,15 @@ log_analytics_workspaces = {
   log_workspace_test1 = {
     name               = "acctest-01"
     resource_group_ref = "rg_test"
-    sku                = "CapacityReservation"
+
+    identity = {
+      type             = "UserAssigned"
+      identity_ids_ref = ["id_test1"]
+    }
+
+    timeouts = {
+      read = "6m"
+    }
 
     # This is example is if rule is created from inside this module
     # rules = {
@@ -13,15 +21,6 @@ log_analytics_workspaces = {
     #     enabled             = true
     #   }
     # }
-
-    identity = {
-      type             = "UserAssigned"
-      identity_ids_ref = ["id_test1"]
-    }
-
-    timeouts = {
-      read = "6m"
-    }
   }
 }
 
