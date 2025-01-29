@@ -1,5 +1,5 @@
 resource "azurerm_log_analytics_data_export_rule" "main" {
-  for_each = try(var.settings.log_analytics_data_export_rules, {})
+  for_each = try(var.settings.rules, {})
 
   name                    = each.value.name
   resource_group_name     = local.resource_group_name
