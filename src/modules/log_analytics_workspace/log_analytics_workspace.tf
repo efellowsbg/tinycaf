@@ -21,14 +21,14 @@ resource "azurerm_log_analytics_workspace" "main" {
     null
   )
 
-  dynamic "identity" {
-    for_each = try(var.settings.identity[*], {})
+  # dynamic "identity" {
+  #   for_each = try(var.settings.identity[*], {})
 
-    content {
-      type         = try(identity.value.type, null)
-      identity_ids = try(local.identity_ids, null)
-    }
-  }
+  #   content {
+  #     type         = try(identity.value.type, null)
+  #     identity_ids = try(local.identity_ids, null)
+  #   }
+  # }
 
   dynamic "timeouts" {
     for_each = try(var.settings.timeouts[*], {})
