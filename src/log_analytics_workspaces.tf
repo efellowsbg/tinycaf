@@ -6,9 +6,8 @@ module "log_analytics_workspaces" {
   global_settings = local.global_settings
 
   resources = {
-    resource_groups          = module.resource_groups
-    managed_identities       = module.managed_identities
-    storage_accounts         = module.storage_accounts
-    log_analytics_workspaces = module.log_analytics_workspaces
+    resource_groups    = module.resource_groups
+    managed_identities = module.managed_identities
+    storage_accounts   = module.storage_accounts
   }
 }
