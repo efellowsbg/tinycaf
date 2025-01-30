@@ -72,11 +72,11 @@ resource "azurerm_container_group" "main" {
   }
 
   dynamic "diagnostics" {
-    for_each = try(var.settings.diagnostics[*], {})
+    for_each = var.settings.diagnostics
 
     content {
       dynamic "log_analytics" {
-        for_each = try(diagnostics.log_analytics[*], {})
+        for_each = try(diagnostics.key[*], {})
 
         content {
           workspace_id  = log_analytics.value.workspace_id
