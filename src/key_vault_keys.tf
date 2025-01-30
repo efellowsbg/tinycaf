@@ -6,7 +6,8 @@ module "key_vault_keys" {
   global_settings = local.global_settings
 
   resources = {
-    resource_groups = module.resource_groups
-    keyvaults       = module.keyvaults
+    resource_groups  = module.resource_groups
+    keyvaults        = module.keyvaults
+    virtual_networks = module.virtual_networks
   }
 }
