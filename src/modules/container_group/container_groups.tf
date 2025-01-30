@@ -39,6 +39,7 @@ resource "azurerm_container_group" "main" {
 
       dynamic "environment_variables" {
         for_each = try(var.container.environment_variables[*], {})
+
         content {
           name  = environment_variables.value.name
           value = environment_variables.value.value
