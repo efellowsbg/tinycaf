@@ -3,9 +3,9 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
-  workspace     = var.resources.log_analytics_workspaces[values(var.settings.diagnostics)[0].workspace_ref]
-  workspace_id  = local.workspace.id
-  workspace_key = local.workspace.primary_shared_key
+  workspace     = try(var.resources.log_analytics_workspaces[values(var.settings.diagnostics)[0].workspace_ref], {})
+  workspace_id  = try(local.workspace.id, null)
+  workspace_key = try(local.workspace.primary_shared_key, null)
 
   identity_ids = [
     for id_ref in try(var.settings.identity.identity_ids_ref, []) :
