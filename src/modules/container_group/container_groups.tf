@@ -29,11 +29,11 @@ resource "azurerm_container_group" "main" {
       memory_limit = try(container.value.memory_limit, null)
 
       environment_variables = try(
-        { for env in container.value.environment_variables : env.name => env.value }, {}
+        { for key, value in container.value.environment_variables : key => value }, {}
       )
 
       secure_environment_variables = try(
-        { for env in container.value.secure_environment_variables : env.name => env.value }, {}
+        { for key, value in container.value.secure_environment_variables : key => value }, {}
       )
 
       dynamic "ports" {
@@ -113,11 +113,11 @@ resource "azurerm_container_group" "main" {
       commands = try(init_container.value.commands, null)
 
       environment_variables = try(
-        { for env in init_container.value.environment_variables : env.name => env.value }, {}
+        { for key, value in container.value.environment_variables : key => value }, {}
       )
 
       secure_environment_variables = try(
-        { for env in init_container.value.secure_environment_variables : env.name => env.value }, {}
+        { for key, value in container.value.secure_environment_variables : key => value }, {}
       )
 
       dynamic "volume" {
