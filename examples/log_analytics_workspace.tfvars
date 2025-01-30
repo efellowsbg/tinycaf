@@ -1,6 +1,6 @@
 log_analytics_workspaces = {
   log_workspace_test1 = {
-    name               = "acctest-01"
+    name               = "law-test-01"
     resource_group_ref = "rg_test"
 
     identity = {
