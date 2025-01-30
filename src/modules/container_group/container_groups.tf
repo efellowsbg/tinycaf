@@ -40,15 +40,6 @@ resource "azurerm_container_group" "main" {
           protocol = try(ports.value.protocol, null)
         }
       }
-
-      # dynamic "environment_variables" {
-      #   for_each = try(container.environment_variables[*], {})
-
-      #   content {
-      #     name  = environment_variables.value.name
-      #     value = environment_variables.value.value
-      #   }
-      # }
     }
   }
 
@@ -76,7 +67,7 @@ resource "azurerm_container_group" "main" {
 
     content {
       dynamic "log_analytics" {
-        for_each = try(diagnostics.key[*], {})
+        for_each = try(diagnostics.value[*], {})
 
         content {
           workspace_id  = log_analytics.value.workspace_id
@@ -124,23 +115,6 @@ resource "azurerm_container_group" "main" {
         { for env in init_container.value.secure_environment_variables : env.name => env.value }, {}
       )
 
-      # dynamic "environment_variables" {
-      #   for_each = try(init_container.environment_variables[*], {})
-      #   content {
-      #     name  = environment_variables.value.name
-      #     value = environment_variables.value.value
-      #   }
-      # }
-
-      # dynamic "secure_environment_variables" {
-      #   for_each = try(var.init_container.secure_environment_variables[*], {})
-
-      #   content {
-      #     name  = secure_environment_variables.value.name
-      #     value = secure_environment_variables.value.value
-      #   }
-      # }
-
       dynamic "volume" {
         for_each = try(init_container.value.volume[*], {})
 
@@ -171,23 +145,3 @@ resource "azurerm_container_group" "main" {
     }
   }
 }
-
-
-# container {
-#   name   = "hello-world"
-#   image  = "mcr.microsoft.com/azuredocs/aci-helloworld:latest"
-#   cpu    = "0.5"
-#   memory = "1.5"
-
-#   ports {
-#     port     = 443
-#     protocol = "TCP"
-#   }
-# }
-
-# container {
-#   name   = "sidecar"
-#   image  = "mcr.microsoft.com/azuredocs/aci-tutorial-sidecar"
-#   cpu    = "0.5"
-#   memory = "1.5"
-# }
