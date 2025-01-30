@@ -1,7 +1,7 @@
 resource "azurerm_key_vault_key" "main" {
   name         = var.settings.name
   key_vault_id = local.key_vault_id
-  key_type     = var.settings.type
+  key_type     = var.settings.key_type
   key_size     = var.settings.key_size
   key_opts     = var.settings.key_opts
   tags         = local.tags
