@@ -7,7 +7,6 @@ module "container_groups" {
 
   resources = {
     resource_groups          = module.resource_groups
-    managed_identities       = module.managed_identities
     virtual_networks         = module.virtual_networks
     log_analytics_workspaces = module.log_analytics_workspaces
     managed_identities       = module.managed_identities
