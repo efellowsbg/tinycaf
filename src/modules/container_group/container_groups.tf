@@ -76,7 +76,7 @@ resource "azurerm_container_group" "main" {
 
     content {
       dynamic "log_analytics" {
-        for_each = try(diagnostics.log_analytics[*], {})
+        for_each = diagnostics.log_analytics
 
         content {
           workspace_id  = log_analytics.value.workspace_id
