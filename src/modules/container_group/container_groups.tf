@@ -29,7 +29,7 @@ resource "azurerm_container_group" "main" {
       memory_limit = try(container.value.memory_limit, null)
 
       dynamic "ports" {
-        for_each = try(var.container.ports[*], {})
+        for_each = try(container.ports[*], {})
 
         content {
           port     = try(ports.value.port, null)
@@ -38,7 +38,7 @@ resource "azurerm_container_group" "main" {
       }
 
       dynamic "environment_variables" {
-        for_each = try(var.container.environment_variables[*], {})
+        for_each = try(container.environment_variables[*], {})
 
         content {
           name  = environment_variables.value.name
