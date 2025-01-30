@@ -28,6 +28,10 @@ resource "azurerm_container_group" "main" {
       cpu_limit    = try(container.value.cpu_limit, null)
       memory_limit = try(container.value.memory_limit, null)
 
+      environment_variables = try(
+        { for env in container.value.environment_variables : env.name => env.value }, {}
+      )
+
       dynamic "ports" {
         for_each = try(container.ports[*], {})
 
@@ -37,14 +41,14 @@ resource "azurerm_container_group" "main" {
         }
       }
 
-      dynamic "environment_variables" {
-        for_each = try(container.environment_variables[*], {})
+      # dynamic "environment_variables" {
+      #   for_each = try(container.environment_variables[*], {})
 
-        content {
-          name  = environment_variables.value.name
-          value = environment_variables.value.value
-        }
-      }
+      #   content {
+      #     name  = environment_variables.value.name
+      #     value = environment_variables.value.value
+      #   }
+      # }
     }
   }
 
@@ -72,7 +76,7 @@ resource "azurerm_container_group" "main" {
 
     content {
       dynamic "log_analytics" {
-        for_each = try(var.diagnostics.log_analytics[*], {})
+        for_each = try(diagnostics.log_analytics[*], {})
 
         content {
           workspace_id  = log_analytics.value.workspace_id
@@ -112,24 +116,33 @@ resource "azurerm_container_group" "main" {
       image    = init_container.value.image
       commands = try(init_container.value.commands, null)
 
-      dynamic "environment_variables" {
-        for_each = try(var.init_container.environment_variables[*], {})
-        content {
-          name  = environment_variables.value.name
-          value = environment_variables.value.value
-        }
-      }
+      environment_variables = try(
+        { for env in init_container.value.environment_variables : env.name => env.value }, {}
+      )
 
-      dynamic "secure_environment_variables" {
-        for_each = try(var.init_container.secure_environment_variables[*], {})
-        content {
-          name  = secure_environment_variables.value.name
-          value = secure_environment_variables.value.value
-        }
-      }
+      secure_environment_variables = try(
+        { for env in init_container.value.secure_environment_variables : env.name => env.value }, {}
+      )
+
+      # dynamic "environment_variables" {
+      #   for_each = try(init_container.environment_variables[*], {})
+      #   content {
+      #     name  = environment_variables.value.name
+      #     value = environment_variables.value.value
+      #   }
+      # }
+
+      # dynamic "secure_environment_variables" {
+      #   for_each = try(var.init_container.secure_environment_variables[*], {})
+
+      #   content {
+      #     name  = secure_environment_variables.value.name
+      #     value = secure_environment_variables.value.value
+      #   }
+      # }
 
       dynamic "volume" {
-        for_each = try(var.init_container.volume[*], {})
+        for_each = try(init_container.value.volume[*], {})
 
         content {
           name       = volume.value.name
@@ -138,7 +151,7 @@ resource "azurerm_container_group" "main" {
       }
 
       dynamic "security" {
-        for_each = try(var.init_container.security[*], {})
+        for_each = try(init_container.value.security[*], {})
 
         content {
           privilege_enabled = security.value.privilege_enabled
