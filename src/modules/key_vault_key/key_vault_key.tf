@@ -22,8 +22,8 @@ resource "azurerm_key_vault_key" "main" {
         for_each = try(rotation_policy.automatic[*], {})
 
         content {
-          time_after_creation = try(rotation_policy.value.time_after_creation, null)
-          time_before_expiry  = try(rotation_policy.value.time_before_expiry, null)
+          time_after_creation = try(automatic.value.time_after_creation, null)
+          time_before_expiry  = try(automatic.value.time_before_expiry, null)
         }
       }
     }
