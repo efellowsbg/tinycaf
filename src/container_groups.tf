@@ -6,6 +6,8 @@ module "container_groups" {
   global_settings = local.global_settings
 
   resources = {
-    resource_groups = module.resource_groups
+    resource_groups    = module.resource_groups
+    managed_identities = module.managed_identities
+    virtual_networks   = module.virtual_networks
   }
 }
