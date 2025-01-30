@@ -70,10 +70,12 @@ resource "azurerm_container_group" "main" {
         for_each = try(diagnostics.value[*], {})
 
         content {
-          workspace_id  = log_analytics.value.workspace_id
-          workspace_key = log_analytics.value.workspace_key
-          log_type      = try(log_analytics.value.log_type, null)
-          metadata      = try(log_analytics.value.metadata, null)
+          workspace_id  = local.workspace_id
+          workspace_key = local.workspace_key
+          # workspace_id  = log_analytics.value.workspace_id
+          # workspace_key = log_analytics.value.workspace_key
+          log_type = try(log_analytics.value.log_type, null)
+          metadata = try(log_analytics.value.metadata, null)
         }
       }
     }
