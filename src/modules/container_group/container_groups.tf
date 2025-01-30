@@ -10,7 +10,7 @@ resource "azurerm_container_group" "main" {
   sku                                 = try(var.settings.sku, null)
   dns_name_label                      = try(var.settings.dns_name_label, null)
   dns_name_label_reuse_policy         = try(var.settings.dns_name_label_reuse_policy, null)
-  key_vault_key_id                    = try(var.settings.key_vault_key_id, null)
+  key_vault_key_id                    = try(var.settings.key_vault_key_id, null) #TODO: Implement it with reference when module for key_vault is created
   key_vault_user_assigned_identity_id = try(var.settings.key_vault_user_assigned_identity_id, null)
   priority                            = try(var.settings.priority, null)
   restart_policy                      = try(var.settings.restart_policy, null)
@@ -32,6 +32,10 @@ resource "azurerm_container_group" "main" {
         { for env in container.value.environment_variables : env.name => env.value }, {}
       )
 
+      secure_environment_variables = try(
+        { for env in container.value.secure_environment_variables : env.name => env.value }, {}
+      )
+
       dynamic "ports" {
         for_each = try(container.ports[*], {})
 
@@ -43,6 +47,7 @@ resource "azurerm_container_group" "main" {
     }
   }
 
+  #TODO: Implement type to handle "UserAssigned, SystemAssigned"
   dynamic "identity" {
     for_each = try(var.settings.identity[*], {})
 
@@ -72,10 +77,8 @@ resource "azurerm_container_group" "main" {
         content {
           workspace_id  = local.workspace_id
           workspace_key = local.workspace_key
-          # workspace_id  = log_analytics.value.workspace_id
-          # workspace_key = log_analytics.value.workspace_key
-          log_type = try(log_analytics.value.log_type, null)
-          metadata = try(log_analytics.value.metadata, null)
+          log_type      = try(log_analytics.value.log_type, null)
+          metadata      = try(log_analytics.value.metadata, null)
         }
       }
     }
