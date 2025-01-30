@@ -25,16 +25,10 @@ resource "azurerm_container_group" "main" {
       cpu    = container.value.cpu
       memory = container.value.memory
 
-      cpu_limit    = try(container.value.cpu_limit, null)
-      memory_limit = try(container.value.memory_limit, null)
-
-      environment_variables = try(
-        { for key, value in container.value.environment_variables : key => value }, {}
-      )
-
-      secure_environment_variables = try(
-        { for key, value in container.value.secure_environment_variables : key => value }, {}
-      )
+      cpu_limit                    = try(container.value.cpu_limit, null)
+      memory_limit                 = try(container.value.memory_limit, null)
+      environment_variables        = try(container.value.environment_variables, null)
+      secure_environment_variables = try(container.value.secure_environment_variables, null)
 
       dynamic "ports" {
         for_each = try(container.ports[*], {})
@@ -108,17 +102,11 @@ resource "azurerm_container_group" "main" {
     for_each = try(var.settings.init_container[*], {})
 
     content {
-      name     = init_container.value.name
-      image    = init_container.value.image
-      commands = try(init_container.value.commands, null)
-
-      environment_variables = try(
-        { for key, value in container.value.environment_variables : key => value }, {}
-      )
-
-      secure_environment_variables = try(
-        { for key, value in container.value.secure_environment_variables : key => value }, {}
-      )
+      name                         = init_container.value.name
+      image                        = init_container.value.image
+      commands                     = try(init_container.value.commands, null)
+      environment_variables        = try(container.value.environment_variables, null)
+      secure_environment_variables = try(container.value.secure_environment_variables, null)
 
       dynamic "volume" {
         for_each = try(init_container.value.volume[*], {})
