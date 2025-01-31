@@ -42,7 +42,6 @@ resource "azurerm_container_group" "main" {
     }
   }
 
-  #TODO: Implement type to handle "UserAssigned, SystemAssigned"
   dynamic "identity" {
     for_each = can(var.settings.identity) ? [1] : []
 
