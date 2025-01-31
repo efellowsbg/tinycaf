@@ -29,14 +29,3 @@ resource "azurerm_key_vault_key" "main" {
     }
   }
 }
-
-# resource "null_resource" "cluster" {
-#   triggers = {
-#     cluster_instance_ids = join(",", aws_instance.cluster[*].id)
-#   }
-# }
-
-resource "local_file" "foo" {
-  content  = jsonencode(var.settings.rotation_policy[*])
-  filename = "debug"
-}
