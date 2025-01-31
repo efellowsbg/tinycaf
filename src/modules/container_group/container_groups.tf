@@ -32,7 +32,7 @@ resource "azurerm_container_group" "main" {
       secure_environment_variables = try(container.value.secure_environment_variables, null)
 
       dynamic "ports" {
-        for_each = try(container.ports[*], {})
+        for_each = try(container.value.ports, {})
 
         content {
           port     = try(ports.value.port, null)
