@@ -18,7 +18,7 @@ resource "azurerm_container_group" "main" {
   zones                               = try(var.settings.zones, null)
 
   dynamic "container" {
-    for_each = var.settings.container
+    for_each = var.settings.containers
 
     content {
       name   = container.value.name
@@ -42,12 +42,32 @@ resource "azurerm_container_group" "main" {
     }
   }
 
-  dynamic "identity" {
-    for_each = can(var.settings.identity) ? [1] : []
+  dynamic "init_container" {
+    for_each = try(var.settings.init_containers, {})
 
     content {
-      type         = try(var.settings.identity.type, null)
-      identity_ids = try(local.identity_ids, null)
+      name                         = init_container.value.name
+      image                        = init_container.value.image
+      commands                     = try(init_container.value.commands, null)
+      environment_variables        = try(container.value.environment_variables, null)
+      secure_environment_variables = try(container.value.secure_environment_variables, null)
+
+      dynamic "volume" {
+        for_each = try(init_container.value.volumes, {})
+
+        content {
+          name       = volume.value.name
+          mount_path = volume.value.mount_path
+        }
+      }
+
+      dynamic "security" {
+        for_each = try(init_container.value.security, {})
+
+        content {
+          privilege_enabled = security.value.privilege_enabled
+        }
+      }
     }
   }
 
@@ -88,7 +108,7 @@ resource "azurerm_container_group" "main" {
   }
 
   dynamic "image_registry_credential" {
-    for_each = try(var.settings.image_registry_credential[*], {})
+    for_each = try(var.settings.image_registry_credentials, {})
 
     content {
       server                    = try(image_registry_credential.value.server, null)
@@ -98,43 +118,24 @@ resource "azurerm_container_group" "main" {
     }
   }
 
-  dynamic "init_container" {
-    for_each = try(var.settings.init_container[*], {})
+  dynamic "identity" {
+    for_each = can(var.settings.identity) ? [1] : []
 
     content {
-      name                         = init_container.value.name
-      image                        = init_container.value.image
-      commands                     = try(init_container.value.commands, null)
-      environment_variables        = try(container.value.environment_variables, null)
-      secure_environment_variables = try(container.value.secure_environment_variables, null)
-
-      dynamic "volume" {
-        for_each = try(init_container.value.volume[*], {})
-
-        content {
-          name       = volume.value.name
-          mount_path = volume.value.mount_path
-        }
-      }
-
-      dynamic "security" {
-        for_each = try(init_container.value.security[*], {})
-
-        content {
-          privilege_enabled = security.value.privilege_enabled
-        }
-      }
+      type         = try(var.settings.identity.type, null)
+      identity_ids = try(local.identity_ids, null)
     }
   }
 
+
   dynamic "timeouts" {
-    for_each = try(var.settings.timeouts[*], {})
+    for_each = can(var.settings.timeouts) ? [1] : []
 
     content {
-      read   = try(timeouts.value.read, null)
-      create = try(timeouts.value.create, null)
-      update = try(timeouts.value.update, null)
-      delete = try(timeouts.value.delete, null)
+      read   = try(var.settings.timeouts.read, null)
+      create = try(var.settings.timeouts.create, null)
+      update = try(var.settings.timeouts.update, null)
+      delete = try(var.settings.timeouts.delete, null)
     }
   }
 }
