@@ -52,27 +52,27 @@ resource "azurerm_container_group" "main" {
   }
 
   dynamic "dns_config" {
-    for_each = try(var.settings.dns_config[*], {})
+    for_each = can(var.settings.dns_config) ? [1] : []
 
     content {
-      nameservers    = dns_config.value.nameservers
-      search_domains = try(dns_config.value.search_domains, null)
-      options        = try(dns_config.value.options, null)
+      nameservers    = var.settings.dns_config.nameservers
+      search_domains = try(var.settings.dns_config.search_domains, null)
+      options        = try(var.settings.dns_config.options, null)
     }
   }
 
   dynamic "diagnostics" {
-    for_each = var.settings.diagnostics
+    for_each = can(var.settings.diagnostics) ? [1] : []
 
     content {
       dynamic "log_analytics" {
-        for_each = try(diagnostics.value[*], {})
+        for_each = var.settings.diagnostics.log_analitics
 
         content {
           workspace_id  = local.workspace_id
           workspace_key = local.workspace_key
-          log_type      = try(log_analytics.value.log_type, null)
-          metadata      = try(log_analytics.value.metadata, null)
+          log_type      = try(var.settings.diagnostics.log_analitics.log_type, null)
+          metadata      = try(var.settings.diagnostics.log_analitics.metadata, null)
         }
       }
     }
