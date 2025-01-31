@@ -11,15 +11,32 @@ resource "azurerm_key_vault_key" "main" {
   expiration_date = try(var.settings.expiration_date, null)
 
   #TODO: Implement rotation policy module when created
+  # dynamic "rotation_policy" {
+  #   for_each = try(var.settings.rotation_policy, {})
+
+  #   content {
+  #     expire_after         = try(each.value.expire_after, null)
+  #     notify_before_expiry = try(each.value.notify_before_expiry, null)
+
+  #     dynamic "automatic" {
+  #       for_each = try(lookup(each.value, "automatic", {}), {})
+
+  #       content {
+  #         time_after_creation = try(each.value.time_after_creation, null)
+  #         time_before_expiry  = try(each.value.time_before_expiry, null)
+  #       }
+  #     }
+  #   }
+  # }
   dynamic "rotation_policy" {
-    for_each = try(var.settings.rotation_policy, {})
+    for_each = try(var.sttings.rotation_policy != null ? [var.sttings.rotation_policy] : [], [])
 
     content {
       expire_after         = try(each.value.expire_after, null)
       notify_before_expiry = try(each.value.notify_before_expiry, null)
 
       dynamic "automatic" {
-        for_each = try(lookup(each.value, "automatic", {}), {})
+        for_each = try(each.value.automatic != null ? [each.value.automatic] : [], [])
 
         content {
           time_after_creation = try(each.value.time_after_creation, null)
