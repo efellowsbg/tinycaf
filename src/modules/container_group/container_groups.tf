@@ -4,13 +4,14 @@ resource "azurerm_container_group" "main" {
   location            = local.location
   tags                = local.tags
 
+  key_vault_key_id = try(local.key_vault_key_id, null)
+  subnet_ids       = try(local.subnet_ids, null)
+
   os_type                             = try(var.settings.os_type, "Linux")
-  subnet_ids                          = try(local.subnet_ids, null)
   ip_address_type                     = try(var.settings.ip_address_type, null)
   sku                                 = try(var.settings.sku, null)
   dns_name_label                      = try(var.settings.dns_name_label, null)
   dns_name_label_reuse_policy         = try(var.settings.dns_name_label_reuse_policy, null)
-  key_vault_key_id                    = try(local.key_vault_key_id, null)
   key_vault_user_assigned_identity_id = try(var.settings.key_vault_user_assigned_identity_id, null)
   priority                            = try(var.settings.priority, null)
   restart_policy                      = try(var.settings.restart_policy, null)
@@ -43,7 +44,7 @@ resource "azurerm_container_group" "main" {
 
   #TODO: Implement type to handle "UserAssigned, SystemAssigned"
   dynamic "identity" {
-    for_each = try(var.settings.identity[*], {})
+    for_each = can(var.settings.identity) ? [1] : []
 
     content {
       type         = try(identity.value.type, null)
