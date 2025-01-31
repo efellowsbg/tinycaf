@@ -29,3 +29,7 @@ resource "azurerm_key_vault_key" "main" {
     }
   }
 }
+
+output "debug" {
+  value = var.settings.rotation_policy[*]
+}
