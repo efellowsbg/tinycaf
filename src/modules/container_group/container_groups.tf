@@ -79,7 +79,7 @@ resource "azurerm_container_group" "main" {
   }
 
   dynamic "exposed_port" {
-    for_each = try(var.settings.exposed_port[*], {})
+    for_each = try(var.settings.exposed_port, {})
 
     content {
       port     = try(exposed_port.value.port, null)
