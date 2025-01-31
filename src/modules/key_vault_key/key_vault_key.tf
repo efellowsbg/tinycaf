@@ -29,7 +29,7 @@ resource "azurerm_key_vault_key" "main" {
   #   }
   # }
   dynamic "rotation_policy" {
-    for_each = try(var.sttings.rotation_policy != null ? [var.sttings.rotation_policy] : [], [])
+    for_each = try(var.settings.rotation_policy != null ? [var.settings.rotation_policy] : [], [])
 
     content {
       expire_after         = try(each.value.expire_after, null)
