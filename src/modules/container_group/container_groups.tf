@@ -47,7 +47,7 @@ resource "azurerm_container_group" "main" {
     for_each = can(var.settings.identity) ? [1] : []
 
     content {
-      type         = try(identity.value.type, null)
+      type         = try(var.settings.identity.type, null)
       identity_ids = try(local.identity_ids, null)
     }
   }
