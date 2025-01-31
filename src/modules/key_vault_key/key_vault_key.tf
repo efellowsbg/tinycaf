@@ -19,7 +19,7 @@ resource "azurerm_key_vault_key" "main" {
       notify_before_expiry = try(each.value.notify_before_expiry, null)
 
       dynamic "automatic" {
-        for_each = try(each.value.automatic, {})
+        for_each = try(rotation_policy.automatic, {})
 
         content {
           time_after_creation = try(each.value.time_after_creation, null)
