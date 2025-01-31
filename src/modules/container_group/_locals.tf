@@ -7,7 +7,7 @@ locals {
   workspace_id  = local.workspace.id
   workspace_key = local.workspace.primary_shared_key
 
-  key_vault_key_id = var.resources.key_vault_keys[var.settings.key_vault_key_ref].id
+  key_vault_key_id = var.resources.key_vault_keys[var.settings.key_vault_key_ref].resource_versionless_id
 
   identity_ids = [
     for id_ref in try(var.settings.identity.identity_ids_ref, []) :
