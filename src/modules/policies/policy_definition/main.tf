@@ -33,3 +33,9 @@ resource "null_resource" "print_path" {
     command = "echo Terraform is running in: ${path.cwd}"
   }
 }
+
+resource "null_resource" "debug" {
+  triggers = {
+    resource_type = path.cwd
+  }
+}
