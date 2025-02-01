@@ -70,3 +70,9 @@ resource "null_resource" "debug_file_existence" {
     file_exists = tostring(fileexists(local.main_subscription_policies_file))
   }
 }
+
+resource "null_resource" "debug_policy_definitions_to_create" {
+  triggers = {
+    extracted_policies = jsonencode(local.policy_definitions_to_create)
+  }
+}
