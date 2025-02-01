@@ -41,6 +41,6 @@ output "policy_definitions_created" {
 
 resource "null_resource" "debug_policy_json" {
   triggers = {
-    policy_json = file("${local.policy_definitions_folder}/${each.value}.json")
+    policy_json = fileexists("${local.policy_definitions_folder}/CAF-Audit-RBAC-KV.json") ? file("${local.policy_definitions_folder}/CAF-Audit-RBAC-KV.json") : "File not found"
   }
 }
