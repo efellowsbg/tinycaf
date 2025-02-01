@@ -27,20 +27,11 @@ resource "azurerm_policy_definition" "policy" {
   mode         = "All"
 
   display_name = try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["displayName"], "")
-
-  # Fix: Convert policy_rule to JSON string using jsonencode()
   policy_rule  = jsonencode(try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["policyRule"], {}))
-
-  # Fix: Convert metadata to JSON string using jsonencode()
   metadata     = jsonencode(try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["metadata"], {}))
+  parameters   = jsonencode(try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["parameters"], {}))
 }
 
 output "policy_definitions_created" {
   value = local.should_create_policies ? azurerm_policy_definition.policy : {}
-}
-
-resource "null_resource" "debug_policy_json" {
-  triggers = {
-    policy_json = fileexists("${local.policy_definitions_folder}/CAF-Audit-RBAC-KV.json") ? file("${local.policy_definitions_folder}/CAF-Audit-RBAC-KV.json") : "File not found"
-  }
 }
