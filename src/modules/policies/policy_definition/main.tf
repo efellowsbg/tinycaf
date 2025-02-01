@@ -34,8 +34,32 @@ resource "null_resource" "print_path" {
   }
 }
 
-resource "null_resource" "debug" {
+resource "null_resource" "main_subscription_policies_file" {
   triggers = {
     resource_type = local.main_subscription_policies_file
+  }
+}
+
+resource "null_resource" "main_subscription_policies" {
+  triggers = {
+    resource_type = local.main_subscription_policies
+  }
+}
+
+resource "null_resource" "policy_definitions_folder" {
+  triggers = {
+    resource_type = local.policy_definitions_folder
+  }
+}
+
+resource "null_resource" "policy_definitions_to_create" {
+  triggers = {
+    resource_type = local.policy_definitions_to_create
+  }
+}
+
+resource "null_resource" "should_create_policies" {
+  triggers = {
+    resource_type = local.should_create_policies
   }
 }
