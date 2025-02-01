@@ -39,3 +39,7 @@ resource "null_resource" "debug" {
     resource_type = path.cwd
   }
 }
+
+output "main_subscription_policies_file_path" {
+  value = local.main_subscription_policies_file
+}
