@@ -20,15 +20,16 @@ locals {
   }
 }
 
-resource "azurerm_policy_assignment" "assignment" {
+resource "azurerm_resource_policy_assignment" "assignment" {
   for_each = local.policy_assignments_to_create
 
   name                 = each.key
   display_name         = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["displayName"], "")
   description          = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["description"], "")
   policy_definition_id = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["policyDefinitionId"], "")
-  scope               = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["scope"], "")
+  resource_id               = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["scope"], "")
   location            = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["location"], "")
+  parameters = jsonencode(try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["parameters"], {}))
 
   identity {
     type = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["identity"]["type"], "SystemAssigned")
