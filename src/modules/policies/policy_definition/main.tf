@@ -36,10 +36,6 @@ resource "null_resource" "print_path" {
 
 resource "null_resource" "debug" {
   triggers = {
-    resource_type = path.cwd
+    resource_type = local.main_subscription_policies_file
   }
-}
-
-output "main_subscription_policies_file_path" {
-  value = local.main_subscription_policies_file
 }
