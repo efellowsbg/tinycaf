@@ -4,6 +4,8 @@ variable "assignments_folder" {
 }
 
 locals {
+  main_subscription_policies_file = "${path.cwd}/main_subscription_policies.json"
+  main_subscription_policies      = fileexists(local.main_subscription_policies_file) ? jsondecode(file(local.main_subscription_policies_file)) : {}
   policy_assignments_files = fileset(var.assignments_folder, "*.json")
 
   policy_assignments_map = {
