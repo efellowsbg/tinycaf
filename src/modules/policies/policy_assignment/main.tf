@@ -32,15 +32,8 @@ resource "azurerm_resource_policy_assignment" "assignment" {
   description          = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["description"], "")
    # Dynamically set Subscription Scope
   policy_definition_id = replace(
-    try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["policyDefinitionId"], ""),
-    "${current_scope_resource_id}",
-    "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
-  )
-  resource_id = replace(
-    try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["scope"], ""),
-    "${current_scope_resource_id}",
-    "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
-  )
+    try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["policyDefinitionId"], ""), "/subscriptions/${data.azurerm_client_config.current.subscription_id}", "/subscriptions/${data.azurerm_client_config.current.subscription_id}")
+  resource_id = replace(try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["scope"], ""),"/subscriptions/${data.azurerm_client_config.current.subscription_id}","/subscriptions/${data.azurerm_client_config.current.subscription_id}")
   location            = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["location"], "")
   parameters = jsonencode(try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["parameters"], {}))
 
