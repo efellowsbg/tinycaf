@@ -24,12 +24,12 @@ locals {
 
   subscription_scope_assignments = {
     for k, v in local.policy_assignments_to_create : k => v
-    if try(jsondecode(file("${var.assignments_folder}/${v}"))["properties"]["scope"], "") == "${current_scope_resource_id}"
+    if contains(try(jsondecode(file("${var.assignments_folder}/${v}"))["properties"]["scope"], ""), "current_scope_resource_id") && !contains(try(jsondecode(file("${local.policy_assignments_folder}/${v}"))["properties"]["scope"], ""), "/")
   }
 
   non_subscription_scope_assignments = {
     for k, v in local.policy_assignments_to_create : k => v
-    if try(jsondecode(file("${var.assignments_folder}/${v}"))["properties"]["scope"], "") != "${current_scope_resource_id}"
+    if !(contains(keys(local.subscription_scope_assignments), k))
   }
 }
 
