@@ -7,29 +7,33 @@ locals {
   main_subscription_policies_file = "${path.cwd}/main_subscription_policies.json"
   main_subscription_policies      = fileexists(local.main_subscription_policies_file) ? jsondecode(file(local.main_subscription_policies_file)) : {}
   policy_definitions_folder       = fileexists(local.main_subscription_policies_file) ? var.definitions_folder : ""
-}
-locals {
+  policy_definitions_files        = fileset(local.policy_definitions_folder, "*.json")
 
-  # Ensure "landing-zones" exists before accessing "policy_definitions"
-  landing_zones = try(local.main_subscription_policies["landing-zones"], {})
+  policy_definitions_map = {
+    for file in local.policy_definitions_files :
+    try(jsondecode(file("${local.policy_definitions_folder}/${file}"))["name"], file) => file
+  }
 
-  # Correctly extract the policy definitions as a list
-  policy_definitions_to_create    = try(local.landing_zones.policy_definitions, [])
+  policy_definitions_to_create = {
+    for policy in try(local.main_subscription_policies["landing-zones"]["policy_definitions"], []) :
+    policy => lookup(local.policy_definitions_map, policy, null)
+    if lookup(local.policy_definitions_map, policy, null) != null
+  }
 
-  should_create_policies          = fileexists(local.main_subscription_policies_file) && length(local.policy_definitions_to_create) > 0
+  should_create_policies = fileexists(local.main_subscription_policies_file) && length(local.policy_definitions_to_create) > 0
 }
 
 resource "azurerm_policy_definition" "policy" {
-  for_each = local.should_create_policies ? toset(local.policy_definitions_to_create) : toset([])
+  for_each = local.policy_definitions_to_create
 
-  name         = each.value
+  name         = each.key
   policy_type  = "Custom"
   mode         = "All"
 
-  display_name = try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["displayName"], "")
-  policy_rule  = jsonencode(try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["policyRule"], {}))
-  metadata     = jsonencode(try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["metadata"], {}))
-  parameters   = jsonencode(try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["parameters"], {}))
+  display_name = try(jsondecode(file("${local.policy_definitions_folder}/${each.value}"))["properties"]["displayName"], "")
+  policy_rule  = jsonencode(try(jsondecode(file("${local.policy_definitions_folder}/${each.value}"))["properties"]["policyRule"], {}))
+  metadata     = jsonencode(try(jsondecode(file("${local.policy_definitions_folder}/${each.value}"))["properties"]["metadata"], {}))
+  parameters   = jsonencode(try(jsondecode(file("${local.policy_definitions_folder}/${each.value}"))["properties"]["parameters"], {}))
 }
 
 output "policy_definitions_created" {
