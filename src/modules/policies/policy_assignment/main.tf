@@ -31,18 +31,35 @@ resource "azurerm_resource_policy_assignment" "main" {
 
 resource_id = replace(
   replace(
-    try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["scope"], ""),
-    "$current_scope_resource_id",
-    "current_scope_resource_id"
+    replace(
+      replace(
+        try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["scope"], ""),
+        "$",
+        ""
+      ),
+      "{",
+      ""
+    ),
+    "}",
+    ""
   ),
   "current_scope_resource_id",
   "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
 )
+
 policy_definition_id = replace(
   replace(
-    try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["policyDefinitionId"], ""),
-    "$current_scope_resource_id",
-    "current_scope_resource_id"
+    replace(
+      replace(
+        try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["policyDefinitionId"], ""),
+        "$",
+        ""
+      ),
+      "{",
+      ""
+    ),
+    "}",
+    ""
   ),
   "current_scope_resource_id",
   "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
