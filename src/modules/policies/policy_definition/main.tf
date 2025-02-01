@@ -7,7 +7,15 @@ locals {
   main_subscription_policies_file = "${path.cwd}/main_subscription_policies.json"
   main_subscription_policies      = fileexists(local.main_subscription_policies_file) ? jsondecode(file(local.main_subscription_policies_file)) : {}
   policy_definitions_folder       = fileexists(local.main_subscription_policies_file) ? var.definitions_folder : ""
-  policy_definitions_to_create    = try(lookup(local.main_subscription_policies, "landing-zones", {})["policy_definitions"], [])
+}
+locals {
+
+  # Ensure "landing-zones" exists before accessing "policy_definitions"
+  landing_zones = try(local.main_subscription_policies["landing-zones"], {})
+
+  # Correctly extract the policy definitions as a list
+  policy_definitions_to_create    = try(local.landing_zones.policy_definitions, [])
+
   should_create_policies          = fileexists(local.main_subscription_policies_file) && length(local.policy_definitions_to_create) > 0
 }
 
@@ -80,5 +88,11 @@ resource "null_resource" "debug_policy_definitions_to_create" {
 resource "null_resource" "debug_landing_zones" {
   triggers = {
     landing_zones_data = jsonencode(try(local.main_subscription_policies["landing-zones"], {}))
+  }
+}
+
+resource "null_resource" "debug_policy_definitions_to_create_fixed" {
+  triggers = {
+    extracted_policies_fixed = jsonencode(local.policy_definitions_to_create)
   }
 }
