@@ -21,15 +21,72 @@ locals {
     assignment => lookup(local.policy_assignments_map, assignment, null)
     if lookup(local.policy_assignments_map, assignment, null) != null
   }
+
+  subscription_scope_assignments = {
+    for k, v in local.policy_assignments_to_create : k => v
+    if try(jsondecode(file("${var.assignments_folder}/${v}"))["properties"]["scope"], "") == "${current_scope_resource_id}"
+  }
+
+  non_subscription_scope_assignments = {
+    for k, v in local.policy_assignments_to_create : k => v
+    if try(jsondecode(file("${var.assignments_folder}/${v}"))["properties"]["scope"], "") != "${current_scope_resource_id}"
+  }
 }
 
 resource "azurerm_subscription_policy_assignment" "main" {
-  for_each = local.policy_assignments_to_create
+  for_each = local.subscription_scope_assignments
   name                 = each.key
   display_name         = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["displayName"], "")
   description          = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["description"], "")
 
 subscription_id     = replace(
+  replace(
+    replace(
+      replace(
+        try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["scope"], ""),
+        "$",
+        ""
+      ),
+      "{",
+      ""
+    ),
+    "}",
+    ""
+  ),
+  "current_scope_resource_id",
+  "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+)
+
+policy_definition_id = replace(
+  replace(
+    replace(
+      replace(
+        try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["policyDefinitionId"], ""),
+        "$",
+        ""
+      ),
+      "{",
+      ""
+    ),
+    "}",
+    ""
+  ),
+  "current_scope_resource_id",
+  "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+)
+  location            = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["location"], "")
+  identity { type = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["identity"]["type"], "SystemAssigned") }
+  parameters = jsonencode(try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["parameters"], {}))
+}
+
+
+resource "azurerm_resource_policy_assignment" "main" {
+  for_each = local.non_subscription_scope_assignments
+  name                 = each.key
+  display_name         = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["displayName"], "")
+  description          = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["description"], "")
+
+resource_id     = replace(
   replace(
     replace(
       replace(
