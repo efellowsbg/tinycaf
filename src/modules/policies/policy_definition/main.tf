@@ -6,13 +6,13 @@ variable "definitions_folder" {
 locals {
   main_subscription_policies_file = "${path.cwd}/main_subscription_policies.json"
   main_subscription_policies      = fileexists(local.main_subscription_policies_file) ? jsondecode(file(local.main_subscription_policies_file)) : {}
-  policy_definitions_folder       = fileexists(local.main_subscription_policies_file) ? "${path.cwd}/policies/definitions" : ""
+  policy_definitions_folder       = fileexists(local.main_subscription_policies_file) ? var.definitions_folder : ""
   policy_definitions_to_create    = try(lookup(local.main_subscription_policies, "landing-zones", {})["policy_definitions"], [])
   should_create_policies          = fileexists(local.main_subscription_policies_file) && length(local.policy_definitions_to_create) > 0
 }
 
 resource "azurerm_policy_definition" "policy" {
-  for_each = local.should_create_policies ? toset(local.policy_definitions_to_create) : {}
+  for_each = local.should_create_policies ? toset(local.policy_definitions_to_create) : toset([])
 
   name         = each.value
   policy_type  = "Custom"
