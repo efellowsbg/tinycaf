@@ -26,3 +26,10 @@ resource "azurerm_policy_definition" "policy" {
 output "policy_definitions_created" {
   value = local.should_create_policies ? azurerm_policy_definition.policy : {}
 }
+
+
+resource "null_resource" "print_path" {
+  provisioner "local-exec" {
+    command = "echo Terraform is running in: ${path.cwd}"
+  }
+}
