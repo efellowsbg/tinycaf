@@ -23,13 +23,13 @@ locals {
   }
 }
 
-resource "azurerm_resource_policy_assignment" "main" {
+resource "azurerm_subscription_policy_assignment" "main" {
   for_each = local.policy_assignments_to_create
   name                 = each.key
   display_name         = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["displayName"], "")
   description          = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["description"], "")
 
-resource_id = replace(
+subscription_id     = replace(
   replace(
     replace(
       replace(
