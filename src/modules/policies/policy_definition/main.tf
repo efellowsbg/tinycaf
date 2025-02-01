@@ -40,11 +40,6 @@ resource "null_resource" "main_subscription_policies_file" {
   }
 }
 
-resource "null_resource" "main_subscription_policies" {
-  triggers = {
-    resource_type = local.main_subscription_policies
-  }
-}
 
 resource "null_resource" "policy_definitions_folder" {
   triggers = {
@@ -52,9 +47,15 @@ resource "null_resource" "policy_definitions_folder" {
   }
 }
 
+resource "null_resource" "main_subscription_policies" {
+  triggers = {
+    resource_type = jsonencode(local.main_subscription_policies) # Convert to JSON string
+  }
+}
+
 resource "null_resource" "policy_definitions_to_create" {
   triggers = {
-    resource_type = local.policy_definitions_to_create
+    resource_type = jsonencode(local.policy_definitions_to_create) # Convert to JSON string
   }
 }
 
