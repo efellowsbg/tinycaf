@@ -24,7 +24,7 @@ locals {
 
   subscription_scope_assignments = {
     for k, v in local.policy_assignments_to_create : k => v
-    if contains(try(jsondecode(file("${var.assignments_folder}/${v}"))["properties"]["scope"], ""), "current_scope_resource_id")
+    if can(regex("current_scope_resource_id", try(jsondecode(file("${var.assignments_folder}/${v}"))["properties"]["scope"], "")))
   }
 
   non_subscription_scope_assignments = {
