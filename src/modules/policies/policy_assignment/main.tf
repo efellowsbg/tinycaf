@@ -3,6 +3,9 @@ variable "assignments_folder" {
   type        = string
 }
 
+# Fetch the current subscription ID
+data "azurerm_client_config" "current" {}
+
 locals {
   main_subscription_policies_file = "${path.cwd}/main_subscription_policies.json"
   main_subscription_policies      = fileexists(local.main_subscription_policies_file) ? jsondecode(file(local.main_subscription_policies_file)) : {}
@@ -20,6 +23,7 @@ locals {
   }
 }
 
+
 resource "azurerm_resource_policy_assignment" "assignment" {
   for_each = local.policy_assignments_to_create
 
@@ -32,7 +36,6 @@ resource "azurerm_resource_policy_assignment" "assignment" {
     "${current_scope_resource_id}",
     "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
   )
-
   resource_id = replace(
     try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["scope"], ""),
     "${current_scope_resource_id}",
