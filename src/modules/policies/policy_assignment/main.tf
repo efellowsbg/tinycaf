@@ -30,20 +30,14 @@ resource "azurerm_resource_policy_assignment" "main" {
   description          = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["description"], "")
 
   policy_definition_id = replace(
-  try(
-    jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["policyDefinitionId"],
-    ""
-  ),
-  "\\${current_scope_resource_id}", # Correct escaping for Terraform
+  try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["policyDefinitionId"], ""),
+  "\\${current_scope_resource_id}",
   "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
 )
 
-  resource_id = replace(
-  try(
-    jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["scope"],
-    ""
-  ),
-  "\\${current_scope_resource_id}", # Correct escaping for Terraform
+resource_id = replace(
+  try(jsondecode(file("${var.assignments_folder}/${each.value}"))["properties"]["scope"], ""),
+  "\\${current_scope_resource_id}",
   "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
 )
   location            = try(jsondecode(file("${var.assignments_folder}/${each.value}"))["location"], "")
