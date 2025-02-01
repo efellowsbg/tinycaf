@@ -27,72 +27,20 @@ resource "azurerm_policy_definition" "policy" {
   mode         = "All"
 
   display_name = try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["displayName"], "")
-  policy_rule  = try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["policyRule"], {})
-  metadata     = try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["metadata"], {})
+
+  # Fix: Convert policy_rule to JSON string using jsonencode()
+  policy_rule  = jsonencode(try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["policyRule"], {}))
+
+  # Fix: Convert metadata to JSON string using jsonencode()
+  metadata     = jsonencode(try(jsondecode(file("${local.policy_definitions_folder}/${each.value}.json"))["properties"]["metadata"], {}))
 }
 
 output "policy_definitions_created" {
   value = local.should_create_policies ? azurerm_policy_definition.policy : {}
 }
 
-
-resource "null_resource" "print_path" {
-  provisioner "local-exec" {
-    command = "echo Terraform is running in: ${path.cwd}"
-  }
-}
-
-resource "null_resource" "main_subscription_policies_file" {
+resource "null_resource" "debug_policy_json" {
   triggers = {
-    resource_type = local.main_subscription_policies_file
-  }
-}
-
-
-resource "null_resource" "policy_definitions_folder" {
-  triggers = {
-    resource_type = local.policy_definitions_folder
-  }
-}
-
-resource "null_resource" "main_subscription_policies" {
-  triggers = {
-    resource_type = jsonencode(local.main_subscription_policies) # Convert to JSON string
-  }
-}
-
-resource "null_resource" "policy_definitions_to_create" {
-  triggers = {
-    resource_type = jsonencode(local.policy_definitions_to_create) # Convert to JSON string
-  }
-}
-
-resource "null_resource" "should_create_policies" {
-  triggers = {
-    resource_type = local.should_create_policies
-  }
-}
-
-resource "null_resource" "debug_file_existence" {
-  triggers = {
-    file_exists = tostring(fileexists(local.main_subscription_policies_file))
-  }
-}
-
-resource "null_resource" "debug_policy_definitions_to_create" {
-  triggers = {
-    extracted_policies = jsonencode(local.policy_definitions_to_create)
-  }
-}
-
-resource "null_resource" "debug_landing_zones" {
-  triggers = {
-    landing_zones_data = jsonencode(try(local.main_subscription_policies["landing-zones"], {}))
-  }
-}
-
-resource "null_resource" "debug_policy_definitions_to_create_fixed" {
-  triggers = {
-    extracted_policies_fixed = jsonencode(local.policy_definitions_to_create)
+    policy_json = file("${local.policy_definitions_folder}/${each.value}.json")
   }
 }
