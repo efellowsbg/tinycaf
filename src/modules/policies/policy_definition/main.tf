@@ -76,3 +76,9 @@ resource "null_resource" "debug_policy_definitions_to_create" {
     extracted_policies = jsonencode(local.policy_definitions_to_create)
   }
 }
+
+resource "null_resource" "debug_landing_zones" {
+  triggers = {
+    landing_zones_data = jsonencode(try(local.main_subscription_policies["landing-zones"], {}))
+  }
+}
