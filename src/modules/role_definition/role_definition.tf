@@ -1,6 +1,6 @@
 resource "azurerm_role_definition" "main" {
   name  = var.settings.name
-  scope = var.global_settings.subscription_id
+  scope = "/subscriptions/${var.global_settings.subscription_id}"
 
   assignable_scopes  = try(var.settings.assignable_scopes, null)
   role_definition_id = try(var.settings.role_definition_id, null)
