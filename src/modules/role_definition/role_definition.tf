@@ -1,6 +1,6 @@
 resource "azurerm_role_definition" "main" {
   name  = var.settings.name
-  scope = try(local.scope_id, var.settings.scope)
+  scope = try(local.scope_id, var.settings.scope_ref)
 
   assignable_scopes  = try(var.settings.assignable_scopes, null)
   role_definition_id = try(var.settings.role_definition_id, null)
