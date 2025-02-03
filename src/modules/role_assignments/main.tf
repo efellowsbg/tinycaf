@@ -13,3 +13,19 @@ module "built_in_roles" {
   global_settings = var.global_settings
   resources       = var.resources
 }
+
+module "custom_roles" {
+  source = "./custom_roles"
+
+  # for_each = {
+  #   for resource_type, roles in try(var.settings, {}) :
+  #   resource_type => {
+  #     resource_type = resource_type
+  #     roles         = roles
+  #   }
+  # }
+  settings        = each.value.roles
+  resource_type   = each.value.resource_type
+  global_settings = var.global_settings
+  resources       = var.resources
+}
