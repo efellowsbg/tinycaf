@@ -85,15 +85,11 @@ resource "azurerm_container_group" "main" {
     for_each = can(var.settings.diagnostics) ? [1] : []
 
     content {
-      dynamic "log_analytics" {
-        for_each = can(var.settings.diagnostics.log_analitics) ? [1] : []
-
-        content {
-          workspace_id  = local.workspace_id
-          workspace_key = local.workspace_key
-          log_type      = try(var.settings.diagnostics.log_analitics.log_type, null)
-          metadata      = try(var.settings.diagnostics.log_analitics.metadata, null)
-        }
+      log_analytics {
+        workspace_id  = local.workspace_id
+        workspace_key = local.workspace_key
+        log_type      = try(var.settings.diagnostics.log_analitics.log_type, null)
+        metadata      = try(var.settings.diagnostics.log_analitics.metadata, null)
       }
     }
   }
