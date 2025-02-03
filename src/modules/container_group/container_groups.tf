@@ -4,21 +4,21 @@ resource "azurerm_container_group" "main" {
   location            = local.location
   tags                = local.tags
 
-  #TODO: Implement it with reference when module for key_vault_key is created
+  key_vault_key_id = try(local.key_vault_key_id, null)
+  subnet_ids       = try(local.subnet_ids, null)
+
   os_type                             = try(var.settings.os_type, "Linux")
-  subnet_ids                          = try(local.subnet_ids, null)
   ip_address_type                     = try(var.settings.ip_address_type, null)
   sku                                 = try(var.settings.sku, null)
   dns_name_label                      = try(var.settings.dns_name_label, null)
   dns_name_label_reuse_policy         = try(var.settings.dns_name_label_reuse_policy, null)
-  key_vault_key_id                    = try(var.settings.key_vault_key_id, null)
   key_vault_user_assigned_identity_id = try(var.settings.key_vault_user_assigned_identity_id, null)
   priority                            = try(var.settings.priority, null)
   restart_policy                      = try(var.settings.restart_policy, null)
   zones                               = try(var.settings.zones, null)
 
   dynamic "container" {
-    for_each = var.settings.container
+    for_each = var.settings.containers
 
     content {
       name   = container.value.name
@@ -32,7 +32,7 @@ resource "azurerm_container_group" "main" {
       secure_environment_variables = try(container.value.secure_environment_variables, null)
 
       dynamic "ports" {
-        for_each = try(container.ports[*], {})
+        for_each = try(container.value.ports, {})
 
         content {
           port     = try(ports.value.port, null)
@@ -42,65 +42,8 @@ resource "azurerm_container_group" "main" {
     }
   }
 
-  #TODO: Implement type to handle "UserAssigned, SystemAssigned"
-  dynamic "identity" {
-    for_each = try(var.settings.identity[*], {})
-
-    content {
-      type         = try(identity.value.type, null)
-      identity_ids = try(local.identity_ids, null)
-    }
-  }
-
-  dynamic "dns_config" {
-    for_each = try(var.settings.dns_config[*], {})
-
-    content {
-      nameservers    = dns_config.value.nameservers
-      search_domains = try(dns_config.value.search_domains, null)
-      options        = try(dns_config.value.options, null)
-    }
-  }
-
-  dynamic "diagnostics" {
-    for_each = var.settings.diagnostics
-
-    content {
-      dynamic "log_analytics" {
-        for_each = try(diagnostics.value[*], {})
-
-        content {
-          workspace_id  = local.workspace_id
-          workspace_key = local.workspace_key
-          log_type      = try(log_analytics.value.log_type, null)
-          metadata      = try(log_analytics.value.metadata, null)
-        }
-      }
-    }
-  }
-
-  dynamic "exposed_port" {
-    for_each = try(var.settings.exposed_port[*], {})
-
-    content {
-      port     = try(exposed_port.value.port, null)
-      protocol = try(exposed_port.value.protocol, null)
-    }
-  }
-
-  dynamic "image_registry_credential" {
-    for_each = try(var.settings.image_registry_credential[*], {})
-
-    content {
-      server                    = try(image_registry_credential.value.server, null)
-      user_assigned_identity_id = try(image_registry_credential.value.user_assigned_identity_id, null)
-      username                  = try(image_registry_credential.value.username, null)
-      password                  = try(image_registry_credential.value.password, null)
-    }
-  }
-
   dynamic "init_container" {
-    for_each = try(var.settings.init_container[*], {})
+    for_each = try(var.settings.init_containers, {})
 
     content {
       name                         = init_container.value.name
@@ -110,7 +53,7 @@ resource "azurerm_container_group" "main" {
       secure_environment_variables = try(container.value.secure_environment_variables, null)
 
       dynamic "volume" {
-        for_each = try(init_container.value.volume[*], {})
+        for_each = try(init_container.value.volumes, {})
 
         content {
           name       = volume.value.name
@@ -119,7 +62,7 @@ resource "azurerm_container_group" "main" {
       }
 
       dynamic "security" {
-        for_each = try(init_container.value.security[*], {})
+        for_each = try(init_container.value.security, {})
 
         content {
           privilege_enabled = security.value.privilege_enabled
@@ -128,14 +71,67 @@ resource "azurerm_container_group" "main" {
     }
   }
 
-  dynamic "timeouts" {
-    for_each = try(var.settings.timeouts[*], {})
+  dynamic "dns_config" {
+    for_each = can(var.settings.dns_config) ? [1] : []
 
     content {
-      read   = try(timeouts.value.read, null)
-      create = try(timeouts.value.create, null)
-      update = try(timeouts.value.update, null)
-      delete = try(timeouts.value.delete, null)
+      nameservers    = var.settings.dns_config.nameservers
+      search_domains = try(var.settings.dns_config.search_domains, null)
+      options        = try(var.settings.dns_config.options, null)
+    }
+  }
+
+  dynamic "diagnostics" {
+    for_each = can(var.settings.diagnostics) ? [1] : []
+
+    content {
+      log_analytics {
+        workspace_id  = local.workspace_id
+        workspace_key = local.workspace_key
+        log_type      = try(var.settings.diagnostics.log_analitics.log_type, null)
+        metadata      = try(var.settings.diagnostics.log_analitics.metadata, null)
+      }
+    }
+  }
+
+  dynamic "exposed_port" {
+    for_each = try(var.settings.exposed_ports, {})
+
+    content {
+      port     = try(exposed_port.value.port, null)
+      protocol = try(exposed_port.value.protocol, null)
+    }
+  }
+
+  dynamic "image_registry_credential" {
+    for_each = try(var.settings.image_registry_credentials, {})
+
+    content {
+      server                    = try(image_registry_credential.value.server, null)
+      user_assigned_identity_id = try(image_registry_credential.value.user_assigned_identity_id, null)
+      username                  = try(image_registry_credential.value.username, null)
+      password                  = try(image_registry_credential.value.password, null)
+    }
+  }
+
+  dynamic "identity" {
+    for_each = can(var.settings.identity) ? [1] : []
+
+    content {
+      type         = try(var.settings.identity.type, null)
+      identity_ids = try(local.identity_ids, null)
+    }
+  }
+
+
+  dynamic "timeouts" {
+    for_each = can(var.settings.timeouts) ? [1] : []
+
+    content {
+      read   = try(var.settings.timeouts.read, null)
+      create = try(var.settings.timeouts.create, null)
+      update = try(var.settings.timeouts.update, null)
+      delete = try(var.settings.timeouts.delete, null)
     }
   }
 }
