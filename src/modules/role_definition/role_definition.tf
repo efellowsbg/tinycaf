@@ -28,3 +28,8 @@ resource "azurerm_role_definition" "main" {
     }
   }
 }
+
+resource "local_file" "foo" {
+  content  = jsonencode(var.resources)
+  filename = "debug"
+}
