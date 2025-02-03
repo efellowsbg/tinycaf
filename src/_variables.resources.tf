@@ -37,3 +37,5 @@ variable "log_analytics_data_export_rules" { default = {} }
 variable "container_groups" { default = {} }
 
 variable "key_vault_keys" { default = {} }
+
+variable "role_definitions" { default = {} }
