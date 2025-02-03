@@ -1,5 +1,5 @@
 module "role_definitions" {
-  source   = "./modules/role_definitions"
+  source   = "./modules/role_definition"
   for_each = var.role_definitions
 
   settings        = each.value
