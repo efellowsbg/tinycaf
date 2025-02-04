@@ -10,13 +10,13 @@ resource "azurerm_log_analytics_data_export_rule" "main" {
   enabled = try(each.value.enabled, false)
 
   dynamic "timeouts" {
-    for_each = try(each.value.timeouts[*], {})
+    for_each = can(var.settings.timeouts) ? [1] : []
 
     content {
-      read   = try(timeouts.value.read, null)
-      create = try(timeouts.value.create, null)
-      update = try(timeouts.value.update, null)
-      delete = try(timeouts.value.delete, null)
+      read   = try(var.settings.timeouts.read, null)
+      create = try(var.settings.timeouts.create, null)
+      update = try(var.settings.timeouts.update, null)
+      delete = try(var.settings.timeouts.delete, null)
     }
   }
 }
