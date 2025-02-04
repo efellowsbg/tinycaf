@@ -3,15 +3,15 @@ variable "global_settings" {
 }
 
 variable "settings" {
-  description = "All the configuration for private endpoint"
-}
-
-variable "storage_acccount_id" {
-  description = "id of the keyvault"
+  description = "All the configuration for this resource"
 }
 
 variable "resources" {
   description = "All required resources"
+}
+
+variable "storage_acccount_id" {
+  description = "id of the keyvault"
 }
 
 variable "subnet_ref" {
