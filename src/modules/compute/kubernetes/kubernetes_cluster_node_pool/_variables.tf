@@ -15,5 +15,5 @@ variable "resources" {
 }
 
 variable "cluster_id" {
-  description = "All the configuration for this resource"
+  description = "Clusters's id"
 }
