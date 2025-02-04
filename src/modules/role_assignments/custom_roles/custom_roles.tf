@@ -35,30 +35,5 @@ resource "azurerm_role_assignment" "main" {
     null
   )
 
-  role_definition_name = each.value.role_definition_name
+  role_definition_id = try(var.resources.role_definitions[each.value.role_definition_name].role_definition_resource_id, null)
 }
-
-
-# resource "azurerm_role_assignment" "main" {
-#   name               = var.settings.name
-#   scope              = data.azurerm_subscription.primary.id
-#   role_definition_id = azurerm_role_definition.example.role_definition_resource_id
-#   principal_id       = var.settings.principal_id
-
-#   principal_type                         = try(var.settings.principal_type, null)
-#   condition                              = try(var.settings.condition, null)
-#   condition_version                      = try(var.settings.condition_version, null)
-#   delegated_managed_identity_resource_id = try(var.settings.delegated_managed_identity_resource_id, null)
-#   description                            = try(var.settings.description, null)
-#   skip_service_principal_aad_check       = try(var.settings.skip_service_principal_aad_check, null)
-
-#   dynamic "timeouts" {
-#     for_each = try(var.settings.timeouts[*], {})
-
-#     content {
-#       read   = try(timeouts.value.read, null)
-#       create = try(timeouts.value.create, null)
-#       delete = try(timeouts.value.delete, null)
-#     }
-#   }
-# }
