@@ -1,6 +1,5 @@
 module "role_assignments" {
   source = "./modules/role_assignments"
-  # for_each = var.role_assignments
 
   settings        = var.role_assignments
   global_settings = local.global_settings
