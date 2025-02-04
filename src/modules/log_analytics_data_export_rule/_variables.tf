@@ -3,7 +3,7 @@ variable "global_settings" {
 }
 
 variable "settings" {
-  description = "All the configuration for Log analytics data export rule module"
+  description = "All the configuration for Log analytics data export rule"
 }
 
 variable "resources" {
