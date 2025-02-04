@@ -1,4 +1,4 @@
-module "linux_virtual_machine" {
+module "linux_virtual_machines" {
   source = "./linux_virtual_machine"
 
   count           = var.settings.type == "linux" ? 1 : 0
@@ -7,7 +7,7 @@ module "linux_virtual_machine" {
   resources       = var.resources
 }
 
-module "windows_virtual_machine" {
+module "windows_virtual_machines" {
   source = "./windows_virtual_machine"
 
   count           = var.settings.type == "windows" ? 1 : 0
