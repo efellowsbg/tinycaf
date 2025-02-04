@@ -1,7 +1,5 @@
 module "secrets" {
-  source = "./keyvault_secret"
-
-  # Use for_each to iterate over the secrets map
+  source   = "./keyvault_secret"
   for_each = try(var.settings.secrets, {})
 
   settings        = var.settings
