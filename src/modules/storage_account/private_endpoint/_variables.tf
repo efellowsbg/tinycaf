@@ -3,7 +3,7 @@ variable "global_settings" {
 }
 
 variable "settings" {
-  description = "All the configuration for this resource"
+  description = "All the configuration for private endpoint"
 }
 
 variable "storage_acccount_id" {
@@ -11,13 +11,13 @@ variable "storage_acccount_id" {
 }
 
 variable "resources" {
-  description = "All the configuration for this resource"
+  description = "All required resources"
 }
 
 variable "subnet_ref" {
-  description = "All the configuration for this resource"
+  description = "Subnet reference"
 }
 
 variable "dns_zones_ref" {
-  description = "All the configuration for this resource"
+  description = "Dns zone references"
 }
