@@ -1,5 +1,5 @@
 module "built_in_roles" {
-  source = "./built_in_roles"
+  source = "./built_in_role"
 
   for_each = {
     for resource_type, roles in try(var.settings.built_in_roles, {}) :
@@ -16,7 +16,7 @@ module "built_in_roles" {
 }
 
 module "custom_roles" {
-  source = "./custom_roles"
+  source = "./custom_role"
 
   for_each = {
     for resource_type, roles in try(var.settings.custom_roles, {}) :
