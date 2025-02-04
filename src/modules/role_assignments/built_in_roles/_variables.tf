@@ -3,7 +3,7 @@ variable "global_settings" {
 }
 
 variable "settings" {
-  description = "All the configuration for a storage account"
+  description = "All the configuration for a buil-in role"
 }
 
 variable "resources" {
