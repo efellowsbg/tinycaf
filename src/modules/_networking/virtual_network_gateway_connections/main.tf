@@ -3,9 +3,9 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
   location            = local.location
   resource_group_name = local.resource_group_name
 
-  type                               = try(var.settings.type, "IPsec")
   virtual_network_gateway_id         = local.virtual_network_gateway_id
   local_network_gateway_id           = local.local_network_gateway_id
+  type                               = try(var.settings.type, "IPsec")
   connection_protocol                = try(var.settings.connection_protocol, "IKEv2")
   use_policy_based_traffic_selectors = try(var.settings.use_policy_based_traffic_selectors, true)
 
