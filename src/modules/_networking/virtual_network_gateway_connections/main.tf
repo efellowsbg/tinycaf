@@ -25,7 +25,7 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
   }
 
   dynamic "ipsec_policy" {
-    for_each = can(var.settings.use_policy_based_traffic_selectors) ? [1] : []
+    for_each = can(var.settings.ipsec_policy) ? [1] : []
 
     content {
       dh_group         = try(var.settings.ipsec_policy.dh_group, "DHGroup14")
