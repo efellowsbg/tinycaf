@@ -1,8 +1,7 @@
 module "nat_gateways" {
-  for_each = var.nat_gateways
-  source   = "./modules/nat_gateway"
+  source = "./modules/nat_gateway"
 
-  settings        = each.value
+  settings        = var.nat_gateways
   global_settings = local.global_settings
 
   resources = {
