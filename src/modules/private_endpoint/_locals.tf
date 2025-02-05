@@ -8,7 +8,7 @@ locals {
     null
   )
 
-  private_connection_resource_id = var.resources[var.settings.resource_type][var.settings.resource_ref].id
+  private_connection_resource_id = var.resources[var.settings.private_dns_zone_group.resource_type][var.settings.private_dns_zone_group.resource_ref].id
 
   private_dns_zone_ids = [
     for dns_zone_ref in try(var.settings.private_dns_zone_group.private_dns_zone_refs, []) :

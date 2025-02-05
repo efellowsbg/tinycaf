@@ -18,11 +18,6 @@ resource "azurerm_private_endpoint" "main" {
   dynamic "private_dns_zone_group" {
     for_each = can(var.settings.private_dns_zone_group) ? [1] : []
 
-    # content {
-    #   name                 = var.settings.private_dns_zone_group.name
-    #   private_dns_zone_ids = var.settings.private_dns_zone_group.private_dns_zone_ids
-    # }
-
     content {
       name                 = var.settings.private_dns_zone_group.name
       private_dns_zone_ids = try(local.private_dns_zone_ids, var.settings.private_dns_zone_group.private_dns_zone_ids)
