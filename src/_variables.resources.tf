@@ -39,3 +39,5 @@ variable "container_groups" { default = {} }
 variable "key_vault_keys" { default = {} }
 
 variable "role_definitions" { default = {} }
+
+variable "network_security_groups" { default = {} }
