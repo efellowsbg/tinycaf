@@ -8,5 +8,6 @@ module "storage_accounts" {
   resources = {
     resource_groups  = module.resource_groups
     virtual_networks = module.virtual_networks
+    private_dns_zones = module.private_dns_zones
   }
 }
