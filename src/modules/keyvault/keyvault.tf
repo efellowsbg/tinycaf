@@ -17,7 +17,7 @@ resource "azurerm_key_vault" "main" {
     for_each = can(var.settings.network_rules) ? [1] : []
 
     content {
-      bypass                     = try(var.settings.network_rules.bypass, null)
+      bypass                     = try(var.settings.network_rules.bypass, "AzureServices")
       default_action             = try(var.settings.network_rules.default_action, "Deny")
       ip_rules                   = try(var.settings.network_rules.allowed_ips, null)
       virtual_network_subnet_ids = try(local.subnet_ids, null)
