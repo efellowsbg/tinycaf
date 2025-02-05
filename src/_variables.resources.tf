@@ -45,3 +45,5 @@ variable "network_security_groups" { default = {} }
 variable "nat_gateways" { default = {} }
 
 variable "application_insights_workbooks" { default = {} }
+
+variable "private_endpoints" { default = {} }
