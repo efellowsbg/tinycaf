@@ -1,9 +1,11 @@
+resource "random_uuid" "main" {}
+
 resource "azurerm_application_insights_workbook" "main" {
-  name                = var.settings.name
+  name                = random_uuid.main.result
   resource_group_name = local.resource_group_name
   location            = local.location
   display_name        = var.settings.display_name
-  data_json           = var.settings.data_json
+  data_json           = jsonencode(var.settings.data_json)
   tags                = local.tags
 
   source_id            = try(var.settings.source_id, null)
