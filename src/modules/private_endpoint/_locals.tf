@@ -14,6 +14,11 @@ locals {
   #   "storage_account" = module.storage_accounts
   # }
 
+  private_dns_zone_ids = [
+    for dns_zone_ref in try(var.settings.private_dns_zone_group.private_dns_zone_refs, []) :
+    var.resources.private_dns_zones[dns_zone_ref].id
+  ]
+
   tags = merge(
     var.global_settings.tags,
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},

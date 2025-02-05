@@ -13,15 +13,19 @@ resource "azurerm_private_endpoint" "main" {
 
     subresource_names = try(var.settings.private_service_connection.subresource_names, null)
     request_message   = try(var.settings.private_service_connection.request_message, null)
-
   }
 
   dynamic "private_dns_zone_group" {
     for_each = can(var.settings.private_dns_zone_group) ? [1] : []
 
+    # content {
+    #   name                 = var.settings.private_dns_zone_group.name
+    #   private_dns_zone_ids = var.settings.private_dns_zone_group.private_dns_zone_ids
+    # }
+
     content {
       name                 = var.settings.private_dns_zone_group.name
-      private_dns_zone_ids = var.settings.private_dns_zone_group.private_dns_zone_ids
+      private_dns_zone_ids = try(local.private_dns_zone_ids, var.settings.private_dns_zone_group.private_dns_zone_ids)
     }
   }
 

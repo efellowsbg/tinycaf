@@ -9,8 +9,9 @@ module "private_endpoints" {
   resource_ref  = each.value.private_service_connection.resource_ref
 
   resources = {
-    resource_groups  = module.resource_groups
-    virtual_networks = module.virtual_networks
-    storage_accounts = module.storage_accounts
+    resource_groups   = module.resource_groups
+    virtual_networks  = module.virtual_networks
+    private_dns_zones = module.private_dns_zones
+    storage_accounts  = module.storage_accounts
   }
 }
