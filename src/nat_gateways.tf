@@ -1,6 +1,6 @@
-module "network_security_groups" {
-  source   = "./modules/network_security_group"
-  for_each = var.network_security_groups
+module "nat_gateways" {
+  source   = "./modules/nat_gateway"
+  for_each = var.nat_gateways
 
   settings        = each.value
   global_settings = local.global_settings
