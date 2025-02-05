@@ -43,3 +43,5 @@ variable "role_definitions" { default = {} }
 variable "network_security_groups" { default = {} }
 
 variable "nat_gateways" { default = {} }
+
+variable "application_insights_workbooks" { default = {} }
