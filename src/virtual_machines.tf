@@ -1,6 +1,6 @@
 module "virtual_machines" {
-  for_each = var.virtual_machines
   source   = "./modules/virtual_machines"
+  for_each = var.virtual_machines
 
   settings        = each.value
   global_settings = var.global_settings
