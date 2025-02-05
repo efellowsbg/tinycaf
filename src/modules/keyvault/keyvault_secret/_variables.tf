@@ -6,14 +6,14 @@ variable "settings" {
   description = "All the configuration for this resource"
 }
 
+variable "resources" {
+  description = "All trequired resources"
+}
+
 variable "keyvault_id" {
   description = "id of the keyvault"
 }
 
-variable "resources" {
-  description = "All the configuration for this resource"
-}
-
 variable "secrets" {
-  description = "All the configuration for this resource"
+  description = "Keyvault secrets"
 }

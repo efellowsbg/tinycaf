@@ -10,7 +10,6 @@ resource "azurerm_key_vault_key" "main" {
   not_before_date = try(var.settings.not_before_date, null)
   expiration_date = try(var.settings.expiration_date, null)
 
-  #TODO: Implement rotation policy module when created
   dynamic "rotation_policy" {
     for_each = can(var.settings.rotation_policy) ? [1] : []
 

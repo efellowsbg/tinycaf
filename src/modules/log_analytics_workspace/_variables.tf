@@ -3,7 +3,7 @@ variable "global_settings" {
 }
 
 variable "settings" {
-  description = "All the configuration for log analytics workspace module"
+  description = "All the configuration for this resource"
 }
 
 variable "resources" {

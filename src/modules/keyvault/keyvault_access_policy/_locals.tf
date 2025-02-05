@@ -32,9 +32,7 @@ locals {
     "GetRotationPolicy",
     "SetRotationPolicy",
   ]
-}
 
-locals {
   effective_key_permissions = (
     var.access_policies.key_permissions == "All" ?
     local.all_key_permissions :
@@ -46,10 +44,7 @@ locals {
     local.all_secret_permissions :
     tolist(try(var.access_policies.secret_permissions, []))
   )
-}
 
-
-locals {
   debug_settings    = var.settings
   has_logged_in_key = contains(keys(var.settings), "managed_identity")
 }

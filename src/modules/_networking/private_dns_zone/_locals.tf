@@ -11,14 +11,6 @@ locals {
     }
   }
 
-  tags = merge(
-    var.global_settings.tags,
-    var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
-    try(var.settings.tags, {})
-  )
-}
-
-locals {
   # local object used to map possible private dns zoone names
   zone_names = {
     "storage_blob"         = "privatelink.blob.core.windows.net"
@@ -29,4 +21,10 @@ locals {
     "keyvaults"            = "privatelink.vaultcore.azure.net"
     "container_registries" = "privatelink.azurecr.io"
   }
+
+  tags = merge(
+    var.global_settings.tags,
+    var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
+    try(var.settings.tags, {})
+  )
 }

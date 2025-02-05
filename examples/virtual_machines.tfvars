@@ -1,7 +1,7 @@
 virtual_machines = {
   machine_1 = {
     type               = "windows"
-    name               = "vm-win-braytest-dv-ne-02"
+    name               = "vm-win-test-dv-ne-02"
     resource_group_ref = "rg_test"
     size               = "Standard_F2"
     admin_username     = "adminuser"
@@ -40,7 +40,7 @@ virtual_machines = {
 
   machine_2 = {
     type               = "linux"
-    name               = "vm-lin-braytest-dv-ne-02"
+    name               = "vm-lin-test-dv-ne-02"
     resource_group_ref = "rg_test"
     size               = "Standard_F2"
     admin_username     = "adminuser"
@@ -95,7 +95,7 @@ virtual_machines = {
 # pre-requisites
 resource_groups = {
   rg_test = {
-    name     = "rg-braytest-dv-ne-02"
+    name     = "rg-test-dv-ne-02"
     location = "northeurope"
   }
 }

@@ -22,22 +22,22 @@ resource "azurerm_log_analytics_workspace" "main" {
   )
 
   dynamic "identity" {
-    for_each = try(var.settings.identity[*], {})
+    for_each = can(var.settings.identity) ? [1] : []
 
     content {
-      type         = try(identity.value.type, null)
+      type         = try(var.settings.identity.type, null)
       identity_ids = try(local.identity_ids, null)
     }
   }
 
   dynamic "timeouts" {
-    for_each = try(var.settings.timeouts[*], {})
+    for_each = can(var.settings.timeouts) ? [1] : []
 
     content {
-      read   = try(timeouts.value.read, null)
-      create = try(timeouts.value.create, null)
-      update = try(timeouts.value.update, null)
-      delete = try(timeouts.value.delete, null)
+      read   = try(var.settings.timeouts.read, null)
+      create = try(var.settings.timeouts.create, null)
+      update = try(var.settings.timeouts.update, null)
+      delete = try(var.settings.timeouts.delete, null)
     }
   }
 }

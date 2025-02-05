@@ -9,6 +9,11 @@ locals {
     )
   ]
 
+  identity_ids = [
+    for id_ref in try(var.settings.identity.identity_ids_ref, []) :
+    var.resources.managed_identities[id_ref].id
+  ]
+
   tags = merge(
     var.global_settings.tags,
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},

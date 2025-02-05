@@ -3,9 +3,9 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
   location            = local.location
   resource_group_name = local.resource_group_name
 
-  type                               = try(var.settings.type, "IPsec")
   virtual_network_gateway_id         = local.virtual_network_gateway_id
   local_network_gateway_id           = local.local_network_gateway_id
+  type                               = try(var.settings.type, "IPsec")
   connection_protocol                = try(var.settings.connection_protocol, "IKEv2")
   use_policy_based_traffic_selectors = try(var.settings.use_policy_based_traffic_selectors, true)
 
@@ -14,15 +14,19 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
     ? data.azurerm_key_vault_secret.main[0].value
     : null
   )
+
   dynamic "traffic_selector_policy" {
     for_each = (try(var.settings.local_address_cidrs, null) != null && try(var.settings.remote_address_cidrs, null) != null) ? [1] : []
+
     content {
-      local_address_cidrs  = try(var.settings.local_address_cidrs, [])
-      remote_address_cidrs = try(var.settings.remote_address_cidrs, [])
+      local_address_cidrs  = var.settings.local_address_cidrs
+      remote_address_cidrs = var.settings.remote_address_cidrs
     }
   }
+
   dynamic "ipsec_policy" {
-    for_each = try(var.settings.use_policy_based_traffic_selectors, true) ? [1] : []
+    for_each = can(var.settings.ipsec_policy) ? [1] : []
+
     content {
       dh_group         = try(var.settings.ipsec_policy.dh_group, "DHGroup14")
       ike_encryption   = try(var.settings.ipsec_policy.ike_encryption, "AES256")

@@ -1,6 +1,8 @@
 resource "azurerm_kubernetes_cluster_node_pool" "main" {
-  name                    = var.settings.name
-  kubernetes_cluster_id   = var.cluster_id
+  name                  = var.settings.name
+  kubernetes_cluster_id = var.cluster_id
+  tags                  = local.tags
+
   vm_size                 = try(var.settings.vm_size, "Standard_DS2_v2")
   node_count              = try(var.settings.node_count, 1)
   auto_scaling_enabled    = try(var.settings.auto_scaling_enabled, false)
@@ -17,7 +19,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "main" {
   vnet_subnet_id          = try(local.vnet_subnet_id, null)
   os_type                 = try(var.settings.os_type, null)
   ultra_ssd_enabled       = try(var.settings.ultra_ssd_enabled, false)
-  tags                    = local.tags
   fips_enabled            = try(var.settings.fips_enabled, false)
   host_encryption_enabled = try(var.settings.host_encryption_enabled, false)
   kubelet_disk_type       = try(var.settings.kubelet_disk_type, "OS")
