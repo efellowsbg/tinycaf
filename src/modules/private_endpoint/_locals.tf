@@ -7,8 +7,8 @@ locals {
     var.resources.virtual_networks[split("/", var.settings.subnet_ref)[0]].subnets[split("/", var.settings.subnet_ref)[1]].id,
     null
   )
-  resource_type                  = var.resource_type
-  private_connection_resource_id = module.resource_type[var.resource_ref].id
+
+  private_connection_resource_id = var.resources[var.resource_type][var.resource_ref].id
 
   # resource_types_map = {
   #   "storage_account" = module.storage_accounts
