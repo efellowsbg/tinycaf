@@ -3,7 +3,7 @@ resource "azurerm_private_endpoint" "main" {
   resource_group_name           = local.resource_group_name
   location                      = local.location
   tags                          = local.tags
-  subnet_id                     = try(var.settings.subnet_ref, local.subnet_id)
+  subnet_id                     = try(local.subnet_id, var.settings.subnet_ref)
   custom_network_interface_name = try(var.settings.custom_network_interface_name, null)
 
   private_service_connection {
