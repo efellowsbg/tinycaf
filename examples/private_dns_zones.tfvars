@@ -6,8 +6,6 @@ private_dns_zones = {
   }
 }
 
-
-
 # pre-requisites
 resource_groups = {
   rg_test = {
