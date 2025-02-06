@@ -2,7 +2,7 @@ locals {
   resource_group      = var.resources.resource_groups[var.settings.resource_group_ref]
   resource_group_name = local.resource_group.name
 
-  zone_name = var.resources.private_dns_zones[var.settings.zone_ref]
+  zone_name = var.resources.private_dns_zones[var.settings.zone_ref].name
 
   tags = merge(
     var.global_settings.tags,
