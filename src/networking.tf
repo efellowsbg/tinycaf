@@ -86,3 +86,16 @@ module "virtual_network_gateway_connections" {
     virtual_network_gateways = module.virtual_network_gateways
   }
 }
+
+module "private_dns_a_records" {
+  source   = "./modules/_networking/private_dns_a_record"
+  for_each = var.private_dns_a_records
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+  resources = {
+    resource_groups   = module.resource_groups
+    private_dns_zones = module.private_dns_zones
+  }
+}
