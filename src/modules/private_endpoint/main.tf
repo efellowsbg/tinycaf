@@ -9,10 +9,10 @@ resource "azurerm_private_endpoint" "main" {
   private_service_connection {
     name                           = var.settings.private_service_connection.name
     private_connection_resource_id = local.private_connection_resource_id
-    is_manual_connection           = try(var.settings.private_service_connection.is_manual_connection, false)
+    subresource_names              = var.settings.private_service_connection.subresource_names
 
-    subresource_names = try(var.settings.private_service_connection.subresource_names, null)
-    request_message   = try(var.settings.private_service_connection.request_message, null)
+    is_manual_connection = try(var.settings.private_service_connection.is_manual_connection, false)
+    request_message      = try(var.settings.private_service_connection.request_message, null)
   }
 
   dynamic "private_dns_zone_group" {
