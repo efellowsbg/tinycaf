@@ -99,3 +99,42 @@ module "private_dns_a_records" {
     private_dns_zones = module.private_dns_zones
   }
 }
+
+module "private_endpoints" {
+  source   = "./modules/_networking/private_endpoint"
+  for_each = var.private_endpoints
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+  resources = {
+    resource_groups   = module.resource_groups
+    virtual_networks  = module.virtual_networks
+    private_dns_zones = module.private_dns_zones
+    storage_accounts  = module.storage_accounts
+  }
+}
+
+module "network_security_groups" {
+  source   = "./modules/_networking/network_security_group"
+  for_each = var.network_security_groups
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+  resources = {
+    resource_groups = module.resource_groups
+  }
+}
+
+module "nat_gateways" {
+  source   = "./modules/_networking/nat_gateway"
+  for_each = var.nat_gateways
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+  resources = {
+    resource_groups = module.resource_groups
+  }
+}
