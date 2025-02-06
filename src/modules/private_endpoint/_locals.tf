@@ -8,7 +8,7 @@ locals {
 
   subnet_id = try(
     var.resources.virtual_networks[split("/", var.settings.subnet_ref)[0]].subnets[split("/", var.settings.subnet_ref)[1]].id,
-    null
+    var.settings.subnet_ref
   )
 
   private_connection_resource_id = try(var.resources[local.current_module][local.current_resource_ref].id, var.settings.resource_ref)
