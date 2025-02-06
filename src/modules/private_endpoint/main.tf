@@ -20,7 +20,7 @@ resource "azurerm_private_endpoint" "main" {
 
     content {
       name                 = var.settings.private_dns_zone_group.name
-      private_dns_zone_ids = try(local.private_dns_zone_ids, var.settings.private_dns_zone_group.private_dns_zone_ids)
+      private_dns_zone_ids = local.private_dns_zone_ids
     }
   }
 
