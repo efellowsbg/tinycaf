@@ -3,7 +3,7 @@ resource "azuread_application" "main" {
 
   owners                         = try(var.settings.owners, var.global_settings.object_id)
   identifier_uris                = try(var.settings.identifier_uris, null)
-  logo_image                     = filebase64(try(var.settings.logo_image), null)
+  logo_image                     = try(filebase64(var.settings.logo_image), null)
   sign_in_audience               = try(var.settings.sign_in_audience, null)
   description                    = try(var.settings.description, null)
   device_only_auth_enabled       = try(var.settings.device_only_auth_enabled, null)
@@ -27,7 +27,7 @@ resource "azuread_application" "main" {
   # }
 
   dynamic "api" {
-    for_each = can(var.settings.api, {}) ? [1] : []
+    for_each = can(var.settings.api) ? [1] : []
 
     content {
       known_client_applications      = try(var.settings.api.known_client_applications, null)
@@ -53,7 +53,7 @@ resource "azuread_application" "main" {
   }
 
   dynamic "password" {
-    for_each = can(var.settings.password, {}) ? [1] : []
+    for_each = can(var.settings.password) ? [1] : []
 
     content {
       display_name = var.settings.password.display_name
@@ -63,14 +63,14 @@ resource "azuread_application" "main" {
   }
 
   dynamic "public_client" {
-    for_each = can(var.settings.public_client, {}) ? [1] : []
+    for_each = can(var.settings.public_client) ? [1] : []
     content {
       redirect_uris = try(var.settings.public_client.redirect_uris, null)
     }
   }
 
   dynamic "single_page_application" {
-    for_each = can(var.settings.single_page_application, {}) ? [1] : []
+    for_each = can(var.settings.single_page_application) ? [1] : []
     content {
       redirect_uris = try(var.settings.single_page_application.redirect_uris, null)
     }
@@ -91,7 +91,7 @@ resource "azuread_application" "main" {
 
 
   dynamic "optional_claims" {
-    for_each = can(var.settings.optional_claims, {}) ? [1] : []
+    for_each = can(var.settings.optional_claims) ? [1] : []
 
     content {
       dynamic "access_token" {
@@ -147,7 +147,7 @@ resource "azuread_application" "main" {
   }
 
   dynamic "web" {
-    for_each = can(var.settings.web, {}) ? [1] : []
+    for_each = can(var.settings.web) ? [1] : []
 
     content {
       homepage_url  = try(var.settings.web.homepage_url, null)
@@ -155,7 +155,7 @@ resource "azuread_application" "main" {
       redirect_uris = try(var.settings.web.redirect_uris, null)
 
       dynamic "implicit_grant" {
-        for_each = can(var.settings.web.implicit_grant, {}) ? [1] : []
+        for_each = can(var.settings.web.implicit_grant) ? [1] : []
 
         content {
           access_token_issuance_enabled = try(var.settings.web.implicit_grant.access_token_issuance_enabled, null)
