@@ -17,13 +17,7 @@ resource "azuread_application" "main" {
   service_management_reference   = try(var.settings.service_management_reference, null)
   template_id                    = try(var.settings.template_id, null)
   terms_of_service_url           = try(var.settings.terms_of_service_url, null)
-  tags                           = try(local.tags, try(var.settings.feature_tags, null))
-
-  # TODO: Implement Feature tags
-  # feature_tags {
-  #   enterprise = true
-  #   gallery    = true
-  # }
+  tags                           = try(local.tags, try(var.setting.feature_tags, null))
 
   dynamic "api" {
     for_each = can(var.settings.api) ? [1] : []
@@ -161,6 +155,17 @@ resource "azuread_application" "main" {
           id_token_issuance_enabled     = try(var.settings.web.implicit_grant.id_token_issuance_enabled, null)
         }
       }
+    }
+  }
+
+  dynamic "timeouts" {
+    for_each = can(var.settings.timeouts) ? [1] : []
+
+    content {
+      read   = try(var.settings.timeouts.read, null)
+      create = try(var.settings.timeouts.create, null)
+      update = try(var.settings.timeouts.update, null)
+      delete = try(var.settings.timeouts.delete, null)
     }
   }
 }
