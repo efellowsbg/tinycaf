@@ -1,7 +1,7 @@
 resource "azuread_application" "main" {
   display_name = var.settings.display_name
 
-  owners                         = try(toset(var.settings.owners), local.owners)
+  owners                         = try(toset(var.settings.owners), [var.global_settings.object_id])
   identifier_uris                = try(var.settings.identifier_uris, null)
   logo_image                     = try(filebase64(var.settings.logo_image), null)
   sign_in_audience               = try(var.settings.sign_in_audience, null)
