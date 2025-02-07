@@ -17,7 +17,7 @@ resource "azuread_application" "main" {
   service_management_reference   = try(var.settings.service_management_reference, null)
   template_id                    = try(var.settings.template_id, null)
   terms_of_service_url           = try(var.settings.terms_of_service_url, null)
-  tags                           = try(local.tags, try(var.setting.feature_tags, null))
+  tags                           = try(local.tags, try(var.settings.feature_tags, null))
 
   dynamic "api" {
     for_each = can(var.settings.api) ? [1] : []
