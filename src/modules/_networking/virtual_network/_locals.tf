@@ -4,6 +4,7 @@ locals {
   location            = local.resource_group.location
 
   network_security_group_id = try(var.resources.network_security_groups[var.settings.subnets.network_security_group_ref].id, null)
+  subnet_id                 = azurerm_subnet.main.id
 
   # local object used to map short delegation refs to full delegation "objects"
   delegations = {
