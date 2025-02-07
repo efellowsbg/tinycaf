@@ -6,7 +6,8 @@ module "virtual_networks" {
   global_settings = local.global_settings
 
   resources = {
-    resource_groups = module.resource_groups
+    resource_groups         = module.resource_groups
+    network_security_groups = module.network_security_groups
   }
 }
 
