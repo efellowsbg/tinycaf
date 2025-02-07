@@ -1,115 +1,167 @@
 resource "azuread_application" "main" {
-  display_name     = "example"
-  identifier_uris  = ["api://example-app"]
-  logo_image       = filebase64("/path/to/logo.png")
-  owners           = [data.azuread_client_config.current.object_id]
-  sign_in_audience = "AzureADMultipleOrgs"
+  display_name = var.settings.name
 
-  api {
-    mapped_claims_enabled          = true
-    requested_access_token_version = 2
+  owners                         = try(var.settings.owners, var.global_settings.object_id)
+  identifier_uris                = try(var.settings.identifier_uris, null)
+  logo_image                     = filebase64(try(var.settings.logo_image), null)
+  sign_in_audience               = try(var.settings.sign_in_audience, null)
+  description                    = try(var.settings.description, null)
+  device_only_auth_enabled       = try(var.settings.device_only_auth_enabled, null)
+  fallback_public_client_enabled = try(var.settings.fallback_public_client_enabled, null)
+  group_membership_claims        = try(var.settings.group_membership_claims, null)
+  marketing_url                  = try(var.settings.marketing_url, null)
+  notes                          = try(var.settings.notes, null)
+  oauth2_post_response_required  = try(var.settings.oauth2_post_response_required, null)
+  prevent_duplicate_names        = try(var.settings.prevent_duplicate_names, null)
+  privacy_statement_url          = try(var.settings.privacy_statement_url, null)
+  service_management_reference   = try(var.settings.service_management_reference, null)
+  template_id                    = try(var.settings.template_id, null)
+  terms_of_service_url           = try(var.settings.terms_of_service_url, null)
+  tags                           = local.tags
+  # owners           = try(var.settings.owners, null)
 
-    known_client_applications = [
-      azuread_application.known1.client_id,
-      azuread_application.known2.client_id,
-    ]
+  # TODO: Implement Feature tags
+  # feature_tags {
+  #   enterprise = true
+  #   gallery    = true
+  # }
 
-    oauth2_permission_scope {
-      admin_consent_description  = "Allow the application to access example on behalf of the signed-in user."
-      admin_consent_display_name = "Access example"
-      enabled                    = true
-      id                         = "96183846-204b-4b43-82e1-5d2222eb4b9b"
-      type                       = "User"
-      user_consent_description   = "Allow the application to access example on your behalf."
-      user_consent_display_name  = "Access example"
-      value                      = "user_impersonation"
-    }
+  dynamic "api" {
+    for_each = can(var.settings.api, {}) ? [1] : []
 
-    oauth2_permission_scope {
-      admin_consent_description  = "Administer the example application"
-      admin_consent_display_name = "Administer"
-      enabled                    = true
-      id                         = "be98fa3e-ab5b-4b11-83d9-04ba2b7946bc"
-      type                       = "Admin"
-      value                      = "administer"
-    }
-  }
+    content {
+      known_client_applications      = try(var.settings.api.known_client_applications, null)
+      mapped_claims_enabled          = try(var.settings.api.mapped_claims_enabled, null)
+      requested_access_token_version = try(var.settings.api.requested_access_token_version, null)
 
-  app_role {
-    allowed_member_types = ["User", "Application"]
-    description          = "Admins can manage roles and perform all task actions"
-    display_name         = "Admin"
-    enabled              = true
-    id                   = "1b19509b-32b1-4e9f-b71d-4992aa991967"
-    value                = "admin"
-  }
+      dynamic "oauth2_permission_scope" {
+        for_each = try(var.settings.api.oauth2_permission_scopes, {})
 
-  app_role {
-    allowed_member_types = ["User"]
-    description          = "ReadOnly roles have limited query access"
-    display_name         = "ReadOnly"
-    enabled              = true
-    id                   = "497406e4-012a-4267-bf18-45a1cb148a01"
-    value                = "User"
-  }
+        content {
+          id                         = oauth2_permission_scope.value.id
+          admin_consent_description  = oauth2_permission_scope.value.admin_consent_description
+          admin_consent_display_name = oauth2_permission_scope.value.admin_consent_display_name
 
-  feature_tags {
-    enterprise = true
-    gallery    = true
-  }
-
-  optional_claims {
-    access_token {
-      name = "myclaim"
-    }
-
-    access_token {
-      name = "otherclaim"
-    }
-
-    id_token {
-      name                  = "userclaim"
-      source                = "user"
-      essential             = true
-      additional_properties = ["emit_as_roles"]
-    }
-
-    saml2_token {
-      name = "samlexample"
+          enabled                   = try(oauth2_permission_scope.value.enabled, null)
+          type                      = try(oauth2_permission_scope.value.type, null)
+          user_consent_description  = try(oauth2_permission_scope.value.user_consent_description, null)
+          user_consent_display_name = try(oauth2_permission_scope.value.user_consent_display_name, null)
+          value                     = try(oauth2_permission_scope.value.value, null)
+        }
+      }
     }
   }
 
-  required_resource_access {
-    resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
+  dynamic "password" {
+    for_each = can(var.settings.password, {}) ? [1] : []
 
-    resource_access {
-      id   = "df021288-bdef-4463-88db-98f22de89214" # User.Read.All
-      type = "Role"
-    }
-
-    resource_access {
-      id   = "b4e74841-8e56-480b-be8b-910348b18b4c" # User.ReadWrite
-      type = "Scope"
+    content {
+      display_name = var.settings.password.display_name
+      end_date     = try(var.settings.password.end_date, null)
+      start_date   = try(var.settings.password.start_date, null)
     }
   }
 
-  required_resource_access {
-    resource_app_id = "c5393580-f805-4401-95e8-94b7a6ef2fc2" # Office 365 Management
-
-    resource_access {
-      id   = "594c1fb6-4f81-4475-ae41-0c394909246c" # ActivityFeed.Read
-      type = "Role"
+  dynamic "public_client" {
+    for_each = can(var.settings.public_client, {}) ? [1] : []
+    content {
+      redirect_uris = try(var.settings.public_client.redirect_uris, null)
     }
   }
 
-  web {
-    homepage_url  = "https://app.example.net"
-    logout_url    = "https://app.example.net/logout"
-    redirect_uris = ["https://app.example.net/account"]
+  dynamic "single_page_application" {
+    for_each = can(var.settings.single_page_application, {}) ? [1] : []
+    content {
+      redirect_uris = try(var.settings.single_page_application.redirect_uris, null)
+    }
+  }
 
-    implicit_grant {
-      access_token_issuance_enabled = true
-      id_token_issuance_enabled     = true
+  dynamic "app_role" {
+    for_each = try(var.settings.app_roles, {})
+
+    content {
+      id                   = app_role.value.id
+      allowed_member_types = app_role.value.allowed_member_types
+      description          = app_role.value.description
+      display_name         = app_role.value.display_name
+      enabled              = try(app_role.value.enabled, null)
+      value                = try(app_role.value.value, null)
+    }
+  }
+
+
+  dynamic "optional_claims" {
+    for_each = can(var.settings.optional_claims, {}) ? [1] : []
+
+    content {
+      dynamic "access_token" {
+        for_each = try(var.settings.optional_claims.access_tokens, {})
+
+        content {
+          name                  = access_token.value.name
+          additional_properties = try(access_token.value.additional_properties, null)
+          essential             = try(access_token.value.essential, null)
+          source                = try(access_token.value.source, null)
+        }
+      }
+
+      dynamic "id_token" {
+        for_each = try(var.settings.optional_claims.id_tokens, {})
+
+        content {
+          name                  = id_token.value.name
+          additional_properties = try(id_token.value.additional_properties, null)
+          essential             = try(id_token.value.essential, null)
+          source                = try(id_token.value.source, null)
+        }
+      }
+
+      dynamic "saml2_token" {
+        for_each = try(var.settings.optional_claims.saml2_tokens, {})
+
+        content {
+          name                  = saml2_token.value.name
+          additional_properties = try(saml2_token.value.additional_properties, null)
+          essential             = try(saml2_token.value.essential, null)
+          source                = try(saml2_token.value.source, null)
+        }
+      }
+    }
+  }
+
+  dynamic "required_resource_access" {
+    for_each = try(var.settings.required_resource_access, {})
+
+    content {
+      resource_app_id = required_resource_access.value.resource_app_id
+
+      dynamic "resource_access" {
+        for_each = required_resource_access.value.resource_access
+
+        content {
+          id   = resource_access.value.id
+          type = resource_access.value.type
+        }
+      }
+    }
+  }
+
+  dynamic "web" {
+    for_each = can(var.settings.web, {}) ? [1] : []
+
+    content {
+      homepage_url  = try(var.settings.web.homepage_url, null)
+      logout_url    = try(var.settings.web.logout_url, null)
+      redirect_uris = try(var.settings.web.redirect_uris, null)
+
+      dynamic "implicit_grant" {
+        for_each = can(var.settings.web.implicit_grant, {}) ? [1] : []
+
+        content {
+          access_token_issuance_enabled = try(var.settings.web.implicit_grant.access_token_issuance_enabled, null)
+          id_token_issuance_enabled     = try(var.settings.web.implicit_grant.id_token_issuance_enabled, null)
+        }
+      }
     }
   }
 }
