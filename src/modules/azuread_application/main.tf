@@ -1,7 +1,7 @@
 resource "azuread_application" "main" {
   display_name = var.settings.display_name
 
-  owners                         = try(var.settings.owners, local.owners)
+  owners                         = try(toset(var.settings.owners), local.owners)
   identifier_uris                = try(var.settings.identifier_uris, null)
   logo_image                     = try(filebase64(var.settings.logo_image), null)
   sign_in_audience               = try(var.settings.sign_in_audience, null)
@@ -17,7 +17,7 @@ resource "azuread_application" "main" {
   service_management_reference   = try(var.settings.service_management_reference, null)
   template_id                    = try(var.settings.template_id, null)
   terms_of_service_url           = try(var.settings.terms_of_service_url, null)
-  tags                           = try(local.tags, try(var.settings.feature_tags, null))
+  tags                           = try(local.tags, null)
 
   dynamic "api" {
     for_each = can(var.settings.api) ? [1] : []
