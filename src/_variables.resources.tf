@@ -49,3 +49,5 @@ variable "application_insights_workbooks" { default = {} }
 variable "private_endpoints" { default = {} }
 
 variable "private_dns_a_records" { default = {} }
+
+variable "network_security_group_associations" { default = {} }
