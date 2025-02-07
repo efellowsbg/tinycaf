@@ -7,7 +7,6 @@ resource "azurerm_subnet" "main" {
 
   address_prefixes  = each.value.cidr
   service_endpoints = try(each.value.service_endpoints, null)
-  # network_security_group_ref = try(each.value.network_security_group_ref, null)
 
   dynamic "delegation" {
     for_each = can(each.value.delegation) ? [1] : []
