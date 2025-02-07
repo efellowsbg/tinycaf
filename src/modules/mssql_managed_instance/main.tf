@@ -23,17 +23,17 @@ resource "azurerm_mssql_managed_instance" "main" {
   zone_redundant_enabled         = try(var.settings.zone_redundant_enabled, null)
   timezone_id                    = try(var.settings.timezone_id, null)
 
-  dynamic "azure_active_directory_administrator" {
-    for_each = can(var.settings.azure_active_directory_administrator) ? [1] : []
+  # dynamic "azure_active_directory_administrator" {
+  #   for_each = can(var.settings.azure_active_directory_administrator) ? [1] : []
 
-    content {
-      login_username                      = var.settings.azure_active_directory_administrator.login_username
-      object_id                           = var.settings.azure_active_directory_administrator.object_id
-      principal_type                      = var.settings.azure_active_directory_administrator.principal_type
-      azuread_authentication_only_enabled = try(var.settings.azure_active_directory_administrator.azuread_authentication_only_enabled, null)
-      tenant_id                           = try(var.settings.azure_active_directory_administrator.tenant_id, null)
-    }
-  }
+  #   content {
+  #     login_username                      = var.settings.azure_active_directory_administrator.login_username
+  #     object_id                           = var.settings.azure_active_directory_administrator.object_id
+  #     principal_type                      = var.settings.azure_active_directory_administrator.principal_type
+  #     azuread_authentication_only_enabled = try(var.settings.azure_active_directory_administrator.azuread_authentication_only_enabled, null)
+  #     tenant_id                           = try(var.settings.azure_active_directory_administrator.tenant_id, null)
+  #   }
+  # }
 
   dynamic "identity" {
     for_each = can(var.settings.identity) ? [1] : []

@@ -6,6 +6,13 @@ mssql_managed_instances = {
 
     administrator_login          = "mradministrator"
     administrator_login_password = "thisIsDog11"
+
+    # This block requires min azurerm version =4.15.0
+    # azure_active_directory_administrator = {
+    #   login_username = "test-user1"
+    #   object_id      = "xxxxxxxx-xxxxxxxxxx-xxxxxxxxxxxxxx"
+    #   principal_type = "User"
+    # }
   }
 }
 
