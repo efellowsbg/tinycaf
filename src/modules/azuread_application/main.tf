@@ -55,6 +55,17 @@ resource "azuread_application" "main" {
     }
   }
 
+  dynamic "feature_tags" {
+    for_each = can(var.settings.feature_tags) ? [1] : []
+
+    content {
+      custom_single_sign_on = try(var.settings.feature_tags.custom_single_sign_on, null)
+      enterprise            = try(var.settings.feature_tags.enterprise, null)
+      gallery               = try(var.settings.feature_tags.gallery, null)
+      hide                  = try(var.settings.feature_tags.hide, null)
+    }
+  }
+
   dynamic "public_client" {
     for_each = can(var.settings.public_client) ? [1] : []
     content {
