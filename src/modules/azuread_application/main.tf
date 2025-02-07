@@ -56,7 +56,7 @@ resource "azuread_application" "main" {
   }
 
   dynamic "feature_tags" {
-    for_each = can(var.settings.feature_tags) && var.settings.tags == null ? [1] : []
+    for_each = can(var.settings.feature_tags) && (try(var.settings.tags, null) == null) ? [1] : []
 
     content {
       custom_single_sign_on = try(var.settings.feature_tags.custom_single_sign_on, null)
