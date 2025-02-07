@@ -17,7 +17,7 @@ resource "azuread_application" "main" {
   service_management_reference   = try(var.settings.service_management_reference, null)
   template_id                    = try(var.settings.template_id, null)
   terms_of_service_url           = try(var.settings.terms_of_service_url, null)
-  tags                           = try(local.tags, var.settings.feature_tags) #TODO: It is just for the test. It must be reworked.
+  # tags                           = local.tags
   # owners           = try(var.settings.owners, null)
 
   # TODO: Implement Feature tags
