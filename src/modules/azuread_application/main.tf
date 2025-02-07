@@ -1,5 +1,5 @@
 resource "azuread_application" "main" {
-  display_name = var.settings.name
+  display_name = var.settings.display_name
 
   owners                         = try(var.settings.owners, var.global_settings.object_id)
   identifier_uris                = try(var.settings.identifier_uris, null)
