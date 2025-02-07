@@ -6,7 +6,7 @@ resource "azurerm_mssql_managed_instance" "main" {
   tags                = local.tags
 
   license_type       = try(var.settings.license_type, "BasePrice")
-  sku_name           = try(var.settings.sku_name, "GP_Gen4")
+  sku_name           = try(var.settings.sku_name, "GP_Gen5")
   storage_size_in_gb = try(var.settings.storage_size_in_gb, "32")
   vcores             = try(var.settings.vcores, "4")
 
