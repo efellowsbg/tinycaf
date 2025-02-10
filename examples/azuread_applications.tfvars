@@ -7,12 +7,6 @@ azuread_applications = {
     api = {
       mapped_claims_enabled          = "true"
       requested_access_token_version = "2"
-
-      # known_client_applications = [
-      #   azuread_application.known1.client_id,
-      #   azuread_application.known2.client_id,
-      # ]
-
       oauth2_permission_scopes = {
         perm_scope1 = {
           admin_consent_description  = "Allow the application to access example on behalf of the signed-in user."
