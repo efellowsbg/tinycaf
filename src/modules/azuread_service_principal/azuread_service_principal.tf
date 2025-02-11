@@ -2,7 +2,7 @@ resource "azuread_service_principal" "main" {
   client_id = local.client_id
 
   # Tags conflicts with feature_tags block, so comment or uncomment respoectivley
-  tags = local.tags
+  tags = toset(local.tags)
 
   owners                        = try(toset(var.settings.owners), [var.global_settings.object_id])
   app_role_assignment_required  = try(var.settings.app_role_assignment_required, null)
