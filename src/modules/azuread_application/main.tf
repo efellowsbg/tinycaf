@@ -1,8 +1,8 @@
 resource "azuread_application" "main" {
   display_name = var.settings.display_name
 
-  # Tags conflicts with feature_tags block, so comment or uncomment respoectivley
-  # tags                           = local.tags
+  # Tags conflicts with feature_tags block, so comment or uncomment respectively
+  # tags = try(toset([for k, v in local.tags : "${k}=${v}"]), null)
 
   owners                         = try(toset(var.settings.owners), [var.global_settings.object_id])
   identifier_uris                = try(var.settings.identifier_uris, null)
