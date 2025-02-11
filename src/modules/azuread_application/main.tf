@@ -1,6 +1,9 @@
 resource "azuread_application" "main" {
   display_name = var.settings.display_name
 
+  # Tags conflicts with feature_tags block, so comment or uncomment respectively
+  # tags = try(toset([for k, v in local.tags : "${k}=${v}"]), null)
+
   owners                         = try(toset(var.settings.owners), [var.global_settings.object_id])
   identifier_uris                = try(var.settings.identifier_uris, null)
   logo_image                     = try(filebase64(var.settings.logo_image), null)
@@ -17,7 +20,6 @@ resource "azuread_application" "main" {
   service_management_reference   = try(var.settings.service_management_reference, null)
   template_id                    = try(var.settings.template_id, null)
   terms_of_service_url           = try(var.settings.terms_of_service_url, null)
-  tags                           = try(var.settings.tags, null)
 
   dynamic "api" {
     for_each = can(var.settings.api) ? [1] : []

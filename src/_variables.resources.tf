@@ -55,3 +55,5 @@ variable "network_security_group_associations" { default = {} }
 variable "mssql_managed_instances" { default = {} }
 
 variable "azuread_applications" { default = {} }
+
+variable "azuread_service_principals" { default = {} }
