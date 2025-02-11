@@ -53,3 +53,5 @@ variable "private_dns_a_records" { default = {} }
 variable "network_security_group_associations" { default = {} }
 
 variable "mssql_managed_instances" { default = {} }
+
+variable "azuread_applications" { default = {} }
