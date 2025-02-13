@@ -39,3 +39,21 @@ variable "container_groups" { default = {} }
 variable "key_vault_keys" { default = {} }
 
 variable "role_definitions" { default = {} }
+
+variable "network_security_groups" { default = {} }
+
+variable "nat_gateways" { default = {} }
+
+variable "application_insights_workbooks" { default = {} }
+
+variable "private_endpoints" { default = {} }
+
+variable "private_dns_a_records" { default = {} }
+
+variable "network_security_group_associations" { default = {} }
+
+variable "mssql_managed_instances" { default = {} }
+
+variable "azuread_applications" { default = {} }
+
+variable "azuread_service_principals" { default = {} }
