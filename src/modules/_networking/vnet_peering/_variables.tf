@@ -11,8 +11,5 @@ variable "settings" {
 }
 
 variable "resources" {
-  type = object({
-    virtual_networks = map(any)
-  })
   description = "All required resources"
 }

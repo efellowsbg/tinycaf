@@ -17,7 +17,6 @@ keyvaults = {
   }
 }
 
-
 # pre-requisites
 virtual_networks = {
   vnet_test = {

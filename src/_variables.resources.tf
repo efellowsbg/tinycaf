@@ -15,3 +15,45 @@ variable "public_ips" { default = {} }
 variable "keyvaults" { default = {} }
 
 variable "storage_accounts" { default = {} }
+
+variable "virtual_machines" { default = {} }
+
+variable "private_dns_zones" { default = {} }
+
+variable "virtual_network_gateway_connections" { default = {} }
+
+variable "kubernetes_clusters" { default = {} }
+
+variable "role_assignments" { default = {} }
+
+variable "container_registries" { default = {} }
+
+variable "managed_disks" { default = {} }
+
+variable "log_analytics_workspaces" { default = {} }
+
+variable "log_analytics_data_export_rules" { default = {} }
+
+variable "container_groups" { default = {} }
+
+variable "key_vault_keys" { default = {} }
+
+variable "role_definitions" { default = {} }
+
+variable "network_security_groups" { default = {} }
+
+variable "nat_gateways" { default = {} }
+
+variable "application_insights_workbooks" { default = {} }
+
+variable "private_endpoints" { default = {} }
+
+variable "private_dns_a_records" { default = {} }
+
+variable "network_security_group_associations" { default = {} }
+
+variable "mssql_managed_instances" { default = {} }
+
+variable "azuread_applications" { default = {} }
+
+variable "azuread_service_principals" { default = {} }
