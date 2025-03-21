@@ -10,5 +10,6 @@ resource "azurerm_network_interface" "main" {
     name                          = each.value.ip_configuration.name
     subnet_id                     = try(var.resources.virtual_networks[split("/", each.value.ip_configuration.subnet_ref)[0]].subnets[split("/", each.value.ip_configuration.subnet_ref)[1]].id, null)
     private_ip_address_allocation = try(each.value.ip_configuration.private_ip_address_allocation, "Dynamic")
+    public_ip_address_id          = try(local.public_ip_address_id, null)
   }
 }
