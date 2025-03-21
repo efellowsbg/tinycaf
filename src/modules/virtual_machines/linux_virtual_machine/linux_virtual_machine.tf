@@ -12,7 +12,7 @@ resource "azurerm_linux_virtual_machine" "main" {
     for_each = try(var.settings.admin_ssh_key[*], {})
     content {
       username   = try(admin_ssh_key.value.username, null)
-      public_key = try(admin_ssh_key.value.public_key, null)
+      public_key = try(local.public_key, null)
     }
   }
 
