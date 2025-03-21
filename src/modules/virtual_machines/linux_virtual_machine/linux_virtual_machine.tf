@@ -9,10 +9,10 @@ resource "azurerm_linux_virtual_machine" "main" {
   tags = local.tags
 
   dynamic "admin_ssh_key" {
-    for_each = try(var.settings.admin_ssh_key[*], {})
+    for_each = try(var.settings.admin_ssh_key, {})
     content {
       username   = try(admin_ssh_key.value.username, null)
-      public_key = try(admin_ssh_key.value.public_key, null)
+      public_key = try(tls_private_key.main[admin_ssh_key.value.public_key_ref].public_key_openssh, null)
     }
   }
 
