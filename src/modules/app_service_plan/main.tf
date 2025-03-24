@@ -3,7 +3,7 @@ resource "azurerm_app_service_plan" "main" {
   resource_group_name = local.resource_group_name
   location            = local.location
 
-  kind = try(var.settings.kind, null)
+  kind = try(var.settings.kind, "Linux")
 
   sku {
     tier = var.settings.sku.tier
