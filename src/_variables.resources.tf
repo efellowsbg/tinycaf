@@ -59,3 +59,5 @@ variable "azuread_applications" { default = {} }
 variable "azuread_service_principals" { default = {} }
 
 variable "app_service_plans" { default = {} }
+
+variable "logic_apps_standard" { default = {} }
