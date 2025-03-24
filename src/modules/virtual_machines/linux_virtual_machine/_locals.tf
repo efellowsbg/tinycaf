@@ -7,9 +7,16 @@ locals {
 
   key_vault_id = var.resources.keyvaults[var.settings.keyvault_ref].id
 
-  vm_key      = tls_private_key.main[var.settings.admin_ssh_key[1].public_key_ref]
-  private_key = local.vm_key.private_key_pem
-  public_key  = local.vm_key.public_key_openssh
+  # vm_key      = tls_private_key.main[var.settings.admin_ssh_key[1].public_key_ref]
+  # private_key = local.vm_key.private_key_pem
+  # public_key  = local.vm_key.public_key_openssh
+
+  vm_keys = { for key, ssh_key in var.settings.admin_ssh_key :
+    key => tls_private_key.main[ssh_key.public_key_ref]
+  }
+
+  private_keys_pem    = { for key, value in local.vm_keys : key => value.private_key_pem }
+  public_keys_openssh = { for key, value in local.vm_keys : key => value.public_key_openssh }
 
   tags = merge(
     var.global_settings.tags,
