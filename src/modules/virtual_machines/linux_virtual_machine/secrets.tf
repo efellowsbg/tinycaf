@@ -1,15 +1,3 @@
-# resource "azurerm_key_vault_secret" "private_key" {
-#   name         = "${var.settings.name}-ssh-private-key"
-#   value        = local.private_key
-#   key_vault_id = local.key_vault_id
-# }
-
-# resource "azurerm_key_vault_secret" "public_key" {
-#   name         = "${var.settings.name}-ssh-public-key"
-#   value        = local.public_key
-#   key_vault_id = local.key_vault_id
-# }
-
 resource "azurerm_key_vault_secret" "private_keys" {
   for_each     = local.private_keys_pem
   name         = "${var.settings.name}-${replace(each.key, "_", "-")}-ssh-private-key"
