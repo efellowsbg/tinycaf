@@ -1,10 +1,12 @@
 resource "azurerm_app_service_plan" "main" {
-  name                = "api-appserviceplan-pro"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
+  name                = var.settings.name
+  resource_group_name = local.resource_group_name
+  location            = local.location
+
+  kind = try(var.settings.kind, null)
 
   sku {
-    tier = "Standard"
-    size = "S1"
+    tier = var.settings.sku.tier
+    size = var.settings.sku.size
   }
 }
