@@ -5,9 +5,16 @@ locals {
   app_service_plan_id = var.resources.app_service_plans[var.settings.app_service_plan_ref].id
   storage_account_name = var.resources.storage_accounts[var.settings.storage_account_ref].name
   storage_account_primary_access_key = var.resources.storage_accounts[var.settings.storage_account_ref].primary_access_key
-  content = {for key, value in var.settings.app_settings : 
-        key => value
-      }
+  
+  content = {
+    for key, value in var.settings.app_settings : 
+    key => value
+  }
+
+  identity_ids = [
+    for id_ref in try(var.settings.identity.identity_ids_ref, []) :
+    var.resources.managed_identities[id_ref].id
+  ]
 
   tags = merge(
     var.global_settings.tags,

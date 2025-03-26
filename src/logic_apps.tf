@@ -8,5 +8,6 @@ module "logic_apps_standard" {
     resource_groups = module.resource_groups
     app_service_plans = module.app_service_plans
     storage_accounts = module.storage_accounts
+    managed_identities = module.managed_identities
   }
 }

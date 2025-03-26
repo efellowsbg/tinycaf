@@ -20,10 +20,11 @@ resource "azurerm_logic_app_standard" "example" {
   tags                                     = try(var.settings.tags, null)
 
   dynamic "identity" {
-    for_each = try([var.settings.identity], [])
+    for_each = can(var.settings.identity) ? [1] : []
+
     content {
-      type         = try(identity.value.type, null)
-      identity_ids = try(identity.value.identity_ids, null)
+      type         = try(var.settings.identity.type, null)
+      identity_ids = try(local.identity_ids, null)
     }
   }
 
