@@ -1,4 +1,4 @@
-resource "azurerm_logic_app_standard" "example" {
+resource "azurerm_logic_app_standard" "main" {
   name                       = var.settings.name
   location                   = local.location
   resource_group_name        = local.resource_group_name
@@ -53,9 +53,9 @@ resource "azurerm_logic_app_standard" "example" {
       vnet_route_all_enabled           = try(site_config.value.vnet_route_all_enabled, null)
       websockets_enabled               = try(site_config.value.websockets_enabled, null)
       dynamic "cors" {
-        for_each = can(var.settings.site_config.cors) ? [1] : []
+        for_each = try([site_config.value.cors], [])
         content {
-          allowed_origins     = try(cors.value.allowed_origins, null)
+          allowed_origins     = try(cors.value.allowed_origins, [])
           support_credentials = try(cors.value.support_credentials, null)
         }
       }
