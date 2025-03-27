@@ -12,5 +12,6 @@ module "role_assignments" {
     virtual_networks    = module.virtual_networks
     storage_accounts    = module.storage_accounts
     role_definitions    = module.role_definitions
+    disk_encryption_sets = module.disk_encryption_sets
   }
 }

@@ -61,3 +61,5 @@ variable "azuread_service_principals" { default = {} }
 variable "app_service_plans" { default = {} }
 
 variable "recovery_vaults" { default = {} }
+
+variable "disk_encryption_sets" { default = {} }
