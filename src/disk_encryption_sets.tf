@@ -6,7 +6,7 @@ module "disk_encryption_sets" {
   global_settings = local.global_settings
   resources = {
     resource_groups    = module.resource_groups
-    key_vault_keys   = module.key_vault_keys
+    key_vault_keys     = module.key_vault_keys
     managed_identities = module.managed_identities
   }
 }
