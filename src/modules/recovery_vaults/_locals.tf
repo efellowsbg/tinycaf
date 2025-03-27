@@ -11,8 +11,8 @@ locals {
     for id_ref in try(var.settings.identity.identity_ids_ref, []) :
     var.resources.managed_identities[id_ref].id
   ]
-  has_encryption_identity = can(var.settings.encryption.managed_identity_key) || can(var.settings.encryption.managed_identity.key)
-  encryption_identity     = local.has_encryption_identity ? var.remote_objects.managed_identities[try(var.settings.encryption.managed_identity.lz_key, var.client_config.landingzone_key)][try(var.settings.encryption.managed_identity.key, var.settings.encryption.managed_identity_key)].id : null
+  has_encryption_identity = can(var.settings.encryption.managed_identity_ref)
+  encryption_identity     = local.has_encryption_identity ? var.resources.managed_identities[var.settings.encryption.managed_identity_ref].id : null
 
   has_encryption = can(var.settings.encryption)
   encryption_key = local.has_encryption ? var.resources.key_vault_keys[var.settings.encryption.keyvault_key_ref].resource_versionless_id : null
