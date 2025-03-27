@@ -5,9 +5,14 @@ output "id" {
   value       = azurerm_recovery_services_vault.asr.id
 }
 
+output "name" {
+  description = "Name of the vault"
+  value       = azurerm_recovery_services_vault.asr.name
+}
+
 output "resource_group_name" {
   description = "Output the resource group name"
-  value       = local.resource_group_name
+  value       = azurerm_recovery_services_vault.asr.resource_group_name
 }
 
 output "soft_delete_enabled" {
