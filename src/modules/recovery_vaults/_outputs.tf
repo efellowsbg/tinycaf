@@ -19,3 +19,11 @@ output "rbac_id" {
   description = "Principal Id of the Vault"
   value       = try(azurerm_recovery_services_vault.asr.identity.0.principal_id, null)
 }
+
+output "backup_policies" {
+  description = "Output the set of backup policies in this vault"
+  value = {
+    virtual_machines = azurerm_backup_policy_vm.vm
+    file_shares      = azurerm_backup_policy_file_share.fs
+  }
+}
