@@ -8,5 +8,5 @@ resource "azurerm_disk_encryption_set" "main" {
   identity {
     type = "SystemAssigned"
   }
-  auto_key_rotation_enabled = try(var.settings.auto_key_rotation_enabled, false)
+  auto_key_rotation_enabled = try(var.settings.auto_key_rotation_enabled, true)
 }
