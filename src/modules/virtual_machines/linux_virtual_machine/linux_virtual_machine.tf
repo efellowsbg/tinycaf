@@ -18,7 +18,10 @@ resource "azurerm_linux_virtual_machine" "main" {
 
   os_disk {
     caching              = var.settings.os_disk.caching
+    disk_size_gb              = try(var.settings.os_disk.disk_size_gb, null)
     storage_account_type = var.settings.os_disk.storage_account_type
+    write_accelerator_enabled = try(var.settings.os_disk.write_accelerator_enabled, false)
+    disk_encryption_set_id    = can(var.settings.os_disk.disk_encryption_set_key) ? var.resources.disk_encryption_sets[var.settings.os_disk.disk_encryption_set_key].id : null
   }
 
   source_image_reference {
