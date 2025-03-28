@@ -10,4 +10,5 @@ module "key_vault_keys" {
     keyvaults        = module.keyvaults
     virtual_networks = module.virtual_networks
   }
+  depends_on = [module.role_assignments]
 }
