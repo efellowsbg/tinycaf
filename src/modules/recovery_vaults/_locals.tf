@@ -15,5 +15,5 @@ locals {
   encryption_identity     = local.has_encryption_identity ? var.resources.managed_identities[var.settings.encryption.managed_identity_ref].id : null
 
   has_encryption = can(var.settings.encryption)
-  encryption_key = local.has_encryption ? var.resources.key_vault_keys[var.settings.encryption.keyvault_key_ref].resource_versionless_id : null
+  encryption_key = local.has_encryption ? var.resources.key_vault_keys[var.settings.encryption.keyvault_key_ref].versionless_id : null
 }
