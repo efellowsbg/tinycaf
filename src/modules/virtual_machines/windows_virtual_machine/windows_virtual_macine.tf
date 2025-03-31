@@ -34,7 +34,7 @@ resource "random_password" "admin" {
 
 
 resource "azurerm_key_vault_secret" "admin_password" {
-  name         = "${var.settings.name}-${replace(each.key, "_", "-")}-${var.settings.admin_username}"
+  name         = "${var.settings.name}-${var.settings.admin_username}"
   value        = random_password.admin.result
   key_vault_id = local.key_vault_id
 }
