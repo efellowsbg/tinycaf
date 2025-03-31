@@ -3,7 +3,7 @@ resource "azurerm_windows_virtual_machine" "main" {
   resource_group_name   = local.resource_group_name
   location              = local.location
   admin_username        = var.settings.admin_username
-  admin_password        = var.settings.admin_password
+  admin_password        = random_password.admin.result
   size                  = var.settings.size
   network_interface_ids = local.network_interface_ids
 
@@ -20,4 +20,21 @@ resource "azurerm_windows_virtual_machine" "main" {
     sku       = var.settings.source_image_reference.sku
     version   = var.settings.source_image_reference.version
   }
+}
+
+resource "random_password" "admin" {
+  length           = 123
+  min_upper        = 2
+  min_lower        = 2
+  min_special      = 2
+  numeric          = true
+  special          = true
+  override_special = "!@#$%&"
+}
+
+
+resource "azurerm_key_vault_secret" "admin_password" {
+  name         = "${var.settings.name}-${replace(each.key, "_", "-")}-${var.settings.admin_username}"
+  value        = random_password.admin.result
+  key_vault_id = local.key_vault_id
 }
