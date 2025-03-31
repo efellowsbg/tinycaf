@@ -3,11 +3,17 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
-  subnet_ids = [
-    for network_rule_ref, config in try(var.settings.network_rules.subnets, {}) : (
-      var.resources.virtual_networks[split("/", config.subnet_ref)[0]].subnets[split("/", config.subnet_ref)[1]].id
-    )
-  ]
+  subnet_ids = concat(
+    try(var.settings.network_rules.subnet_ids, []),
+    compact([
+      for network_rule_ref, config in try(var.settings.network_rules.subnets, {}) : (
+        try(
+          var.resources.virtual_networks[split("/", config.subnet_ref)[0]].subnets[split("/", config.subnet_ref)[1]].id,
+          null
+        )
+      )
+    ])
+  )
 
   subnet_id = try(
     var.resources.virtual_networks[split("/", var.settings.private_endpoint.subnet_ref)[0]].subnets[split("/", var.settings.private_endpoint.subnet_ref)[1]].id,

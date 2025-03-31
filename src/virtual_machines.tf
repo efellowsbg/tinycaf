@@ -9,5 +9,7 @@ module "virtual_machines" {
     resource_groups  = module.resource_groups
     virtual_networks = module.virtual_networks
     keyvaults        = module.keyvaults
+    recovery_vaults  = module.recovery_vaults
+    disk_encryption_sets = module.disk_encryption_sets
   }
 }
