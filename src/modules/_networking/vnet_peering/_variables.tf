@@ -4,9 +4,9 @@ variable "global_settings" {
 
 variable "settings" {
   description = "All the configuration for this resource"
-  
+
   validation {
-    condition = contains(["<-", "->", "<->", "target", "source"], try(var.settings.direction, "<->"))
+    condition     = contains(["<-", "->", "<->", "target", "source"], try(var.settings.direction, "<->"))
     error_message = "Allowed values for 'direction' are '<-', '->', '<->', 'target', or 'source'. Defaults to '<->' if not set."
   }
 }
