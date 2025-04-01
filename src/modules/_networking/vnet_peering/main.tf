@@ -17,7 +17,7 @@ resource "azurerm_virtual_network_peering" "right_to_left" {
 }
 
 resource "azurerm_virtual_network_peering" "target" {
-  count = local.custom_peering ? 1 : 0
+  count = local.target ? 1 : 0
 
   name                         = "peering-${local.vnet_right.name}"
   resource_group_name          = local.vnet_right.resource_group_name
