@@ -6,7 +6,7 @@ module "keyvault_endpoint" {
   settings        = var.settings
   keyvault_id     = azurerm_key_vault.main.id
   subnet_ref      = var.settings.private_endpoint.subnet_ref
-  dns_zones_ref   = var.settings.private_endpoint.dns_zones_ref
   global_settings = var.global_settings
   resources       = var.resources
 }
+

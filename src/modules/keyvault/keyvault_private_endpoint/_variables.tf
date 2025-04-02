@@ -17,7 +17,3 @@ variable "keyvault_id" {
 variable "subnet_ref" {
   description = "Reference for subnet"
 }
-
-variable "dns_zones_ref" {
-  description = "Reference for DNS zone"
-}
