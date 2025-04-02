@@ -3,13 +3,16 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
-  vnet_ids = {
-    for vnet in var.settings.vnet_ref :
-    vnet => {
-      name = var.resources.virtual_networks[vnet].name
-      id   = var.resources.virtual_networks[vnet].id
-    }
-  }
+  vnet_ids = (
+    var.settings.vnet_ref != null && length(var.settings.vnet_ref) > 0 ?
+    {
+      for vnet in var.settings.vnet_ref :
+      vnet => {
+        name = var.resources.virtual_networks[vnet].name
+        id   = var.resources.virtual_networks[vnet].id
+      }
+    } : {}
+  )
 
   # local object used to map possible private dns zoone names
   zone_names = {
