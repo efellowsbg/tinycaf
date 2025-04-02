@@ -4,7 +4,7 @@ locals {
   location            = local.resource_group.location
 
   vnet_ids = (
-    var.settings.vnet_ref != null && length(var.settings.vnet_ref) > 0 ?
+    try(length(var.settings.vnet_ref), 0) > 0 ?
     {
       for vnet in var.settings.vnet_ref :
       vnet => {
@@ -13,6 +13,7 @@ locals {
       }
     } : {}
   )
+
 
   # local object used to map possible private dns zoone names
   zone_names = {
