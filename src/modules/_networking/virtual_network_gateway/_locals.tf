@@ -3,6 +3,7 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
+
   tags = merge(
     var.global_settings.tags,
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
