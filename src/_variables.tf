@@ -13,3 +13,5 @@ variable "global_settings" {
     inherit_resource_group_tags = false
   }
 }
+
+variable "ddos_id" { default = {} }

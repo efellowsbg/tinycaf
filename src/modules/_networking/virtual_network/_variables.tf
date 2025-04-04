@@ -9,3 +9,7 @@ variable "settings" {
 variable "resources" {
   description = "All required resources"
 }
+
+variable "ddos_id" {
+  description = "All required resources"
+}

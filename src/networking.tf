@@ -4,12 +4,14 @@ module "virtual_networks" {
 
   settings        = each.value
   global_settings = local.global_settings
-
+  ddos_id = ""
   resources = {
     resource_groups         = module.resource_groups
     network_security_groups = module.network_security_groups
   }
 }
+
+
 
 module "vnet_peerings" {
   source   = "./modules/_networking/vnet_peering"
