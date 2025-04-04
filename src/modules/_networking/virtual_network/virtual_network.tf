@@ -7,7 +7,7 @@ resource "azurerm_virtual_network" "main" {
 
   dynamic "ddos_protection_plan" {
     for_each = (
-      (!can(var.settings.ddos) || var.settings.ddos != false) &&
+      (try(var.settings.ddos, null) != false) &&
       (var.ddos_id != "" && can(var.global_settings.ddos_protection_plan_id))
     ) ? { "enabled" = true } : {}
 
@@ -16,4 +16,5 @@ resource "azurerm_virtual_network" "main" {
       enable = true
     }
   }
+
 }
