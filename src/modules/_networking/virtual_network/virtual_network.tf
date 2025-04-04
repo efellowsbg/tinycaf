@@ -6,14 +6,11 @@ resource "azurerm_virtual_network" "main" {
   tags                = local.tags
 
   dynamic "ddos_protection_plan" {
-    for_each = (
-      (try(var.settings.ddos, null) != false) &&
-      (var.ddos_id != "" && can(var.global_settings.ddos_protection_plan_id))
-    ) ? { "enabled" = true } : {}
+    for_each = var.ddos_id != "" || can(var.global_settings["ddos_protection_plan_id"]) ? [1] : []
 
     content {
       id     = var.ddos_id != "" ? var.ddos_id : var.global_settings["ddos_protection_plan_id"]
-      enable = true
+      enable = try(var.settings.ddos_plan, true)
     }
   }
 
