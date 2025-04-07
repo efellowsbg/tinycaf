@@ -16,11 +16,11 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
   )
 
   dynamic "traffic_selector_policy" {
-    for_each = (try(var.settings.local_address_cidrs, null) != null && try(var.settings.remote_address_cidrs, null) != null) ? [1] : []
+    for_each = try(var.settings.selectors, {})
 
     content {
-      local_address_cidrs  = var.settings.local_address_cidrs
-      remote_address_cidrs = var.settings.remote_address_cidrs
+      local_address_cidrs  = try(traffic_selector_policy.value.local_address_cidrs, null)
+      remote_address_cidrs = try(traffic_selector_policy.value.remote_address_cidrs, null)
     }
   }
 
