@@ -13,7 +13,12 @@ module "role_assignments" {
     storage_accounts     = module.storage_accounts
     role_definitions     = module.role_definitions
     disk_encryption_sets = module.disk_encryption_sets
-    linux_virtual_machines     = module.virtual_machines.linux_virtual_machines
-    windows_virtual_machines = module.virtual_machines.windows_virtual_machines
+    linux_virtual_machines = flatten([
+      for vm in module.virtual_machines : vm.linux_virtual_machines
+    ])
+
+    windows_virtual_machines = flatten([
+      for vm in module.virtual_machines : vm.windows_virtual_machines
+    ])
   }
 }
