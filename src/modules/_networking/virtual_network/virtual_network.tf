@@ -4,4 +4,5 @@ resource "azurerm_virtual_network" "main" {
   resource_group_name = local.resource_group_name
   address_space       = var.settings.cidr
   tags                = local.tags
+  dns_servers = try(var.settings.dns_servers,null)
 }
