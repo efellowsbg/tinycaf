@@ -6,6 +6,7 @@ resource "azurerm_virtual_machine_extension" "extension" {
   publisher            = each.value.publisher
   type                 = each.value.type
   type_handler_version = each.value.type_handler_version
+  auto_upgrade_minor_version = try(each.value.auto_upgrade_minor_version, true)
 
   settings = try(each.value.settings,null)
   tags = local.tags
