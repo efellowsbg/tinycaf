@@ -13,7 +13,14 @@ resource "azurerm_windows_virtual_machine" "main" {
     caching              = var.settings.os_disk.caching
     storage_account_type = var.settings.os_disk.storage_account_type
   }
+  dynamic "identity" {
+    for_each = can(var.settings.identity) ? [1] : []
 
+    content {
+      type         = var.settings.identity.type
+      identity_ids = try(local.identity_ids, null)
+    }
+  }
   source_image_reference {
     publisher = var.settings.source_image_reference.publisher
     offer     = var.settings.source_image_reference.offer
