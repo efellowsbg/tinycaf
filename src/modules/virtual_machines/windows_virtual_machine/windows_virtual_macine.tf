@@ -8,7 +8,6 @@ resource "azurerm_windows_virtual_machine" "main" {
   network_interface_ids             = local.network_interface_ids
   vm_agent_platform_updates_enabled = try(var.settings.vm_agent_platform_updates_enabled,false)
   tags                              = local.tags
-  computer_name = try(var.settings.computer_name, var.settings.name)
 
   os_disk {
     caching              = var.settings.os_disk.caching
