@@ -112,11 +112,8 @@ resource "azurerm_kubernetes_cluster" "main" {
     for_each = try(var.settings.linux_profile, null) == null ? [] : [1]
     content {
       admin_username = try(var.settings.linux_profile.admin_username, null)
-      dynamic "ssh_key" {
-        for_each = try(var.settings.linux_profile.ssh_key, null) == null ? [] : [1]
-        content {
-          key_data = try(var.settings.linux_profile.ssh_key_data, null)
-        }
+      ssh_key {
+        key_data = try(var.settings.linux_profile.ssh_key_data, null)
       }
     }
   }
