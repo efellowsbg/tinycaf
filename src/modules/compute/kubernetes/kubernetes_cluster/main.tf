@@ -107,4 +107,19 @@ resource "azurerm_kubernetes_cluster" "main" {
       user_assigned_identity_id = try(kubelet_identity.value.type == "UserAssigned" ? local.kubelet_identity.id : null, null)
     }
   }
+
+  dynamic "linux_profile" {
+    for_each = try(var.settings.linux_profile, null) == null ? [] : [1]
+    content {
+      admin_username = try(var.settings.linux_profile.admin_username, null)
+      dynamic "ssh_key" {
+        for_each = try(var.settings.linux_profile.ssh_key, null) == null ? [] : [1]
+        content {
+          key_data = try(var.settings.linux_profile.ssh_key.key_data, null)
+        }
+      }
+    }
+  }
+
+
 }
