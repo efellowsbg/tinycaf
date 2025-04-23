@@ -19,7 +19,7 @@ locals {
     vnet_id => {
       name = split("/", vnet_id)[length(split("/", vnet_id)) - 1]
       id   = vnet_id
-    } if contains(vnet_id, "Microsoft.Network")
+    }
   }, {})
 
   # Final merged map of all vNets
