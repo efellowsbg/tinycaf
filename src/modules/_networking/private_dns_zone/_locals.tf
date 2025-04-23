@@ -1,10 +1,10 @@
 locals {
-  resource_group      = var.resources.resource_groups[var.settings.resource_group_ref]
-  resource_group_name = local.resource_group.name
-  location            = local.resource_group.location
+  resource_group       = var.resources.resource_groups[var.settings.resource_group_ref]
+  resource_group_name  = local.resource_group.name
+  location             = local.resource_group.location
   registration_enabled = try(var.settings.registration_enabled, false)
 
-  vnet_ids = (
+  vnet_refs = (
     try(length(var.settings.vnet_ref), 0) > 0 ?
     {
       for vnet in var.settings.vnet_ref :
@@ -14,7 +14,16 @@ locals {
       }
     } : {}
   )
+  vnet_ids_cleaned = try({
+    for vnet_id in var.settings.vnet_ids :
+    vnet_id => {
+      name = split("/", vnet_id)[length(split("/", vnet_id)) - 1]
+      id   = vnet_id
+    } if contains(vnet_id, "Microsoft.Network")
+  }, {})
 
+  # Final merged map of all vNets
+  vnet_ids = merge(local.vnet_refs, local.vnet_ids_cleaned)
 
   # local object used to map possible private dns zoone names
   zone_names = {
