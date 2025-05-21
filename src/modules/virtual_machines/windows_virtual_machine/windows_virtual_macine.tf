@@ -6,7 +6,7 @@ resource "azurerm_windows_virtual_machine" "main" {
   admin_password                    = random_password.admin.result
   size                              = var.settings.size
   network_interface_ids             = local.network_interface_ids
-  vm_agent_platform_updates_enabled = try(var.settings.vm_agent_platform_updates_enabled,false)
+  vm_agent_platform_updates_enabled = try(var.settings.vm_agent_platform_updates_enabled, false)
   tags                              = local.tags
 
   os_disk {

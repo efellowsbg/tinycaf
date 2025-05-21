@@ -3,7 +3,7 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
-  key_vault_id          = var.resources.keyvaults[var.settings.keyvault_ref].id
+  key_vault_id = var.resources.keyvaults[var.settings.keyvault_ref].id
 
   tags = merge(
     var.global_settings.tags,
