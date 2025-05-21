@@ -9,6 +9,10 @@ output "primary_access_key" {
   value = azurerm_storage_account.main.primary_access_key
 }
 
+output "primary_connection_string" {
+  value = azurerm_storage_account.main.primary_connection_string
+}
+
 output "containers" {
   value = length(try(var.settings.containers, {})) > 0 ? {
     for container_ref, _ in try(var.settings.containers, {}) :
