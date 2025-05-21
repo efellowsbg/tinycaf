@@ -12,6 +12,7 @@ resource "azurerm_windows_virtual_machine" "main" {
   os_disk {
     caching              = var.settings.os_disk.caching
     storage_account_type = var.settings.os_disk.storage_account_type
+    disk_encryption_set_id    = can(var.settings.os_disk.disk_encryption_set_key) ? var.resources.disk_encryption_sets[var.settings.os_disk.disk_encryption_set_key].id : null
   }
   dynamic "identity" {
     for_each = can(var.settings.identity) ? [1] : []
