@@ -44,7 +44,7 @@ resource "azurerm_postgresql_server" "postgres" {
 }
 
 resource "random_password" "admin" {
-  count            = var.settings.keyvault_ref ? 1 : 0
+  count = try(length(trimspace(var.settings.keyvault_ref)) > 0, false) ? 1 : 0
   length           = 15
   min_upper        = 2
   min_lower        = 2
@@ -55,7 +55,7 @@ resource "random_password" "admin" {
 }
 
 resource "azurerm_key_vault_secret" "admin_password" {
-  count        = var.settings.keyvault_ref ? 1 : 0
+  count = try(length(trimspace(var.settings.keyvault_ref)) > 0, false) ? 1 : 0
   name         = "${var.settings.name}-psqladmin-password"
   value        = random_password.admin[0].result
   key_vault_id = local.key_vault_id

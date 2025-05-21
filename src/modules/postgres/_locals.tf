@@ -3,7 +3,6 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
-  subnet_id = var.resources.virtual_networks[split("/", var.settings.subnet_ref)[0]].subnets[split("/", var.settings.subnet_ref)[1]].id
   key_vault_id          = var.resources.keyvaults[var.settings.keyvault_ref].id
 
   tags = merge(

@@ -8,5 +8,6 @@ module "postgres" {
   resources = {
     resource_groups    = module.resource_groups
     managed_identities = module.managed_identities
+    key_vaults        = module.key_vaults
   }
 }
