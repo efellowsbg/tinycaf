@@ -29,7 +29,7 @@ resource "azurerm_container_registry" "main" {
     for_each = can(var.settings.encryption) ? [1] : []
 
     content {
-      key_vault_key_id = try(var.resources.key_vault_keys[var.settings.encryption.key_vault_key_ref].id, null)
+      key_vault_key_id   = try(var.resources.key_vault_keys[var.settings.encryption.key_vault_key_ref].id, null)
       identity_client_id = try(var.resources.managed_identities[var.settings.encryption.identity_ref].id, null)
     }
   }
