@@ -9,4 +9,3 @@ module "keyvault_endpoint" {
   global_settings = var.global_settings
   resources       = var.resources
 }
-
