@@ -1,5 +1,5 @@
 module "function_apps" {
-  source   = "./modules/function_apps"
+  source   = "./modules/function_app"
   for_each = var.function_apps
 
   settings        = each.value
