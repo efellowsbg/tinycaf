@@ -10,6 +10,8 @@ variable "local_network_gateways" { default = {} }
 
 variable "virtual_network_gateways" { default = {} }
 
+variable "logic_apps_workflow" { default = {} }
+
 variable "function_apps" { default = {} }
 
 variable "public_ips" { default = {} }
