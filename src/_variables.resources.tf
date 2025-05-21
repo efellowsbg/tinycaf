@@ -12,6 +12,8 @@ variable "virtual_network_gateways" { default = {} }
 
 variable "public_ips" { default = {} }
 
+variable "postgres" { default = {} }
+
 variable "keyvaults" { default = {} }
 
 variable "storage_accounts" { default = {} }
