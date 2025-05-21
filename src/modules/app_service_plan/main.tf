@@ -1,19 +1,12 @@
-resource "azurerm_app_service_plan" "main" {
+resource "azurerm_service_plan" "main" {
   name                = var.settings.name
   resource_group_name = local.resource_group_name
   location            = local.location
-
-  kind                         = try(var.settings.kind, "Linux")
+  os_type             = var.settings.os_type
+  sku_name            = var.settings.sku_name
+  app_service_environment_id = try(var.settings.app_service_environment_id, null)
   maximum_elastic_worker_count = try(var.settings.maximum_elastic_worker_count, null)
-  app_service_environment_id   = try(var.settings.app_service_environment_id, null)
-  reserved                     = try(var.settings.reserved, null)
-  is_xenon                     = try(var.settings.is_xenon, null)
-  zone_redundant               = try(var.settings.zone_redundant, null)
-
-
-
-  sku {
-    tier = var.settings.sku.tier
-    size = var.settings.sku.size
-  }
+  per_site_scaling_enabled = try(var.settings.per_site_scaling_enabled, null)
+  zone_balancing_enabled = try(var.settings.zone_balancing_enabled, null)
+  tags = local.tags
 }
