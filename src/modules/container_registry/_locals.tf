@@ -18,4 +18,8 @@ locals {
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
     try(var.settings.tags, {})
   )
+  identity_ids = [
+    for id_ref in try(var.settings.identity.identity_ids_ref, []) :
+    var.resources.managed_identities[id_ref].id
+  ]
 }

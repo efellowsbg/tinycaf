@@ -9,5 +9,6 @@ module "container_registries" {
     resource_groups   = module.resource_groups
     virtual_networks  = module.virtual_networks
     private_dns_zones = module.private_dns_zones
+    key_vault_keys = module.key_vault_keys
   }
 }

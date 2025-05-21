@@ -17,4 +17,20 @@ resource "azurerm_container_registry" "main" {
       tags                    = try(georeplications.value.tags, null)
     }
   }
+  dynamic "identity" {
+    for_each = can(var.settings.identity) ? [1] : []
+
+    content {
+      type         = var.settings.identity.type
+      identity_ids = try(local.identity_ids, null)
+    }
+  }
+  dynamic "encryption" {
+    for_each = can(var.settings.encryption) ? [1] : []
+
+    content {
+      key_vault_key_id = try(var.resources.key_vault_keys[var.settings.encryption.key_vault_key_ref].id, null)
+      identity_client_id = try(var.resources.managed_identities[var.settings.encryption.identity_ref].id, null)
+    }
+  }
 }
