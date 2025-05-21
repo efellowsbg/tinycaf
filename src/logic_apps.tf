@@ -11,3 +11,15 @@ module "logic_apps_standard" {
     managed_identities = module.managed_identities
   }
 }
+
+module "logic_apps_workflow" {
+  source   = "./modules/logic_app/workflow"
+  for_each = var.logic_apps_workflow
+
+  settings        = each.value
+  global_settings = local.global_settings
+  resources = {
+    resource_groups    = module.resource_groups
+    managed_identities = module.managed_identities
+  }
+}
