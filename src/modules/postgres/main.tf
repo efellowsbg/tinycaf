@@ -5,7 +5,7 @@ resource "azurerm_postgresql_server" "postgres" {
   tags                = local.tags
 
   administrator_login          = var.settings.keyvault_ref != null ? "postgreadmin" : null
-  administrator_login_password = var.settings.keyvault_ref != null ? random_password.admin.value : null
+  administrator_login_password = var.settings.keyvault_ref != null ? random_password.admin.result : null
 
   sku_name   = try(var.settings.sku_name, "GP_Gen5_4")
   version    = try(var.settings.version, "11")
