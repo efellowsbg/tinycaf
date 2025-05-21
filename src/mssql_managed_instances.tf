@@ -10,5 +10,6 @@ module "mssql_managed_instances" {
     virtual_networks        = module.virtual_networks
     managed_identities      = module.managed_identities
     network_security_groups = module.network_security_groups
+    keyvaults               = module.keyvaults
   }
 }
