@@ -5,7 +5,7 @@ resource "azurerm_postgresql_server" "postgres" {
   tags                = local.tags
 
   administrator_login          = var.settings.keyvault_ref != null ? "postgreadmin" : null
-  administrator_login_password = var.settings.keyvault_ref != null ? random_password.admin.result : null
+  administrator_login_password =  var.settings.keyvault_ref != null ? random_password.admin[0].result : null
 
   sku_name   = try(var.settings.sku_name, "GP_Gen5_4")
   version    = try(var.settings.version, "11")
@@ -57,6 +57,6 @@ resource "random_password" "admin" {
 resource "azurerm_key_vault_secret" "admin_password" {
   count        = var.settings.keyvault_ref ? 1 : 0
   name         = "${var.settings.name}-psqladmin-password"
-  value        = random_password.admin.result
+  value        = random_password.admin[0].result
   key_vault_id = local.key_vault_id
 }
