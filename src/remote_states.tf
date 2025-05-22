@@ -7,4 +7,6 @@ module "remote_states" {
   resource_group_name  = var.landingzone.backend_config.resource_group_name
   storage_account_name = var.landingzone.backend_config.storage_account_name
   container_name       = var.landingzone.backend_config.container_name
+  client_id            = var.client_id
+  tenant_id            = var.tenant_id
 }
