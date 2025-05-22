@@ -6,11 +6,3 @@ locals {
     client_id       = data.azurerm_client_config.current.client_id
   })
 }
-
-
-locals {
-  resources = merge(
-    { "${var.landingzone.key}" = module.caf },
-    { for k, v in module.remote_states : k => v.outputs }
-  )
-}
