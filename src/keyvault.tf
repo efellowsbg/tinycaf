@@ -14,7 +14,5 @@ module "keyvaults" {
       for k, v in module.remote_states : k => v.outputs
     }
   )
-  client_config = {
-    landingzone_key = var.landingzone.key
-  }
 }
+
