@@ -30,6 +30,3 @@ variable "landingzone" {
     })))
   })
 }
-variable "resources" {
-  type = any
-}
