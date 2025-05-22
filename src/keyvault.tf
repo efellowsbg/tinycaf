@@ -16,3 +16,10 @@ module "keyvaults" {
   )
 }
 
+resource "null_resource" "debug_remote_state" {
+  triggers = {
+    remote_states_json = jsonencode({
+      for k, v in module.remote_states : k => v.outputs
+    })
+  }
+}
