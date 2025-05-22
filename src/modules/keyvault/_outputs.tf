@@ -17,3 +17,7 @@ output "location" {
 output "name" {
   value = azurerm_key_vault.main.name
 }
+
+output "debug_subnet_resolution" {
+  value = local.resolved_subnet_ids
+}

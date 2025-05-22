@@ -20,6 +20,25 @@ locals {
       )
     ])
   )
+  resolved_subnet_ids = [
+    for network_rule_ref, config in try(var.settings.network_rules.subnets, {}) : {
+      lz     = try(config.lz_key, var.client_config.landingzone_key)
+      vnet   = split("/", config.subnet_ref)[0]
+      subnet = split("/", config.subnet_ref)[1]
+
+      # Проверка дали стойностите съществуват:
+      maybe_id = try(
+        var.resources[
+          try(config.lz_key, var.client_config.landingzone_key)
+        ].virtual_networks[
+          split("/", config.subnet_ref)[0]
+        ].subnets[
+          split("/", config.subnet_ref)[1]
+        ].id,
+        "NOT_FOUND"
+      )
+    }
+  ]
 
   subnet_id = try(
     var.resources.virtual_networks[split("/", var.settings.private_endpoint.subnet_ref)[0]].subnets[split("/", var.settings.private_endpoint.subnet_ref)[1]].id,
