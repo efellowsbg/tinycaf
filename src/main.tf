@@ -11,3 +11,7 @@ module "resource_groups" {
 output "resource_groups" {
   value = module.resource_groups
 }
+
+output "debug_static" {
+  value = "✅ Output block reached"
+}
