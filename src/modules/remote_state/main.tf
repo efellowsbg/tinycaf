@@ -3,6 +3,8 @@ variable "tfstate" {}
 variable "resource_group_name" {}
 variable "storage_account_name" {}
 variable "container_name" {}
+variable "client_id" {}
+variable "tenant_id" {}
 
 data "terraform_remote_state" "this" {
   backend = var.backend_type
@@ -14,6 +16,8 @@ data "terraform_remote_state" "this" {
     key                  = var.tfstate
     use_oidc             = true
     use_azuread_auth     = true
+    client_id           = var.client_id
+    tenant_id           = var.tenant_id
   }
 }
 
