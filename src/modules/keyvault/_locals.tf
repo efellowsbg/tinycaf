@@ -9,20 +9,13 @@ locals {
       for network_rule_ref, config in try(var.settings.network_rules.subnets, {}) : (
         try(
           var.resources[
-            try(config.lz_key, "___no_lz_key___")
+            try(config.lz_key, var.client_config.landingzone_key)
             ].virtual_networks[
             split("/", config.subnet_ref)[0]
             ].subnets[
             split("/", config.subnet_ref)[1]
           ].id,
-          try(
-            var.resources.virtual_networks[
-              split("/", config.subnet_ref)[0]
-              ].subnets[
-              split("/", config.subnet_ref)[1]
-            ].id,
-            null
-          )
+          null
         )
       )
     ])
