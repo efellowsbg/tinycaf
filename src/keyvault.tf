@@ -4,11 +4,14 @@ module "keyvaults" {
 
   settings        = each.value
   global_settings = local.global_settings
-  resources = merge({
-    resource_groups    = module.resource_groups
-    virtual_networks   = module.virtual_networks
-    managed_identities = module.managed_identities
-    private_dns_zones  = module.private_dns_zones
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups    = module.resource_groups
+        virtual_networks   = module.virtual_networks
+        managed_identities = module.managed_identities
+        private_dns_zones  = module.private_dns_zones
+      }
     },
     {
       for k, v in module.remote_states : k => v.outputs
