@@ -5,15 +5,24 @@ module "virtual_networks" {
   settings        = each.value
   global_settings = local.global_settings
 
-  resources = {
-    resource_groups         = module.resource_groups
-    network_security_groups = module.network_security_groups
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups         = module.resource_groups
+        network_security_groups = module.network_security_groups
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }
 
-output "virtual_networks" {
-  value = module.virtual_networks
-}
 
 module "vnet_peerings" {
   source   = "./modules/_networking/vnet_peering"
@@ -22,8 +31,19 @@ module "vnet_peerings" {
   settings        = each.value
   global_settings = local.global_settings
 
-  resources = {
-    virtual_networks = module.virtual_networks
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        virtual_networks = module.virtual_networks
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }
 
@@ -34,10 +54,22 @@ module "virtual_network_gateways" {
   settings        = each.value
   global_settings = local.global_settings
 
-  resources = {
-    virtual_networks = module.virtual_networks
-    public_ips       = module.public_ips
-    resource_groups  = module.resource_groups
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        virtual_networks = module.virtual_networks
+        public_ips       = module.public_ips
+        resource_groups  = module.resource_groups
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }
 
@@ -48,8 +80,21 @@ module "public_ips" {
   settings        = each.value
   global_settings = local.global_settings
 
-  resources = {
-    resource_groups = module.resource_groups
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups = module.resource_groups
+
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }
 
@@ -60,8 +105,20 @@ module "local_network_gateways" {
   global_settings = var.global_settings
   settings        = each.value
 
-  resources = {
-    resource_groups = module.resource_groups
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups = module.resource_groups
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }
 
@@ -71,9 +128,21 @@ module "private_dns_zones" {
 
   global_settings = var.global_settings
   settings        = each.value
-  resources = {
-    resource_groups  = module.resource_groups
-    virtual_networks = module.virtual_networks
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups  = module.resource_groups
+        virtual_networks = module.virtual_networks
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }
 
@@ -83,12 +152,24 @@ module "virtual_network_gateway_connections" {
 
   global_settings = var.global_settings
   settings        = each.value
-  resources = {
-    resource_groups          = module.resource_groups
-    virtual_networks         = module.virtual_networks
-    keyvaults                = module.keyvaults
-    local_network_gateways   = module.local_network_gateways
-    virtual_network_gateways = module.virtual_network_gateways
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups          = module.resource_groups
+        virtual_networks         = module.virtual_networks
+        keyvaults                = module.keyvaults
+        local_network_gateways   = module.local_network_gateways
+        virtual_network_gateways = module.virtual_network_gateways
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }
 
@@ -99,9 +180,20 @@ module "private_dns_a_records" {
   settings        = each.value
   global_settings = local.global_settings
 
-  resources = {
-    resource_groups   = module.resource_groups
-    private_dns_zones = module.private_dns_zones
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups   = module.resource_groups
+        private_dns_zones = module.private_dns_zones
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }
 
@@ -112,11 +204,23 @@ module "private_endpoints" {
   settings        = each.value
   global_settings = local.global_settings
 
-  resources = {
-    resource_groups   = module.resource_groups
-    virtual_networks  = module.virtual_networks
-    private_dns_zones = module.private_dns_zones
-    storage_accounts  = module.storage_accounts
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups   = module.resource_groups
+        virtual_networks  = module.virtual_networks
+        private_dns_zones = module.private_dns_zones
+        storage_accounts  = module.storage_accounts
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }
 
@@ -127,8 +231,20 @@ module "network_security_groups" {
   settings        = each.value
   global_settings = local.global_settings
 
-  resources = {
-    resource_groups = module.resource_groups
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups = module.resource_groups
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }
 
@@ -139,8 +255,20 @@ module "nat_gateways" {
   settings        = each.value
   global_settings = local.global_settings
 
-  resources = {
-    resource_groups = module.resource_groups
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups = module.resource_groups
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }
 
@@ -151,9 +279,20 @@ module "network_security_group_associations" {
   settings        = each.value
   global_settings = local.global_settings
 
-  resources = {
-    resource_groups         = module.resource_groups
-    network_security_groups = module.network_security_groups
-    virtual_networks        = module.virtual_networks
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups         = module.resource_groups
+        network_security_groups = module.network_security_groups
+        virtual_networks        = module.virtual_networks
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }
