@@ -24,9 +24,3 @@ resource "azurerm_key_vault" "main" {
     }
   }
 }
-
-resource "null_resource" "debug_lz_key" {
-  triggers = {
-    current_lz_key = var.client_config.landingzone_key
-  }
-}
