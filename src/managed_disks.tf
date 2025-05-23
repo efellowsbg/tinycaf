@@ -19,3 +19,4 @@ module "managed_disks" {
     landingzone_key = var.landingzone.key
   }
 }
+

@@ -21,3 +21,10 @@ variable "subnet_ref" {
 variable "dns_zones_ref" {
   description = "Dns zone references"
 }
+
+variable "client_config" {
+  description = "Client config such as current landingzone key"
+  type = object({
+    landingzone_key = string
+  })
+}

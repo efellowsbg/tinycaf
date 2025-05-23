@@ -24,3 +24,4 @@ module "function_apps" {
     landingzone_key = var.landingzone.key
   }
 }
+

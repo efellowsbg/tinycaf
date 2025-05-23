@@ -7,6 +7,7 @@ module "recovery_vaults" {
 
 
 
+
   resources = merge(
     {
       (var.landingzone.key) = {

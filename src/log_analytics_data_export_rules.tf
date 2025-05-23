@@ -23,3 +23,4 @@ module "log_analytics_data_export_rules" {
     landingzone_key = var.landingzone.key
   }
 }
+

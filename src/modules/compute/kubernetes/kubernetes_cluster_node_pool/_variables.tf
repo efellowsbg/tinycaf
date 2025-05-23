@@ -17,3 +17,10 @@ variable "resources" {
 variable "cluster_id" {
   description = "Clusters's id"
 }
+
+variable "client_config" {
+  description = "Client config such as current landingzone key"
+  type = object({
+    landingzone_key = string
+  })
+}

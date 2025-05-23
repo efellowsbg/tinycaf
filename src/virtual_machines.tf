@@ -24,3 +24,4 @@ module "virtual_machines" {
     landingzone_key = var.landingzone.key
   }
 }
+

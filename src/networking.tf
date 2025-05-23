@@ -56,6 +56,7 @@ module "virtual_network_gateways" {
 
 
 
+
   resources = merge(
     {
       (var.landingzone.key) = {

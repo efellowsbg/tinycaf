@@ -25,3 +25,4 @@ module "mssql_managed_instances" {
     landingzone_key = var.landingzone.key
   }
 }
+
