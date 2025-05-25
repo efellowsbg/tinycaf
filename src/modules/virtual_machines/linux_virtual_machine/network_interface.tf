@@ -4,4 +4,5 @@ module "network_interface" {
   settings        = var.settings
 
   resources = var.resources
+  client_config = var.client_config
 }

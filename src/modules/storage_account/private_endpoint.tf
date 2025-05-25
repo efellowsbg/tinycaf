@@ -9,4 +9,5 @@ module "storage_account_endpoint" {
   dns_zones_ref       = var.settings.private_endpoint.dns_zones_ref
   global_settings     = var.global_settings
   resources           = var.resources
+  client_config = var.client_config
 }

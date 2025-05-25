@@ -5,6 +5,7 @@ module "linux_virtual_machines" {
   settings        = var.settings
   global_settings = var.global_settings
   resources       = var.resources
+  client_config = var.client_config
 }
 
 module "windows_virtual_machines" {
@@ -14,4 +15,5 @@ module "windows_virtual_machines" {
   settings        = var.settings
   global_settings = var.global_settings
   resources       = var.resources
+  client_config = var.client_config
 }

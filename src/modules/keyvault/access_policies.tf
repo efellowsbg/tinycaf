@@ -9,4 +9,5 @@ module "initial_policy" {
   policy_name     = each.key
 
   resources = var.resources
+  client_config = var.client_config
 }

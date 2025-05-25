@@ -6,21 +6,39 @@ locals {
   location            = local.resource_group.location
 
   subnet_ids = [
-    for network_rule_ref, config in try(var.settings.network_rules.subnets, {}) : (
-      var.resources.virtual_networks[split("/", config.subnet_ref)[0]].subnets[split("/", config.subnet_ref)[1]].id
-    )
-  ]
+  for network_rule_ref, config in try(var.settings.network_rules.subnets, {}) : (
+    var.resources[
+      try(config.subnet_lz_key, var.client_config.landingzone_key)
+    ].virtual_networks[
+      split("/", config.subnet_ref)[0]
+    ].subnets[
+      split("/", config.subnet_ref)[1]
+    ].id
+  )
+]
+
 
   subnet_id = try(
-    var.resources.virtual_networks[split("/", var.settings.private_endpoint.subnet_ref)[0]].subnets[split("/", var.settings.private_endpoint.subnet_ref)[1]].id,
-    null
-  )
+  var.resources[
+    try(var.settings.private_endpoint.subnet_lz_key, var.client_config.landingzone_key)
+  ].virtual_networks[
+    split("/", var.settings.private_endpoint.subnet_ref)[0]
+  ].subnets[
+    split("/", var.settings.private_endpoint.subnet_ref)[1]
+  ].id,
+  null
+)
 
   dns_zone_ids = try(
-    var.settings.private_endpoint.dns_zones_ids,
-    [for zone in var.settings.private_endpoint.dns_zones_ref : var.resources.private_dns_zones[zone].id],
-    []
-  )
+  var.settings.private_endpoint.dns_zones_ids,
+  [
+    for zone in var.settings.private_endpoint.dns_zones_ref :
+    var.resources[
+      try(var.settings.private_endpoint.private_dns_zone_lz_key, var.client_config.landingzone_key)
+    ].private_dns_zones[zone].id
+  ],
+  []
+)
 
   tags = merge(
     var.global_settings.tags,

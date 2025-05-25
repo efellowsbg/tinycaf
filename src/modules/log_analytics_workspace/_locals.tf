@@ -6,9 +6,15 @@ locals {
   location            = local.resource_group.location
 
   identity_ids = [
-    for id_ref in try(var.settings.identity.identity_ids_ref, []) :
-    try(var.resources.managed_identities[id_ref].id, null)
-  ]
+  for id_ref in try(var.settings.identity.identity_ids_ref, []) :
+  try(
+    var.resources[
+      try(var.settings.identity.managed_identity_lz_key, var.client_config.landingzone_key)
+    ].managed_identities[id_ref].id,
+    null
+  )
+]
+
 
   tags = merge(
     var.global_settings.tags,
