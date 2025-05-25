@@ -141,17 +141,4 @@ output "role_definitions" {
   value = module.role_definitions
 }
 
-output "keyvault_access_policies" {
-  value = module.keyvault_access_policies
-}
 
-output "storage_account_endpoints" {
-  value = module.storage_account_endpoint
-}
-
-output "virtual_machine_network_interfaces" {
-  value = merge(
-    module.virtual_machines.linux_virtual_machines.network_interface,
-    module.virtual_machines.windows_virtual_machines.network_interface
-  )
-}
