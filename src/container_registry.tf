@@ -24,4 +24,3 @@ module "container_registries" {
     landingzone_key = var.landingzone.key
   }
 }
-

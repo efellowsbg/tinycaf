@@ -23,4 +23,3 @@ module "kubernetes_clusters" {
     landingzone_key = var.landingzone.key
   }
 }
-

@@ -47,4 +47,3 @@ module "logic_apps_workflow" {
     landingzone_key = var.landingzone.key
   }
 }
-

@@ -7,17 +7,17 @@ resource "azurerm_network_interface" "main" {
   tags = local.tags
 
   ip_configuration {
-    name                          = each.value.ip_configuration.name
+    name = each.value.ip_configuration.name
     subnet_id = try(
-  var.resources[
-    try(each.value.ip_configuration.subnet_lz_key, var.client_config.landingzone_key)
-  ].virtual_networks[
-    split("/", each.value.ip_configuration.subnet_ref)[0]
-  ].subnets[
-    split("/", each.value.ip_configuration.subnet_ref)[1]
-  ].id,
-  null
-)
+      var.resources[
+        try(each.value.ip_configuration.subnet_lz_key, var.client_config.landingzone_key)
+        ].virtual_networks[
+        split("/", each.value.ip_configuration.subnet_ref)[0]
+        ].subnets[
+        split("/", each.value.ip_configuration.subnet_ref)[1]
+      ].id,
+      null
+    )
 
     private_ip_address_allocation = try(each.value.ip_configuration.private_ip_address_allocation, "Dynamic")
     private_ip_address = try(

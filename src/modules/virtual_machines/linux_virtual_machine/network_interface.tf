@@ -3,6 +3,6 @@ module "network_interface" {
   global_settings = var.global_settings
   settings        = var.settings
 
-  resources = var.resources
+  resources     = var.resources
   client_config = var.client_config
 }

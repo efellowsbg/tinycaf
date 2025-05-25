@@ -23,4 +23,3 @@ module "log_analytics_workspaces" {
     landingzone_key = var.landingzone.key
   }
 }
-

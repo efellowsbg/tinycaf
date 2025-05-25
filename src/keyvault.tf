@@ -21,5 +21,3 @@ module "keyvaults" {
     landingzone_key = var.landingzone.key
   }
 }
-
-

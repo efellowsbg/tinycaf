@@ -10,13 +10,13 @@ resource "azurerm_windows_virtual_machine" "main" {
   tags                              = local.tags
 
   os_disk {
-    caching                = var.settings.os_disk.caching
-    storage_account_type   = var.settings.os_disk.storage_account_type
+    caching              = var.settings.os_disk.caching
+    storage_account_type = var.settings.os_disk.storage_account_type
     disk_encryption_set_id = can(var.settings.os_disk.disk_encryption_set_key) ? var.resources[
-  try(var.settings.os_disk.disk_encryption_set_lz_key, var.client_config.landingzone_key)
-].disk_encryption_sets[
-  var.settings.os_disk.disk_encryption_set_key
-].id : null
+      try(var.settings.os_disk.disk_encryption_set_lz_key, var.client_config.landingzone_key)
+      ].disk_encryption_sets[
+      var.settings.os_disk.disk_encryption_set_key
+    ].id : null
 
   }
   dynamic "identity" {

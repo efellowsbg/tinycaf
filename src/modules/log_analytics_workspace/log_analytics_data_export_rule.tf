@@ -1,16 +1,16 @@
 resource "azurerm_log_analytics_data_export_rule" "main" {
   for_each = try(var.settings.rules, {})
 
-  name                    = each.value.name
-  resource_group_name     = local.resource_group_name
-  workspace_resource_id   = azurerm_log_analytics_workspace.main.id
+  name                  = each.value.name
+  resource_group_name   = local.resource_group_name
+  workspace_resource_id = azurerm_log_analytics_workspace.main.id
   destination_resource_id = var.resources[
-  try(each.value.storage_account_lz_key, var.client_config.landingzone_key)
-].storage_accounts[
-  each.value.storage_account_ref
-].id
+    try(each.value.storage_account_lz_key, var.client_config.landingzone_key)
+    ].storage_accounts[
+    each.value.storage_account_ref
+  ].id
 
-  table_names             = each.value.table_names
+  table_names = each.value.table_names
 
   enabled = try(each.value.enabled, false)
 

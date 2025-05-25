@@ -25,4 +25,3 @@ module "storage_accounts" {
     landingzone_key = var.landingzone.key
   }
 }
-

@@ -8,6 +8,6 @@ module "initial_policy" {
   access_policies = each.value
   policy_name     = each.key
 
-  resources = var.resources
+  resources     = var.resources
   client_config = var.client_config
 }

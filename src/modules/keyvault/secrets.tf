@@ -7,5 +7,5 @@ module "secrets" {
   secrets         = each.value
   global_settings = var.global_settings
   resources       = var.resources
-  client_config = var.client_config
+  client_config   = var.client_config
 }

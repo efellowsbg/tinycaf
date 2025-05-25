@@ -3,7 +3,7 @@ module "kubernetes_cluster" {
   settings        = var.settings
   global_settings = var.global_settings
   resources       = var.resources
-  client_config = var.client_config
+  client_config   = var.client_config
 }
 
 module "kubernetes_cluster_node_pool" {
@@ -15,5 +15,5 @@ module "kubernetes_cluster_node_pool" {
   settings        = each.value
   global_settings = var.global_settings
   resources       = var.resources
-  client_config = var.client_config
+  client_config   = var.client_config
 }

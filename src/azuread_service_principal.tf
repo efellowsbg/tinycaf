@@ -18,4 +18,3 @@ module "azuread_service_principals" {
     landingzone_key = var.landingzone.key
   }
 }
-

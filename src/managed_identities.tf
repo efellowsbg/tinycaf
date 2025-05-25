@@ -21,4 +21,3 @@ module "managed_identities" {
     landingzone_key = var.landingzone.key
   }
 }
-

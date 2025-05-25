@@ -5,7 +5,7 @@ module "linux_function_apps" {
   settings        = var.settings
   global_settings = var.global_settings
   resources       = var.resources
-  client_config = var.client_config
+  client_config   = var.client_config
 }
 
 module "windows_function_apps" {
@@ -15,5 +15,5 @@ module "windows_function_apps" {
   settings        = var.settings
   global_settings = var.global_settings
   resources       = var.resources
-  client_config = var.client_config
+  client_config   = var.client_config
 }

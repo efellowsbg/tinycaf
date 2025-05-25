@@ -16,8 +16,8 @@ data "terraform_remote_state" "this" {
     key                  = var.tfstate
     use_oidc             = true
     use_azuread_auth     = true
-    client_id           = var.client_id
-    tenant_id           = var.tenant_id
+    client_id            = var.client_id
+    tenant_id            = var.tenant_id
   }
 }
 

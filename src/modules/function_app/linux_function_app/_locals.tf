@@ -18,9 +18,9 @@ locals {
   subnet_id = try(
     var.resources[
       try(var.settings.site_config.ip_restriction.subnet_lz_key, var.client_config.landingzone_key)
-    ].virtual_networks[
+      ].virtual_networks[
       split("/", var.settings.site_config.ip_restriction.subnet_ref)[0]
-    ].subnets[
+      ].subnets[
       split("/", var.settings.site_config.ip_restriction.subnet_ref)[1]
     ].id,
     null
@@ -29,7 +29,7 @@ locals {
   # key vault key
   key_vault_key_id = var.resources[
     try(var.settings.key_vault_key_lz_key, var.client_config.landingzone_key)
-  ].key_vault_keys[
+    ].key_vault_keys[
     var.settings.key_vault_key_ref
   ].versionless_id
 }

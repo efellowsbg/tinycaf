@@ -24,4 +24,3 @@ module "key_vault_keys" {
   }
 
 }
-
