@@ -63,6 +63,7 @@ output "managed_disks" {
 
 output "storage_accounts" {
   value = module.storage_accounts
+  sensitive = true
 }
 
 output "recovery_vaults" {
