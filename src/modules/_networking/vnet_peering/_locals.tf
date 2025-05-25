@@ -1,6 +1,18 @@
 locals {
-  vnet_left  = try(var.resources.virtual_networks[var.settings.vnet_left_ref], null)
-  vnet_right = try(var.resources.virtual_networks[var.settings.vnet_right_ref], null)
+  vnet_left = try(
+    var.resources[
+      try(var.settings.vnet_left_lz_key, var.client_config.landingzone_key)
+    ].virtual_networks[var.settings.vnet_left_ref],
+    null
+  )
+
+  vnet_right = try(
+    var.resources[
+      try(var.settings.vnet_right_lz_key, var.client_config.landingzone_key)
+    ].virtual_networks[var.settings.vnet_right_ref],
+    null
+  )
+
 
   direction = try(var.settings.direction, "<->")
   target    = local.direction == "target"

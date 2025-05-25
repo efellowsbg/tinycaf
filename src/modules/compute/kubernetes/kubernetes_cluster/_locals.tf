@@ -1,22 +1,50 @@
 locals {
-  resource_group      = var.resources.resource_groups[var.settings.resource_group_ref]
+  resource_group = var.resources[
+    try(var.settings.lz_key, var.client_config.landingzone_key)
+  ].resource_groups[var.settings.resource_group_ref]
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
-  managed_identity = can(var.resources.managed_identities[var.settings.identity.managed_identity_ref]) ? var.resources.managed_identities[var.settings.identity.managed_identity_ref] : null
-  kubelet_identity = can(var.resources.managed_identities[var.settings.kubelet_identity.managed_identity_ref]) ? var.resources.managed_identities[var.settings.kubelet_identity.managed_identity_ref] : null
+  managed_identity = can(
+    var.resources[
+      try(var.settings.identity.lz_key, var.client_config.landingzone_key)
+    ].managed_identities[var.settings.identity.managed_identity_ref]
+    ) ? var.resources[
+    try(var.settings.identity.lz_key, var.client_config.landingzone_key)
+  ].managed_identities[var.settings.identity.managed_identity_ref] : null
+
+  kubelet_identity = can(
+    var.resources[
+      try(var.settings.kubelet_identity.lz_key, var.client_config.landingzone_key)
+    ].managed_identities[var.settings.kubelet_identity.managed_identity_ref]
+    ) ? var.resources[
+    try(var.settings.kubelet_identity.lz_key, var.client_config.landingzone_key)
+  ].managed_identities[var.settings.kubelet_identity.managed_identity_ref] : null
 
   validated_pod_cidr           = local.effective_network_profile.network_plugin == "azure" && local.effective_network_profile.pod_cidr != null && local.effective_network_profile.network_plugin_mode != "overlay" ? error("Error: When network_plugin is 'azure', pod_cidr must not be set unless network_plugin_mode is 'overlay'.") : local.effective_network_profile.pod_cidr
   validated_network_data_plane = local.effective_network_profile.network_policy == "cilium" && local.effective_network_profile.network_data_plane != "cilium" ? error("Error: When network_policy is set to 'cilium', the network_data_plane must also be set to 'cilium'.") : local.effective_network_profile.network_data_plane
 
   subnet_ids = [
     for network_rule_ref, config in try(var.settings.network_rules.subnets, {}) : (
-      var.resources.virtual_networks[split("/", config.subnet_ref)[0]].subnets[split("/", config.subnet_ref)[1]].id
+      var.resources[
+        try(config.lz_key, var.client_config.landingzone_key)
+        ].virtual_networks[
+        split("/", config.subnet_ref)[0]
+        ].subnets[
+        split("/", config.subnet_ref)[1]
+      ].id
     )
   ]
 
+
   vnet_subnet_id = try(
-    var.resources.virtual_networks[split("/", var.settings.default_node_pool.subnet_ref)[0]].subnets[split("/", var.settings.default_node_pool.subnet_ref)[1]].id,
+    var.resources[
+      try(var.settings.default_node_pool.lz_key, var.client_config.landingzone_key)
+      ].virtual_networks[
+      split("/", var.settings.default_node_pool.subnet_ref)[0]
+      ].subnets[
+      split("/", var.settings.default_node_pool.subnet_ref)[1]
+    ].id,
     null
   )
 

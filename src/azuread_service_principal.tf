@@ -4,8 +4,17 @@ module "azuread_service_principals" {
 
   settings        = each.value
   global_settings = local.global_settings
-
-  resources = {
-    azuread_applications = module.azuread_applications
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        azuread_applications = module.azuread_applications
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
   }
 }

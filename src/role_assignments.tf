@@ -24,4 +24,7 @@ module "role_assignments" {
       if length(vm.windows_virtual_machines) > 0
     }
   }
+  client_config = {
+    landingzone_key = var.landingzone.key
+  }
 }

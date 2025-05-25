@@ -21,6 +21,12 @@ variable "access_policies" {
   }
 }
 
+variable "client_config" {
+  description = "Client config such as current landingzone key"
+  type = object({
+    landingzone_key = string
+  })
+}
 variable "policy_name" {
   description = "The key of the access policy."
   type        = string

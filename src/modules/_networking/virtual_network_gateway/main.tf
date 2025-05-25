@@ -17,8 +17,18 @@ resource "azurerm_virtual_network_gateway" "main" {
     content {
       name                          = ip_configuration.value.name
       private_ip_address_allocation = try(ip_configuration.value.private_ip_address_allocation, null)
-      public_ip_address_id          = var.resources.public_ips[ip_configuration.value.public_ip_address_ref].id
-      subnet_id                     = var.resources.virtual_networks[split("/", ip_configuration.value.subnet_ref)[0]].subnets[split("/", ip_configuration.value.subnet_ref)[1]].id
+
+      public_ip_address_id = var.resources[
+        try(ip_configuration.value.lz_key, var.client_config.landingzone_key)
+      ].public_ips[ip_configuration.value.public_ip_address_ref].id
+
+      subnet_id = var.resources[
+        try(ip_configuration.value.lz_key, var.client_config.landingzone_key)
+        ].virtual_networks[
+        split("/", ip_configuration.value.subnet_ref)[0]
+        ].subnets[
+        split("/", ip_configuration.value.subnet_ref)[1]
+      ].id
     }
   }
 

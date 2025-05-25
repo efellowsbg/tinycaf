@@ -17,3 +17,10 @@ variable "keyvault_id" {
 variable "secrets" {
   description = "Keyvault secrets"
 }
+
+variable "client_config" {
+  description = "Client config such as current landingzone key"
+  type = object({
+    landingzone_key = string
+  })
+}

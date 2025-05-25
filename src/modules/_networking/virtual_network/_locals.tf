@@ -1,5 +1,7 @@
 locals {
-  resource_group      = var.resources.resource_groups[var.settings.resource_group_ref]
+  resource_group = var.resources[
+    try(var.settings.lz_key, var.client_config.landingzone_key)
+  ].resource_groups[var.settings.resource_group_ref]
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
@@ -7,8 +9,14 @@ locals {
 
   network_security_group_ids = {
     for k, v in var.settings.subnets :
-    k => try(var.resources.network_security_groups[v.network_security_group_ref].id, null)
+    k => try(
+      var.resources[
+        try(var.settings.lz_key, var.client_config.landingzone_key)
+      ].network_security_groups[v.network_security_group_ref].id,
+      null
+    )
   }
+
 
   # local object used to map short delegation refs to full delegation "objects"
   delegations = {

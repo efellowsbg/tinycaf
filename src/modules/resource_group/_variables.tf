@@ -5,3 +5,11 @@ variable "global_settings" {
 variable "settings" {
   description = "All the configuration for this resource"
 }
+
+variable "client_config" {
+  description = "Client config such as current landingzone key"
+  type = object({
+    landingzone_key = string
+  })
+}
+

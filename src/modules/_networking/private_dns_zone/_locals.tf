@@ -1,5 +1,7 @@
 locals {
-  resource_group       = var.resources.resource_groups[var.settings.resource_group_ref]
+  resource_group = var.resources[
+    try(var.settings.lz_key, var.client_config.landingzone_key)
+  ].resource_groups[var.settings.resource_group_ref]
   resource_group_name  = local.resource_group.name
   location             = local.resource_group.location
   registration_enabled = try(var.settings.registration_enabled, false)
@@ -9,8 +11,12 @@ locals {
     {
       for vnet in var.settings.vnet_ref :
       vnet => {
-        name = var.resources.virtual_networks[vnet].name
-        id   = var.resources.virtual_networks[vnet].id
+        name = var.resources[
+          try(var.settings.lz_key, var.client_config.landingzone_key)
+        ].virtual_networks[vnet].name
+        id = var.resources[
+          try(var.settings.lz_key, var.client_config.landingzone_key)
+        ].virtual_networks[vnet].id
       }
     } : {}
   )

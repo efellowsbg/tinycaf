@@ -13,10 +13,15 @@ module "managed_identities" {
   source   = "./access_policy"
   for_each = var.policy_name == "managed_identity" && length(try(var.access_policies.managed_identity_refs, [])) > 0 ? { for idx, ref in try(var.access_policies.managed_identity_refs, []) : idx => ref } : {}
 
-  keyvault_id        = var.keyvault_id
-  access_policies    = var.access_policies
-  tenant_id          = var.global_settings.tenant_id
-  object_id          = var.resources.managed_identities[each.value].principal_id
+  keyvault_id     = var.keyvault_id
+  access_policies = var.access_policies
+  tenant_id       = var.global_settings.tenant_id
+  object_id = var.resources[
+    try(var.settings.managed_identity_lz_key, var.client_config.landingzone_key)
+    ].managed_identities[
+    each.value
+  ].principal_id
+
   key_permissions    = local.effective_key_permissions
   secret_permissions = local.effective_secret_permissions
 }

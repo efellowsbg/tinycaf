@@ -17,3 +17,10 @@ variable "keyvault_id" {
 variable "subnet_ref" {
   description = "Reference for subnet"
 }
+
+variable "client_config" {
+  description = "Client config such as current landingzone key"
+  type = object({
+    landingzone_key = string
+  })
+}

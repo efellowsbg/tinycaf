@@ -9,3 +9,10 @@ variable "settings" {
 variable "resources" {
   description = "All required resources"
 }
+
+variable "client_config" {
+  description = "Client config such as current landingzone key"
+  type = object({
+    landingzone_key = string
+  })
+}
