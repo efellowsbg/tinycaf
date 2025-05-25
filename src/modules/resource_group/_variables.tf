@@ -12,3 +12,4 @@ variable "client_config" {
     landingzone_key = string
   })
 }
+
