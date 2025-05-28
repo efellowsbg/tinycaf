@@ -10,6 +10,10 @@ variable "client_id" {
   type = string
 }
 
+variable "remote_state_subscription_id" {
+  type = string
+}
+
 variable "global_settings" {
   type = object({
     tags                        = map(string),

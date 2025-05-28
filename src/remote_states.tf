@@ -9,4 +9,5 @@ module "remote_states" {
   container_name       = var.landingzone.backend_config.container_name
   client_id            = var.client_id
   tenant_id            = var.tenant_id
+  remote_state_subscription_id = var.remote_state_subscription_id
 }
