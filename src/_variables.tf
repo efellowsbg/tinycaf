@@ -44,11 +44,6 @@ variable "landingzone" {
   type = object({
     backend_type = string
     key          = string
-    backend_config = object({
-      resource_group_name  = string
-      storage_account_name = string
-      container_name       = string
-    })
     tfstates = optional(map(object({
       tfstate         = string
       subscription_id = string
