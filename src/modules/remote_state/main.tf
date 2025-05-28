@@ -16,6 +16,7 @@ data "terraform_remote_state" "this" {
     key                  = var.tfstate
     client_id            = var.client_id
     tenant_id            = var.tenant_id
+    subscription_id      = "4affcb27-c12b-4d13-bb79-d55897d0f55b"
   }
 }
 
