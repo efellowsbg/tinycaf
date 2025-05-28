@@ -13,6 +13,7 @@ data "terraform_remote_state" "this" {
     resource_group_name  = var.resource_group_name
     storage_account_name = var.storage_account_name
     container_name       = var.container_name
+    use_oidc             = true
     key                  = var.tfstate
     client_id            = var.client_id
     tenant_id            = var.tenant_id
