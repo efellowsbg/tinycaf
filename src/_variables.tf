@@ -10,6 +10,19 @@ variable "client_id" {
   type = string
 }
 
+variable "tfstate_rg_name" {
+  type = string
+}
+
+variable "tfstate_storage_account_name" {
+  type = string
+}
+
+variable "tfstate_container_name" {
+  type = string
+}
+
+
 variable "remote_state_subscription_id" {
   type = string
 }
