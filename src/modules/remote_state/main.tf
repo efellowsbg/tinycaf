@@ -14,7 +14,6 @@ data "terraform_remote_state" "this" {
     storage_account_name = var.storage_account_name
     container_name       = var.container_name
     key                  = var.tfstate
-    use_oidc             = true
     use_azuread_auth     = true
     client_id            = var.client_id
     tenant_id            = var.tenant_id
