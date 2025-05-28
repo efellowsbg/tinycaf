@@ -34,7 +34,7 @@ resource "azurerm_virtual_network_peering" "source" {
   name                         = "peering-${local.vnet_left.name}"
   resource_group_name          = local.vnet_left.resource_group_name
   virtual_network_name         = local.vnet_left.name
-  remote_virtual_network_id    = try(var.settings.remote_vnet_id, local.vnet_left.id)
+  remote_virtual_network_id    = try(var.settings.remote_vnet_id, local.vnet_right.id)
   allow_virtual_network_access = true
   allow_forwarded_traffic      = true
   allow_gateway_transit        = true
