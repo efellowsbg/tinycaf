@@ -62,7 +62,7 @@ output "managed_disks" {
 }
 
 output "storage_accounts" {
-  value = module.storage_accounts
+  value     = module.storage_accounts
   sensitive = true
 }
 
@@ -141,5 +141,3 @@ output "remote_states" {
 output "role_definitions" {
   value = module.role_definitions
 }
-
-
