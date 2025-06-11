@@ -1,9 +1,9 @@
 # self-protection
-CODEOWNERS @mitiko
+CODEOWNERS @mitiko @lyudmililchev92
 
 # pipelines
-.github @mitiko
-.vscode @mitiko
+.github @mitiko @lyudmililchev92
+.vscode @mitiko @lyudmililchev92
 
 # source code
 src @mitiko
