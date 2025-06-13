@@ -10,6 +10,10 @@ output "virtual_networks" {
   value = module.virtual_networks
 }
 
+output "subscription_assignments" {
+  value = module.subscription_assignments
+}
+
 output "subnets" {
   value = {
     for vnet_key, vnet in module.virtual_networks :

@@ -30,7 +30,7 @@ module "role_assignments" {
 }
 
 
-module "subscription_role_assignments" {
+module "subscription_assignments" {
   source   = "./modules/role_assignments/subscription"
   count    = var.subscription_assignments != null && length(var.subscription_assignments.built_in_roles) > 0 ? 1 : 0
 
