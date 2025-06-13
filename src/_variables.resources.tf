@@ -8,6 +8,8 @@ variable "vnet_peerings" { default = {} }
 
 variable "local_network_gateways" { default = {} }
 
+variable "subscription_assignments" { default = {} }
+
 variable "virtual_network_gateways" { default = {} }
 
 variable "logic_apps_workflow" { default = {} }

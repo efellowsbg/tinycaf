@@ -28,3 +28,13 @@ module "role_assignments" {
     landingzone_key = var.landingzone.key
   }
 }
+
+
+module "subscription_role_assignments" {
+  source   = "./modules/role_assignments/subscription"
+  count    = var.subscription_assignments != null && length(var.subscription_assignments.built_in_roles) > 0 ? 1 : 0
+
+  subscription_assignments = var.subscription_assignments.built_in_roles
+  global_settings = local.global_settings
+
+}
