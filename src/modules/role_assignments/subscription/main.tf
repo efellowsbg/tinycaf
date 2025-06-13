@@ -29,20 +29,10 @@ data "azuread_user" "users" {
   user_principal_name = each.value
 }
 
-# Lookup built-in role definition by name (e.g., "Contributor", "Reader")
-data "azurerm_role_definition" "built_in" {
-  for_each = {
-    for assignment in local.flat_assignments : assignment.role => assignment.role
-  }
-
-  name  = each.key
-  scope = "/"
-}
-
 resource "azurerm_role_assignment" "assignments" {
   for_each = local.flat_assignments
 
-  principal_id = data.azuread_user.users[each.value.user].object_id
-  role_definition_id = data.azurerm_role_definition.built_in[each.value.role].id
-  scope              = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+  principal_id         = data.azuread_user.users[each.value.user].object_id
+  role_definition_name = each.value.role
+  scope                = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
 }
