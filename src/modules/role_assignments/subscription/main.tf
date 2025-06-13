@@ -3,6 +3,10 @@ variable "subscription_assignments" {
   type        = map(list(string))
 }
 
+variable "global_settings" {
+  description = "Global settings for tinycaf"
+}
+
 data "azurerm_client_config" "current" {}
 
 locals {
