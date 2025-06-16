@@ -31,10 +31,12 @@ module "role_assignments" {
 
 
 module "subscription_assignments" {
-  source   = "./modules/role_assignments/subscription"
-  count    = var.subscription_assignments != null && length(var.subscription_assignments.built_in_roles) > 0 ? 1 : 0
+  source = "./modules/role_assignments/subscription"
+  count = length(
+    try(var.subscription_assignments.built_in_roles, [])
+  ) > 0 ? 1 : 0
 
   subscription_assignments = var.subscription_assignments.built_in_roles
-  global_settings = local.global_settings
+  global_settings          = local.global_settings
 
 }
