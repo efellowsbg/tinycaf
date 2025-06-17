@@ -32,6 +32,8 @@ locals {
   )
   identity_ids = [
     for id_ref in try(var.settings.identity.identity_ids_ref, []) :
-    var.resources.managed_identities[id_ref].id
+    var.resources[
+      var.client_config.landingzone_key
+    ].managed_identities[id_ref].id
   ]
 }
