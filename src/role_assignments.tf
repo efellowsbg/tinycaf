@@ -12,6 +12,7 @@ module "role_assignments" {
     storage_accounts     = module.storage_accounts
     role_definitions     = module.role_definitions
     disk_encryption_sets = module.disk_encryption_sets
+    container_registries = module.container_registries
     linux_virtual_machines = {
       for key, vm in module.virtual_machines :
       key => vm.linux_virtual_machines[0]
