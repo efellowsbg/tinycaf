@@ -14,6 +14,7 @@ module "virtual_machines" {
         keyvaults            = module.keyvaults
         recovery_vaults      = module.recovery_vaults
         disk_encryption_sets = module.disk_encryption_sets
+        public_ips           = module.public_ips
       }
     },
     {

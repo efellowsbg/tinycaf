@@ -24,5 +24,13 @@ resource "azurerm_network_interface" "main" {
       each.value.ip_configuration.private_ip_address_allocation == "Static" ? each.value.ip_configuration.private_ip_address : null,
       null
     )
+    public_ip_address_id = try(
+      var.resources[
+        try(each.value.ip_configuration.public_ip_lz_key, var.client_config.landingzone_key)
+        ].public_ips[
+        each.value.ip_configuration.public_ip_ref
+      ].id,
+      null
+    )
   }
 }
