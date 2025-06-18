@@ -9,7 +9,7 @@ resource "azurerm_container_registry" "main" {
   admin_enabled                 = try(var.settings.admin_enabled, false)
 
   dynamic "georeplications" {
-    for_each = try(var.settings.georeplications, null)
+    for_each = can(var.settings.georeplications) ? [1] : []
 
     content {
       location                = try(georeplications.value.location, null)
