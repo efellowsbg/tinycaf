@@ -73,6 +73,32 @@ module "virtual_network_gateways" {
     landingzone_key = var.landingzone.key
   }
 }
+module "application_gateways" {
+  source   = "./modules/_networking/application_gateway"
+  for_each = var.application_gateways
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups  = module.resource_groups
+        virtual_networks = module.virtual_networks
+        public_ips       = module.public_ips
+        subnets          = module.subnets
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+
+  client_config = {
+    landingzone_key = var.landingzone.key
+  }
+}
+
 
 module "public_ips" {
   source   = "./modules/_networking/public_ip"

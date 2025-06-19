@@ -39,6 +39,13 @@ variable "global_settings" {
   }
 }
 
+variable "application_gateways" {
+  type        = any
+  description = "Map of Application Gateways to deploy"
+  default     = {}
+}
+
+
 variable "landingzone" {
   description = "Landing zone metadata and tfstate dependencies"
   type = object({
