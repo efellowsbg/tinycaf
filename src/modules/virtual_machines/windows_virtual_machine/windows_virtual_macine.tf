@@ -1,13 +1,12 @@
 resource "azurerm_windows_virtual_machine" "main" {
-  name                              = var.settings.name
-  resource_group_name               = local.resource_group_name
-  location                          = local.location
-  admin_username                    = var.settings.admin_username
-  admin_password                    = random_password.admin.result
-  size                              = var.settings.size
-  network_interface_ids             = local.network_interface_ids
-  vm_agent_platform_updates_enabled = try(var.settings.vm_agent_platform_updates_enabled, false)
-  tags                              = local.tags
+  name                  = var.settings.name
+  resource_group_name   = local.resource_group_name
+  location              = local.location
+  admin_username        = var.settings.admin_username
+  admin_password        = random_password.admin.result
+  size                  = var.settings.size
+  network_interface_ids = local.network_interface_ids
+  tags                  = local.tags
 
   os_disk {
     caching              = var.settings.os_disk.caching
