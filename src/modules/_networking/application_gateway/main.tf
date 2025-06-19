@@ -12,12 +12,12 @@ resource "azurerm_application_gateway" "main" {
 
   gateway_ip_configuration {
     name      = var.settings.gateway_ip_configuration.name
-    subnet_id = var.settings.gateway_ip_configuration.subnet_id
+    subnet_id = local.subnet.id
   }
 
   frontend_ip_configuration {
     name                 = var.settings.frontend_ip_configuration.name
-    public_ip_address_id = var.settings.frontend_ip_configuration.public_ip_address_id
+    public_ip_address_id = local.public_ip.id
   }
 
   dynamic "frontend_port" {
