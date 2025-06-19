@@ -86,7 +86,6 @@ module "application_gateways" {
         resource_groups  = module.resource_groups
         virtual_networks = module.virtual_networks
         public_ips       = module.public_ips
-        subnets          = module.subnets
       }
     },
     {
