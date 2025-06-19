@@ -10,10 +10,20 @@ resource "azurerm_application_gateway" "main" {
     capacity = var.settings.sku.capacity
   }
 
-  gateway_ip_configuration {
-    name      = var.settings.gateway_ip_configuration.name
-    subnet_id = local.subnet.id
+  dynamic "gateway_ip_configuration" {
+  for_each = var.settings.gateway_ip_configuration
+  content {
+    name      = gateway_ip_configuration.value.name
+    subnet_id = var.resources[
+      try(var.settings.lz_key, var.client_config.landingzone_key)
+    ].virtual_networks[
+      split("/", gateway_ip_configuration.value.subnet_ref)[0]
+    ].subnets[
+      split("/", gateway_ip_configuration.value.subnet_ref)[1]
+    ].id
   }
+}
+
 
   frontend_ip_configuration {
     name                 = var.settings.frontend_ip_configuration.name
