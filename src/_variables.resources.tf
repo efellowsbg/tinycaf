@@ -73,3 +73,5 @@ variable "recovery_vaults" { default = {} }
 variable "disk_encryption_sets" { default = {} }
 
 variable "logic_apps_standard" { default = {} }
+
+variable "application_gateways" { default = {} }
