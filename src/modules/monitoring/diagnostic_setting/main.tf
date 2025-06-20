@@ -1,9 +1,9 @@
 resource "azurerm_monitor_diagnostic_setting" "main" {
-  name = var.diagnostic_setting.name
-  target_resource_id = var.resources[
-    try(var.diagnostic_setting.resource_lz_key, var.client_config.landingzone_key)
-  ][var.diagnostic_setting.resource_type][var.diagnostic_setting.resource_ref].id
+  name = var.settings.name
 
+  target_resource_id = var.resources[
+    try(var.settings.resource_lz_key, var.client_config.landingzone_key)
+  ][var.settings.resource_type][var.settings.resource_ref].id
 
   dynamic "log" {
     for_each = try(var.settings.logs, {})
