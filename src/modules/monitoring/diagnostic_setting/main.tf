@@ -19,10 +19,6 @@ resource "azurerm_monitor_diagnostic_setting" "main" {
     content {
       category = enabled_metric.value.category
 
-      retention_policy {
-        enabled = try(enabled_metric.value.retention_policy.enabled, false)
-        days    = try(enabled_metric.value.retention_policy.days, 0)
-      }
     }
   }
 
