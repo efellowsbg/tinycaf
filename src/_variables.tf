@@ -55,3 +55,8 @@ variable "resources" {
   description = "CAF resources map passed from root or higher-level module"
   type        = any
 }
+
+variable "diagnostic_setting" {
+  description = "Diagnostic settings for the monitored resource"
+  type        = any
+}
