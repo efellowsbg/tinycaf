@@ -56,12 +56,5 @@ variable "resources" {
   type        = any
 }
 
-variable "diagnostic_setting" {
-  description = "Diagnostic settings for the monitored resource"
-  type        = any
-}
-variable "settings" {
-  description = "Diagnostic settings for the monitored resource"
-  type        = any
-}
+
 
