@@ -6,18 +6,20 @@ resource "azurerm_monitor_diagnostic_setting" "main" {
     try(each.value.resource_lz_key, var.client_config.landingzone_key)
   ][each.value.resource_type][each.value.resource_ref].id
 
-  dynamic "enabled_log" {
+  dynamic "log" {
     for_each = try(each.value.logs, {})
     content {
-      category = enabled_log.value.category
+      category = log.value.category
+      enabled  = log.value.enabled
 
     }
   }
 
-  dynamic "enabled_metric" {
+  dynamic "metric" {
     for_each = try(each.value.metrics, {})
     content {
-      category = enabled_metric.value.category
+      category = metric.value.category
+      enabled  = metric.value.enabled
 
     }
   }
