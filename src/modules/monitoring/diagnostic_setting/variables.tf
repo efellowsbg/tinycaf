@@ -39,3 +39,10 @@ variable "client_config" {
   })
 }
 
+variable "global_settings" {
+  description = "Global settings passed from root"
+  type = object({
+    tags                        = map(string)
+    inherit_resource_group_tags = bool
+  })
+}
