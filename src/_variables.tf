@@ -79,9 +79,9 @@ variable "storage_account_name" {
   default     = "projectstoragedemo"
 }
 
-variable "diagnostic_setting" {
-  description = "Configuration for diagnostic settings"
-  type = object({
+variable "diagnostic_settings" {
+  description = "Map of diagnostic settings"
+  type = map(object({
     name                        = string
     resource_type               = string
     resource_ref                = string
@@ -106,6 +106,5 @@ variable "diagnostic_setting" {
         days    = number
       }))
     })))
-  })
+  }))
 }
-
