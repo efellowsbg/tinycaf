@@ -17,9 +17,8 @@ variable "global_settings" {
     inherit_resource_group_tags = bool
   })
 }
-variable "diagnostic_setting" {
-  description = "Diagnostic setting input"
-  type = object({
+variable "diagnostic_settings" {
+  type = map(object({
     name                        = string
     resource_type               = string
     resource_ref                = string
@@ -44,6 +43,7 @@ variable "diagnostic_setting" {
         days    = number
       }))
     })))
-  })
+  }))
 }
+
 
