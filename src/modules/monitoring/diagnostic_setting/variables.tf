@@ -27,3 +27,15 @@ variable "settings" {
     })))
   })
 }
+variable "resources" {
+  description = "CAF resources map from root module"
+  type        = any
+}
+
+variable "client_config" {
+  description = "Client config including landingzone key"
+  type = object({
+    landingzone_key = string
+  })
+}
+

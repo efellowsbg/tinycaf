@@ -51,3 +51,7 @@ variable "landingzone" {
     })))
   })
 }
+variable "resources" {
+  description = "CAF resources map passed from root or higher-level module"
+  type        = any
+}
