@@ -1,8 +1,8 @@
 module "diagnostic_setting" {
   source   = "./modules/monitoring/diagnostic_setting"
 
-  diagnostic_setting = var.diagnostic_setting
-  resources = var.resources
+  settings  = var.diagnostic_setting
+  resources = local.combined_resources
 
   client_config = {
     landingzone_key = var.landingzone.key
