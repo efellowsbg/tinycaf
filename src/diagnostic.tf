@@ -8,8 +8,7 @@ module "diagnostic_setting" {
     {
       (var.landingzone.key) = {
         resource_groups    = module.resource_groups 
-        storage_accounts = module.storage_accounts
-        log_analytics = module.log_analytics_workspace_id       
+        storage_accounts = module.storage_accounts      
       }
     },
     {
