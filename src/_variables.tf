@@ -51,30 +51,4 @@ variable "landingzone" {
     })))
   })
 }
-variable "resources" {
-  description = "CAF resources map passed from root or higher-level module"
-  type        = any
-}
-variable "vm_password" {
-  description = "Password for the Linux VM. Must meet Azure's complexity requirements."
-  type        = string
-  sensitive   = true
-}
 
-variable "location" {
-  description = "Azure region where resources will be created"
-  type        = string
-  default     = "West Europe"
-}
-
-variable "resource_group_name" {
-  description = "Name of the resource group"
-  type        = string
-  default     = "project-rg"
-}
-
-variable "storage_account_name" {
-  description = "Globally unique name for the Azure Storage Account (3–24 lowercase letters/numbers)"
-  type        = string
-  default     = "projectstoragedemo"
-}
