@@ -11,3 +11,10 @@ module "resource_groups" {
   }
 
 }
+module "diagnostic_settings" {
+  source          = "./modules/diagnostic_settings"
+  settings        = var.settings
+  resources       = var.resources
+  client_config   = var.client_config
+  global_settings = var.global_settings
+}
