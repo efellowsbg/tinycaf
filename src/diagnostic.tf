@@ -3,7 +3,7 @@ module "diagnostic_setting" {
   for_each = var.diagnostic_settings
 
 
-  diagnostic_setting = each.value
+  diagnostic_settings = each.value
   resources = merge(
     {
       (var.landingzone.key) = {
