@@ -12,10 +12,6 @@ resource "azurerm_monitor_diagnostic_setting" "main" {
       category = log.value.category
       enabled  = log.value.enabled
 
-      retention_policy {
-        enabled = try(log.value.retention_policy.enabled, false)
-        days    = try(log.value.retention_policy.days, 0)
-      }
     }
   }
 
@@ -24,7 +20,6 @@ resource "azurerm_monitor_diagnostic_setting" "main" {
     content {
       category = metric.value.category
       enabled  = metric.value.enabled
-
 
     }
   }
