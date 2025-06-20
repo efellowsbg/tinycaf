@@ -7,7 +7,11 @@ resource "azurerm_monitor_diagnostic_setting" "main" {
   ][each.value.resource_type][each.value.resource_ref].id
 
   dynamic "log" {
-    for_each = try(each.value.logs, {})
+    for_each = [for k, v in try(each.value.logs, {}) : {
+      category         = v.category
+      enabled          = v.enabled
+
+    }]
     content {
       category = log.value.category
       enabled  = log.value.enabled
@@ -16,11 +20,13 @@ resource "azurerm_monitor_diagnostic_setting" "main" {
   }
 
   dynamic "metric" {
-    for_each = try(each.value.metrics, {})
+    for_each = [for k, v in try(each.value.metrics, {}) : {
+      category         = v.category
+      enabled          = v.enabled
+    }]
     content {
       category = metric.value.category
       enabled  = metric.value.enabled
-
     }
   }
 
