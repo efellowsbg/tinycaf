@@ -9,7 +9,7 @@ resource "azurerm_monitor_diagnostic_setting" "main" {
   dynamic "enabled_log" {
     for_each = try(var.settings.enabled_log, {})
     content {
-      category = each.value.category
+      category = enabled_log.value.category
 
     }
   }
