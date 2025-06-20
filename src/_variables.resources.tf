@@ -87,3 +87,5 @@ variable "logs_destination_ids" { default = {} }
 variable "log_analytics_destination_type" { default = {} }
 
 variable "resources" { default = {} }
+
+variable "settings" { default = {} }
