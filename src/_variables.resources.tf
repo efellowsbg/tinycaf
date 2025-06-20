@@ -86,4 +86,3 @@ variable "logs_destination_ids" { default = {} }
 
 variable "log_analytics_destination_type" { default = {} }
 
-variable "diagnostic_setting" { default = {} }
