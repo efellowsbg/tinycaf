@@ -1,7 +1,7 @@
 module "diagnostic_setting" {
   source   = "./modules/monitoring/diagnostic_setting"
 
-  settings  = var.diagnostic_setting
+  diagnostic_setting = var.diagnostic_setting
   resources = var.resources
 
   client_config = {
