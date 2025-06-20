@@ -1,5 +1,5 @@
 module "diagnostic_setting" {
-  source          = "./modules/monitoring/diagnostic_setting"
+  source          = "../../modules/monitoring/diagnostic_setting"
   settings        = var.settings
   resources       = var.resources
 
