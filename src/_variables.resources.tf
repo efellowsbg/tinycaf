@@ -75,3 +75,13 @@ variable "disk_encryption_sets" { default = {} }
 variable "logic_apps_standard" { default = {} }
 
 variable "application_gateways" { default = {} }
+
+variable "log_categories" { default = {} }
+
+variable "excluded_log_categories" { default = {} }
+
+variable "metric_categories" { default = {} }
+
+variable "logs_destination_ids" { default = {} }
+
+variable "log_analytics_destination_type" { default = {} }
