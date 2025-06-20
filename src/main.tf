@@ -11,7 +11,7 @@ module "resource_groups" {
   }
 
 }
-module "diagnostic_settings" {
+module "diagnostic_setting" {
   source          = "./modules/diagnostic_settings"
   settings        = var.settings
   resources       = var.resources
