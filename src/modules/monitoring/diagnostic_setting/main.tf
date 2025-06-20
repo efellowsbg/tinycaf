@@ -26,7 +26,7 @@ resource "azurerm_monitor_diagnostic_setting" "main" {
     try(var.settings.log_analytics_workspace_ref, null) != null ?
     var.resources[
       try(var.settings.log_analytics_lz_key, var.client_config.landingzone_key)
-    ].log_analytics[var.settings.log_analytics_workspace_ref].id :
+    ].log_analytics_workspaces[var.settings.log_analytics_workspace_ref].id :
     null
   )
 

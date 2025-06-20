@@ -10,6 +10,8 @@ module "diagnostic_setting" {
         resource_groups    = module.resource_groups
         storage_accounts = module.storage_accounts      
         keyvaults = module.keyvaults
+        log_analytics_workspaces = module.log_analytics_workspaces
+        
       }
     },
     {
