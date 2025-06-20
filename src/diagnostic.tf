@@ -1,6 +1,7 @@
 module "diagnostic_setting" {
   source   = "./modules/monitoring/diagnostic_setting"
-  for_each = var.diagnostic_settings  # This must be a map
+  for_each = var.diagnostic_settings  
+
 
   diagnostic_setting = each.value
   resources          = var.resources
