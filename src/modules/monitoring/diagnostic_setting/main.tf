@@ -1,11 +1,13 @@
 resource "azurerm_monitor_diagnostic_setting" "main" {
-  name               = var.diagnostic_setting.name
+  for_each = var.diagnostic_setting
+
+  name               = each.value.name
   target_resource_id = var.resources[
-    try(var.diagnostic_setting.resource_lz_key, var.client_config.landingzone_key)
-  ][var.diagnostic_setting.resource_type][var.diagnostic_setting.resource_ref].id
+    try(each.value.resource_lz_key, var.client_config.landingzone_key)
+  ][each.value.resource_type][each.value.resource_ref].id
 
   dynamic "log" {
-    for_each = try(var.diagnostic_setting.logs, {})
+    for_each = try(each.value.logs, {})
     content {
       category = log.value.category
       enabled  = log.value.enabled
@@ -18,29 +20,28 @@ resource "azurerm_monitor_diagnostic_setting" "main" {
   }
 
   dynamic "metric" {
-    for_each = try(var.diagnostic_setting.metrics, {})
+    for_each = try(each.value.metrics, {})
     content {
       category = metric.value.category
       enabled  = metric.value.enabled
 
+
     }
   }
 
-  # Only include if log_analytics_workspace_ref is not null
   log_analytics_workspace_id = (
-    try(var.diagnostic_setting.log_analytics_workspace_ref, null) != null ?
+    try(each.value.log_analytics_workspace_ref, null) != null ?
     var.resources[
-      try(var.diagnostic_setting.log_analytics_lz_key, var.client_config.landingzone_key)
-    ].log_analytics[var.diagnostic_setting.log_analytics_workspace_ref].id :
+      try(each.value.log_analytics_lz_key, var.client_config.landingzone_key)
+    ].log_analytics[each.value.log_analytics_workspace_ref].id :
     null
   )
 
-  # Only include if storage_account_ref is not null
   storage_account_id = (
-    try(var.diagnostic_setting.storage_account_ref, null) != null ?
+    try(each.value.storage_account_ref, null) != null ?
     var.resources[
-      try(var.diagnostic_setting.storage_account_lz_key, var.client_config.landingzone_key)
-    ].storage_accounts[var.diagnostic_setting.storage_account_ref].id :
+      try(each.value.storage_account_lz_key, var.client_config.landingzone_key)
+    ].storage_accounts[each.value.storage_account_ref].id :
     null
   )
 }
