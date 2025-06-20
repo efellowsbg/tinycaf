@@ -1,32 +1,3 @@
-variable "diagnostic_setting" {
-  description = "Settings for diagnostic settings"
-  type = object({
-    name                       = string
-    resource_type              = string
-    resource_ref               = string
-    resource_lz_key            = optional(string)
-    storage_account_ref        = optional(string)
-    storage_account_lz_key     = optional(string)
-    log_analytics_workspace_ref = optional(string)
-    log_analytics_lz_key       = optional(string)
-    logs = optional(map(object({
-      category = string
-      enabled  = bool
-      retention_policy = optional(object({
-        enabled = bool
-        days    = number
-      }))
-    })))
-    metrics = optional(map(object({
-      category = string
-      enabled  = bool
-      retention_policy = optional(object({
-        enabled = bool
-        days    = number
-      }))
-    })))
-  })
-}
 variable "resources" {
   description = "CAF resources map from root module"
   type        = any
@@ -46,3 +17,33 @@ variable "global_settings" {
     inherit_resource_group_tags = bool
   })
 }
+variable "diagnostic_setting" {
+  description = "Diagnostic setting input"
+  type = object({
+    name                        = string
+    resource_type               = string
+    resource_ref                = string
+    resource_lz_key             = optional(string)
+    storage_account_ref         = optional(string)
+    storage_account_lz_key      = optional(string)
+    log_analytics_workspace_ref = optional(string)
+    log_analytics_lz_key        = optional(string)
+    logs = optional(map(object({
+      category         = string
+      enabled          = bool
+      retention_policy = optional(object({
+        enabled = bool
+        days    = number
+      }))
+    })))
+    metrics = optional(map(object({
+      category         = string
+      enabled          = bool
+      retention_policy = optional(object({
+        enabled = bool
+        days    = number
+      }))
+    })))
+  })
+}
+

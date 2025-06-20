@@ -80,7 +80,7 @@ variable "storage_account_name" {
 }
 
 variable "diagnostic_setting" {
-  description = "Settings for the diagnostic_setting module"
+  description = "Configuration for diagnostic settings"
   type = object({
     name                        = string
     resource_type               = string
@@ -108,3 +108,4 @@ variable "diagnostic_setting" {
     })))
   })
 }
+
