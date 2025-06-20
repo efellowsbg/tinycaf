@@ -1,4 +1,7 @@
-output "diagnostic_setting_id" {
-  value       = azurerm_monitor_diagnostic_setting.main.id
-  description = "The ID of the diagnostic setting."
+output "diagnostic_setting_ids" {
+  description = "Map of all diagnostic setting resource IDs"
+  value = {
+    for key, setting in azurerm_monitor_diagnostic_setting.main :
+    key => setting.id
+  }
 }
