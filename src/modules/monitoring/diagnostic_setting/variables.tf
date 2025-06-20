@@ -1,4 +1,4 @@
-variable "settings" {
+variable "diagnostic_setting" {
   description = "Settings for diagnostic settings"
   type = object({
     name                       = string
