@@ -7,8 +7,9 @@ module "diagnostic_setting" {
   resources = merge(
     {
       (var.landingzone.key) = {
-        resource_groups    = module.resource_groups 
+        resource_groups    = module.resource_groups
         storage_accounts = module.storage_accounts      
+        keyvaults = module.keyvaults
       }
     },
     {
