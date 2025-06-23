@@ -9,24 +9,26 @@ resource "azurerm_container_registry" "main" {
   admin_enabled                 = try(var.settings.admin_enabled, false)
 
   dynamic "georeplications" {
-    for_each = can(var.settings.georeplications) ? [1] : []
+    for_each = try(length(var.settings.georeplications) > 0 ? [1] : [], [])
 
     content {
-      location                = try(georeplications.value.location, null)
+      location                 = try(georeplications.value.location, null)
       zone_redundancy_enabled = try(georeplications.value.zone_redundancy_enabled, false)
       tags                    = try(georeplications.value.tags, null)
     }
   }
+
   dynamic "identity" {
-    for_each = can(var.settings.identity) ? [1] : []
+    for_each = try(length(var.settings.identity) > 0 ? [1] : [], [])
 
     content {
       type         = var.settings.identity.type
       identity_ids = try(local.identity_ids, null)
     }
   }
+
   dynamic "encryption" {
-    for_each = can(var.settings.encryption) ? [1] : []
+    for_each = try(length(var.settings.encryption) > 0 ? [1] : [], [])
 
     content {
       key_vault_key_id = try(
@@ -43,6 +45,22 @@ resource "azurerm_container_registry" "main" {
         null
       )
     }
+  }
 
+  dynamic "network_rule_set" {
+    for_each = try(length(var.settings.network_rule_set) > 0 ? [1] : [], [])
+
+    content {
+      default_action = try(var.settings.network_rule_set[0].default_action, "Allow")
+
+      dynamic "ip_rule" {
+        for_each = try(var.settings.network_rule_set[0].ip_rule, [])
+
+        content {
+          action   = try(ip_rule.value.action, "Allow")
+          ip_range = ip_rule.value.ip_range
+        }
+      }
+    }
   }
 }

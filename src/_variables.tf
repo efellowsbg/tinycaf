@@ -39,6 +39,7 @@ variable "global_settings" {
   }
 }
 
+
 variable "landingzone" {
   description = "Landing zone metadata and tfstate dependencies"
   type = object({
@@ -50,3 +51,4 @@ variable "landingzone" {
     })))
   })
 }
+
