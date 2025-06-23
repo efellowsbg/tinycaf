@@ -7,13 +7,13 @@ resource "azurerm_role_assignment" "main" {
   )
 
   principal_id = try(
-    each.value.principal_type == "object_ids"
-    ? each.value.principal :
-    each.value.principal_type == "group_names"
-    ? data.azuread_group.by_name[each.value.principal].object_id :
-    var.resources[each.value.principal_type][each.value.principal].principal_id,
-    null
-  )
+  each.value.principal_type == "object_ids" ? each.value.principal :
+  each.value.principal_type == "group_names" ? data.azuread_group.by_name[each.value.principal].object_id :
+  each.value.principal_type == "user_names" ? data.azuread_user.by_name[each.value.principal].object_id :
+  var.resources[each.value.principal_type][each.value.principal].principal_id,
+  null
+)
+
 
   role_definition_name = each.value.role_definition_name
 }
