@@ -1,9 +1,11 @@
 data "azuread_group" "by_name" {
-  for_each = {
-    for k, v in local.computed_role_assignments :
-    k => v
-    if v.principal_type == "group_names"
-  }
+  for_each = local.group_names
+  display_name = each.key
+}
 
-  display_name = each.value.principal
+locals {
+  group_names = toset([
+    for ra in local.computed_role_assignments : ra.principal
+    if ra.principal_type == "group_names"
+  ])
 }
