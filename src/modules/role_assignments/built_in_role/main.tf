@@ -10,7 +10,7 @@ resource "azurerm_role_assignment" "main" {
     each.value.principal_type == "object_ids"
     ? each.value.principal :
     each.value.principal_type == "group_names"
-    ? data.azuread_group.by_name[each.key].id :
+    ? data.azuread_group.by_name[each.key].object_id :
     var.resources[each.value.principal_type][each.value.principal].principal_id,
     null
   )
