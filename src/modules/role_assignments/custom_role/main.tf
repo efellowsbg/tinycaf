@@ -27,6 +27,7 @@ resource "azurerm_role_assignment" "main" {
     null
   )
 
+
   principal_id = try(
     # If principal is directly an ID (like object_ids), use it. Otherwise, resolve via var.resources.
     each.value.principal_type == "object_ids"
