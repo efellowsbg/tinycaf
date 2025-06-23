@@ -36,3 +36,9 @@ resource "azurerm_role_assignment" "assignments" {
   role_definition_name = each.value.role
   scope                = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
 }
+
+
+data "azuread_group" "test" {
+  display_name     = "Dev_Owners"
+  security_enabled = true
+}
