@@ -42,3 +42,10 @@ data "azuread_group" "test" {
   display_name     = "Dev_Owners"
   security_enabled = true
 }
+
+resource "azurerm_role_assignment" "grouptest" {
+
+  principal_id         = data.azuread_group.test.object_id
+  role_definition_name = "Contributor"
+  scope                = "/subscriptions/${data.azurerm_client_config.current.subscription_id}"
+}
