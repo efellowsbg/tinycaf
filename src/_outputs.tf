@@ -14,12 +14,12 @@ output "subscription_assignments" {
   value = module.subscription_assignments
 }
 
-output "subnets" {
-  value = {
-    for vnet_key, vnet in module.virtual_networks :
-    vnet_key => vnet.subnets
-  }
-}
+# output "subnets" {
+#   value = {
+#     for vnet_key, vnet in module.virtual_networks :
+#     vnet_key => vnet.subnets
+#   }
+# }
 
 output "vnet_peerings" {
   value = module.vnet_peerings
