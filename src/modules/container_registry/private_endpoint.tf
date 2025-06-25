@@ -16,7 +16,7 @@ resource "azurerm_private_endpoint" "main" {
   }
 
   private_dns_zone_group {
-    name                 = try(var.settings.private_endpoint.private_dns_zone_group.name, local.dns_zone_group_name)
+    name                 = try(var.settings.private_endpoint.private_dns_zone_group_name, local.dns_zone_group_name)
     private_dns_zone_ids = local.private_dns_zone_ids
   }
 }
