@@ -1,7 +1,7 @@
 resource "azurerm_private_endpoint" "main" {
   count = try(var.settings.private_endpoint, null) == null ? 0 : 1
 
-  name                = "pe-${var.settings.name}"
+  name                = try(var.settings.private_endpoint.name,"pe-${var.settings.name}")
   resource_group_name = local.resource_group_name
   location            = local.location
   subnet_id           = local.subnet_id
