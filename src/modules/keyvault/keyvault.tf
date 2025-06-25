@@ -10,6 +10,7 @@ resource "azurerm_key_vault" "main" {
   soft_delete_retention_days  = try(var.settings.soft_delete_retention_days, null)
   purge_protection_enabled    = try(var.settings.purge_protection_enabled, null)
   enable_rbac_authorization   = try(var.settings.enable_rbac_authorization, false)
+  enabled_for_deployment      = try(var.settings.enabled_for_deployment, null)
 
   public_network_access_enabled = try(var.settings.public_network_access_enabled, false)
 
