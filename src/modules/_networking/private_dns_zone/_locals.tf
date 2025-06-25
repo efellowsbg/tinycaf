@@ -11,16 +11,17 @@ locals {
     {
       for vnet_raw in var.settings.vnet_ref :
       split("/", vnet_raw)[0] => {
-        name = (
-          length(split("/", vnet_raw)) > 1 ?
-          split("/", vnet_raw)[1] :
-          var.resources[
-            try(var.settings.lz_key, var.client_config.landingzone_key)
-          ].virtual_networks[vnet_raw].name
-        )
+        name = var.resources[
+          try(var.settings.lz_key, var.client_config.landingzone_key)
+        ].virtual_networks[split("/", vnet_raw)[0]].name
         id = var.resources[
           try(var.settings.lz_key, var.client_config.landingzone_key)
         ].virtual_networks[split("/", vnet_raw)[0]].id
+        name_exact = (
+          length(split("/", vnet_raw)) > 1 ?
+          split("/", vnet_raw)[1] :
+          null
+        )
       }
     } : {}
   )
