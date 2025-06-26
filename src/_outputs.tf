@@ -145,3 +145,11 @@ output "remote_states" {
 output "role_definitions" {
   value = module.role_definitions
 }
+
+output "azuread_applications" {
+  value = module.azuread_applications
+}
+
+output "azuread_service_principals" {
+  value = module.azuread_service_principals
+}
