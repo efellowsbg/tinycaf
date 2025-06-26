@@ -10,6 +10,10 @@ variable "resources" {
   description = "All required resources"
 }
 
+variable "create_password" {
+  description = "Create password boolean"
+}
+
 variable "client_config" {
   description = "Client config such as current landingzone key"
   type = object({

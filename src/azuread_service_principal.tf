@@ -17,4 +17,5 @@ module "azuread_service_principals" {
   client_config = {
     landingzone_key = var.landingzone.key
   }
+  create_password = try(each.value.create_password, false)
 }
