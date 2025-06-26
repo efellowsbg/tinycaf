@@ -3,7 +3,7 @@ locals {
     var.resources[
       try(var.settings.lz_key, var.client_config.landingzone_key)
     ].azuread_applications[var.settings.client_id_ref].client_id,
-    var.settings.client_id_exact
+    var.settings.client_id
   )
 
   tags = merge(
