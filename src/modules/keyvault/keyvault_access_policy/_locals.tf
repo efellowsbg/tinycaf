@@ -1,7 +1,8 @@
 locals {
   all_key_permissions = [
     "Backup", "Create", "Decrypt", "Delete", "Encrypt", "Get", "Import",
-    "List", "Purge", "Recover", "Restore", "Sign", "UnwrapKey", "Update", "Verify", "WrapKey", "Release", "Rotate"
+    "List", "Purge", "Recover", "Restore", "Sign", "UnwrapKey", "Update",
+    "Verify", "WrapKey", "Release", "Rotate", "GetRotationPolicy", "SetRotationPolicy"
   ]
 
   all_secret_permissions = [
@@ -9,31 +10,29 @@ locals {
   ]
 
   all_certificate_permissions = [
-    "Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import", "List",
-    "ListIssuers", "ManageContacts", "ManageIssuers", "Purge", "Recover", "Restore", "SetIssuers", "Update"
+    "Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import",
+    "List", "ListIssuers", "ManageContacts", "ManageIssuers", "Purge",
+    "Recover", "Restore", "SetIssuers", "Update"
   ]
 
   all_storage_permissions = [
-    "Backup", "Delete", "DeleteSAS", "Get", "GetSAS", "List", "ListSAS", "Purge", "Recover",
-    "RegenerateKey", "Restore", "Set", "SetSAS", "Update"
+    "Backup", "Delete", "DeleteSAS", "Get", "GetSAS", "List", "ListSAS",
+    "Purge", "Recover", "RegenerateKey", "Restore", "Set", "SetSAS", "Update"
   ]
 
-  key_permissions = contains(try(var.access_policies.key_permissions, []), "All") ? local.all_key_permissions : try(var.access_policies.key_permissions, [])
-
-  secret_permissions = contains(try(var.access_policies.secret_permissions, []), "All") ? local.all_secret_permissions : try(var.access_policies.secret_permissions, [])
-
+  key_permissions         = contains(try(var.access_policies.key_permissions, []), "All") ? local.all_key_permissions : try(var.access_policies.key_permissions, [])
+  secret_permissions      = contains(try(var.access_policies.secret_permissions, []), "All") ? local.all_secret_permissions : try(var.access_policies.secret_permissions, [])
   certificate_permissions = contains(try(var.access_policies.certificate_permissions, []), "All") ? local.all_certificate_permissions : try(var.access_policies.certificate_permissions, [])
-
-  storage_permissions = contains(try(var.access_policies.storage_permissions, []), "All") ? local.all_storage_permissions : try(var.access_policies.storage_permissions, [])
+  storage_permissions     = contains(try(var.access_policies.storage_permissions, []), "All") ? local.all_storage_permissions : try(var.access_policies.storage_permissions, [])
 
   normalized_access_policies = flatten([
     concat(
       [
         for ref in try(var.access_policies.managed_identity_refs, []) : {
-          key                     = "${var.policy_name}_managed_identity_${ref}"
-          object_id               = var.resources[
-                                      try(var.settings.managed_identity_lz_key, var.client_config.landingzone_key)
-                                    ].managed_identities[ref].principal_id
+          key = "${var.policy_name}_managed_identity_${ref}"
+          object_id = var.resources[
+            try(var.settings.managed_identity_lz_key, var.client_config.landingzone_key)
+          ].managed_identities[ref].principal_id
           key_permissions         = local.key_permissions
           secret_permissions      = local.secret_permissions
           certificate_permissions = local.certificate_permissions
