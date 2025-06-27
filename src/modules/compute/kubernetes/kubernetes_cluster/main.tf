@@ -14,7 +14,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   run_command_enabled                 = try(var.settings.run_command_enabled, true)
   oidc_issuer_enabled                 = try(var.settings.oidc_issuer_enabled, false)
   workload_identity_enabled           = try(var.settings.oidc_issuer_enabled ? var.settings.workload_identity_enabled : false, false)
-  open_service_mesh_enabled           = try(var.settings.open_service_mesh_enabled, false)
+  open_service_mesh_enabled           = try(var.settings.open_service_mesh_enabled, null)
 
   default_node_pool {
     vnet_subnet_id              = local.vnet_subnet_id
