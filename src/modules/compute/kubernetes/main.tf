@@ -8,7 +8,7 @@ module "kubernetes_cluster" {
 
 module "kubernetes_cluster_node_pool" {
   source   = "./kubernetes_cluster_node_pool"
-  for_each = var.settings.additional_node_pools
+  for_each = try(tomap(var.settings.additional_node_pools), {})
 
   cluster_id      = module.kubernetes_cluster.id
   all_settings    = var.settings
