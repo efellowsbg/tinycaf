@@ -273,6 +273,105 @@ module "nat_gateways" {
   }
 }
 
+module "nat_gateway_public_ip_associations" {
+  source   = "./modules/_networking/nat_gateway_public_ip_association"
+  for_each = var.nat_gateway_public_ip_association
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        nat_gateways = module.nat_gateways
+        public_ips   = module.public_ips
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
+  }
+}
+
+module "subnet_nat_gateway_associations" {
+  source   = "./modules/_networking/subnet_nat_gateway_association"
+  for_each = var.subnet_nat_gateway_associations
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        nat_gateways     = module.nat_gateways
+        virtual_networks = module.virtual_networks
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
+  }
+}
+
+module "subnet_route_table_associations" {
+  source   = "./modules/_networking/subnet_route_table_association"
+  for_each = var.subnet_route_table_associations
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        route_tables     = module.route_tables
+        virtual_networks = module.virtual_networks
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
+  }
+}
+
+module "route_tables" {
+  source   = "./modules/_networking/route_table"
+  for_each = var.route_tables
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups = module.resource_groups
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
+  }
+}
+
 module "network_security_group_associations" {
   source   = "./modules/_networking/network_security_group_association"
   for_each = var.network_security_group_associations

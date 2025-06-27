@@ -8,6 +8,18 @@ variable "vnet_peerings" { default = {} }
 
 variable "local_network_gateways" { default = {} }
 
+variable "nat_gateway_public_ip_association" { default = {} }
+
+variable "mssql_virtual_machines" { default = {} }
+
+variable "subnet_nat_gateway_associations" { default = {} }
+
+variable "subnet_route_table_associations" { default = {} }
+
+variable "route_tables" { default = {} }
+
+variable "waf_policies" { default = {} }
+
 variable "subscription_assignments" { default = {} }
 
 variable "virtual_network_gateways" { default = {} }
