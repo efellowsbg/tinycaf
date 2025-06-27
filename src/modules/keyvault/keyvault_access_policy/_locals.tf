@@ -37,23 +37,6 @@ locals {
     "List", "ManageContacts", "ManageIssuers", "Purge", "Recover", "Restore",
     "SetIssuers", "Update",
   ]
-  effective_key_permissions = (
-    try(var.access_policies.key_permissions, null) == "All" ?
-    local.all_key_permissions :
-    tolist(try(var.access_policies.key_permissions, []))
-  )
-
-  effective_secret_permissions = (
-    try(var.access_policies.secret_permissions, null) == "All" ?
-    local.all_secret_permissions :
-    tolist(try(var.access_policies.secret_permissions, []))
-  )
-
-  effective_certificate_permissions = (
-    try(var.access_policies.certificate_permissions, null) == "All" ?
-    local.all_certificate_permissions :
-    tolist(try(var.access_policies.certificate_permissions, []))
-  )
 
   debug_settings    = var.settings
   has_logged_in_key = contains(keys(var.settings), "managed_identity")
