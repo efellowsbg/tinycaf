@@ -32,7 +32,11 @@ locals {
     "GetRotationPolicy",
     "SetRotationPolicy",
   ]
-
+  all_certificate_permissions = [
+    "Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import",
+    "List", "ManageContacts", "ManageIssuers", "Purge", "Recover", "Restore",
+    "SetIssuers", "Update",
+  ]
   effective_key_permissions = (
     try(var.access_policies.key_permissions, null) == "All" ?
     local.all_key_permissions :
@@ -43,6 +47,12 @@ locals {
     try(var.access_policies.secret_permissions, null) == "All" ?
     local.all_secret_permissions :
     tolist(try(var.access_policies.secret_permissions, []))
+  )
+
+  effective_certificate_permissions = (
+    try(var.access_policies.certificate_permissions, null) == "All" ?
+    local.all_certificate_permissions :
+    tolist(try(var.access_policies.certificate_permissions, []))
   )
 
   debug_settings    = var.settings

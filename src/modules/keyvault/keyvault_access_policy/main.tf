@@ -7,6 +7,7 @@ module "logged_in_user" {
   object_id          = var.global_settings.object_id
   key_permissions    = local.all_key_permissions
   secret_permissions = local.all_secret_permissions
+  certificate_permissions = local.effective_certificate_permissions
 }
 
 module "managed_identities" {
@@ -24,6 +25,7 @@ module "managed_identities" {
 
   key_permissions    = local.effective_key_permissions
   secret_permissions = local.effective_secret_permissions
+  certificate_permissions = local.effective_certificate_permissions
 }
 
 module "object_ids" {
@@ -35,4 +37,6 @@ module "object_ids" {
   object_id          = each.value
   key_permissions    = local.effective_key_permissions
   secret_permissions = local.effective_secret_permissions
+  certificate_permissions = local.effective_certificate_permissions
 }
+
