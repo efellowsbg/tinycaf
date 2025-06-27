@@ -34,13 +34,13 @@ locals {
   ]
 
   effective_key_permissions = (
-    var.access_policies.key_permissions == "All" ?
+    try(var.access_policies.key_permissions, null) == "All" ?
     local.all_key_permissions :
     tolist(try(var.access_policies.key_permissions, []))
   )
 
   effective_secret_permissions = (
-    var.access_policies.secret_permissions == "All" ?
+    try(var.access_policies.secret_permissions, null) == "All" ?
     local.all_secret_permissions :
     tolist(try(var.access_policies.secret_permissions, []))
   )

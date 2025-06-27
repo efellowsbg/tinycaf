@@ -19,3 +19,4 @@ module "azuread_service_principals" {
   }
   create_password = try(each.value.create_password, false)
 }
+
