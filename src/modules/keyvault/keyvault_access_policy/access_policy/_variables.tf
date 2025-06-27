@@ -4,4 +4,4 @@ variable "object_id" {}
 variable "key_permissions" {}
 variable "secret_permissions" {}
 variable "certificate_permissions" {}
-variable "access_policies" {}
+variable "storage_permissions" {}
