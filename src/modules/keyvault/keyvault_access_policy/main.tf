@@ -10,5 +10,3 @@ module "access_policy" {
   certificate_permissions = each.value.certificate_permissions
   storage_permissions     = each.value.storage_permissions
 }
-
-
