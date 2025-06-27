@@ -59,6 +59,8 @@ resource "azurerm_kubernetes_cluster" "main" {
     pod_cidr            = local.validated_pod_cidr
   }
   node_os_upgrade_channel = try(var.settings.node_os_upgrade_channel, null)
+  image_cleaner_interval_hours = try(var.settings.image_cleaner_interval_hours, null)
+  local_account_disabled = try(var.settings.local_account_disabled, null)
   identity {
     type         = try(var.settings.identity.type, "SystemAssigned")
     identity_ids = try(var.settings.identity.type == "UserAssigned" ? [local.managed_identity.id] : null, null)
