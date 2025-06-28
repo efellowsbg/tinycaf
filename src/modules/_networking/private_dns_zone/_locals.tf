@@ -6,44 +6,45 @@ locals {
   location             = local.resource_group.location
   registration_enabled = try(var.settings.registration_enabled, false)
 
-  vnet_refs = (
-    try(length(var.settings.vnet_ref), 0) > 0 ?
-    {
-      for vnet_raw in var.settings.vnet_ref :
-      split("/", vnet_raw)[0] => {
-        name = var.resources[
-          try(var.settings.lz_key, var.client_config.landingzone_key)
-        ].virtual_networks[split("/", vnet_raw)[0]].name
-        id = var.resources[
-          try(var.settings.lz_key, var.client_config.landingzone_key)
-        ].virtual_networks[split("/", vnet_raw)[0]].id
-        name_exact = (
-          length(split("/", vnet_raw)) > 1 ?
-          split("/", vnet_raw)[1] :
-          "null"
-        )
-      }
-    } : {}
-  )
+  vnet_refs = try(length(var.settings.vnet_ref), 0) > 0 ? {
+    for vnet_raw in var.settings.vnet_ref :
+    vnet_raw => {
+      vnet_parts  = split("/", vnet_raw)
+      vnet_key    = vnet_parts[0]
+      subnet_part = length(vnet_parts) > 1 ? vnet_parts[1] : null
+
+      name = var.resources[
+        try(var.settings.lz_key, var.client_config.landingzone_key)
+      ].virtual_networks[vnet_key].name
+
+      id = var.resources[
+        try(var.settings.lz_key, var.client_config.landingzone_key)
+      ].virtual_networks[vnet_key].id
+
+      name_exact = subnet_part
+    }
+  } : {}
+
+  vnet_ids_cleaned = try({
+    for vnet_id in var.settings.vnet_ids :
+    vnet_id => {
+      name       = split("/", vnet_id)[length(split("/", vnet_id)) - 1]
+      id         = vnet_id
+      name_exact = null
+    }
+  }, {})
 
   remote_vnet_refs = (
     try(length(var.settings.remote_vnet_refs), 0) > 0 ?
     {
       for vnet in var.settings.remote_vnet_refs :
       vnet => {
-        name = var.resources[var.settings.remote_lz_key].virtual_networks[vnet].name
-        id   = var.resources[var.settings.remote_lz_key].virtual_networks[vnet].id
+        name       = var.resources[var.settings.remote_lz_key].virtual_networks[vnet].name
+        id         = var.resources[var.settings.remote_lz_key].virtual_networks[vnet].id
+        name_exact = null
       }
     } : {}
   )
-
-  vnet_ids_cleaned = try({
-    for vnet_id in var.settings.vnet_ids :
-    vnet_id => {
-      name = split("/", vnet_id)[length(split("/", vnet_id)) - 1]
-      id   = vnet_id
-    }
-  }, {})
 
   # Final merged map of all vNets
   vnet_ids = merge(local.vnet_refs, local.vnet_ids_cleaned, local.remote_vnet_refs)
