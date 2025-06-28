@@ -9,14 +9,21 @@ resource "azurerm_web_application_firewall_policy" "this" {
       enabled                     = try(var.settings.policy_settings.enabled, true)
       mode                        = try(var.settings.policy_settings.mode, "Prevention")
       request_body_check          = try(var.settings.policy_settings.request_body_check, true)
-      max_request_body_size_kb    = try(var.settings.policy_settings.max_request_body_size_kb, 128)
       file_upload_limit_in_mb     = try(var.settings.policy_settings.file_upload_limit_in_mb, 100)
       max_request_body_size_in_kb = try(var.settings.policy_settings.max_request_body_size_in_kb, 128)
       dynamic "log_scrubbing" {
         for_each = try(var.settings.policy_settings.log_scrubbing, [])
         content {
           enabled = log_scrubbing.value.enabled
-          rule    = log_scrubbing.value.rule
+          dynamic "scrubbing_rule" {
+            for_each = try(log_scrubbing.value.scrubbing_rule, [])
+            content {
+              enabled                 = try(scrubbing_rule.value.enabled, true)
+              match_variable          = scrubbing_rule.value.match_variable
+              selector                = try(scrubbing_rule.value.selector, null)
+              selector_match_operator = try(scrubbing_rule.value.selector_match_operator, "Equals")
+            }
+          }
         }
       }
       request_body_enforcement                  = try(var.settings.policy_settings.request_body_enforcement, true)
@@ -50,12 +57,12 @@ resource "azurerm_web_application_firewall_policy" "this" {
   dynamic "managed_rules" {
     for_each = can(var.settings.managed_rules) ? [1] : []
     content {
-      dynamic "exclusions" {
+      dynamic "exclusion" {
         for_each = try(var.settings.managed_rules.exclusions, [])
         content {
-          match_variable = exclusions.value.match_variable
-          selector       = exclusions.value.selector
-          operator       = exclusions.value.operator
+          match_variable          = exclusion.value.match_variable
+          selector                = exclusion.value.selector
+          selector_match_operator = try(exclusion.value.selector_match_operator, "Equals")
         }
       }
 
@@ -70,11 +77,12 @@ resource "azurerm_web_application_firewall_policy" "this" {
             content {
               rule_group_name = rule_group_override.value.rule_group_name
 
-              dynamic "rules" {
+              dynamic "rule" {
                 for_each = try(rule_group_override.value.rules, [])
                 content {
-                  rule_id = rules.value.rule_id
-                  action  = rules.value.action
+                  id      = rule.value.id
+                  action  = try(rule.value.action, null)
+                  enabled = try(rule.value.enabled, false)
                 }
               }
             }

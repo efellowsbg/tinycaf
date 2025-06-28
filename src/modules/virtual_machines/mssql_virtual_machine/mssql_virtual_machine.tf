@@ -12,5 +12,4 @@ resource "azurerm_mssql_virtual_machine" "main" {
   sql_connectivity_port = try(var.settings.sql_connectivity_port, 1433)
   sql_connectivity_type = try(var.settings.sql_connectivity_type, "PRIVATE")
   r_services_enabled    = try(var.settings.r_services_enabled, false)
-  tags                  = local.tags
 }
