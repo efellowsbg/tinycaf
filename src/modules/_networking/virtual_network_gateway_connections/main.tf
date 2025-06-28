@@ -6,10 +6,10 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
 
   virtual_network_gateway_id         = local.virtual_network_gateway_id
   local_network_gateway_id           = local.local_network_gateway_id
-  ingress_nat_rule_ids = try(var.settings.ingress_nat_rule_ids, [])
-  enable_bgp = try(var.settings.enable_bgp, false)
+  ingress_nat_rule_ids               = try(var.settings.ingress_nat_rule_ids, [])
+  enable_bgp                         = try(var.settings.enable_bgp, false)
   type                               = try(var.settings.type, "IPsec")
-  routing_weight = try(var.settings.routing_weight, null)
+  routing_weight                     = try(var.settings.routing_weight, null)
   connection_protocol                = try(var.settings.connection_protocol, "IKEv2")
   use_policy_based_traffic_selectors = try(var.settings.use_policy_based_traffic_selectors, true)
 
