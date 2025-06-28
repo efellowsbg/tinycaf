@@ -20,7 +20,7 @@ locals {
         name_exact = (
           length(split("/", vnet_raw)) > 1 ?
           split("/", vnet_raw)[1] :
-          null
+          "null"
         )
       }
     } : {}
