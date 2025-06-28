@@ -249,6 +249,58 @@ module "network_security_groups" {
   }
 }
 
+module "network_interfaces" {
+  source   = "./modules/_networking/network_interface"
+  for_each = var.network_interfaces
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups  = module.resource_groups
+        virtual_networks = module.virtual_networks
+        public_ips       = module.public_ips
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
+  }
+}
+
+module "network_interface_security_group_association" {
+  source   = "./modules/_networking/network_interface_security_group_association"
+  for_each = var.network_interface_security_group_associations
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        network_security_groups = module.network_security_groups
+        network_interfaces      = module.network_interfaces
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
+  }
+}
+
+
 module "nat_gateways" {
   source   = "./modules/_networking/nat_gateway"
   for_each = var.nat_gateways
