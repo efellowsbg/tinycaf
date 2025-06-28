@@ -48,6 +48,16 @@ locals {
           certificate_permissions = local.certificate_permissions
           storage_permissions     = local.storage_permissions
         }
+      ],
+      [
+        for include in [true] : {
+          key                     = "${var.policy_name}_logged_in_user"
+          object_id               = var.global_settings.object_id
+          key_permissions         = local.key_permissions
+          secret_permissions      = local.secret_permissions
+          certificate_permissions = local.certificate_permissions
+          storage_permissions     = local.storage_permissions
+        } if try(var.access_policies.logged_in_user, false)
       ]
     )
   ])
