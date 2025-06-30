@@ -141,6 +141,10 @@ resource "azurerm_application_gateway" "main" {
       http_listener_name         = request_routing_rule.value.http_listener_name
       backend_address_pool_name  = try(request_routing_rule.value.backend_address_pool_name, null)
       backend_http_settings_name = try(request_routing_rule.value.backend_http_settings_name, null)
+      redirect_configuration_name = try(request_routing_rule.value.redirect_configuration_name, null)
+      rewrite_rule_set_name = try(request_routing_rule.value.rewrite_rule_set_name, null)
+      url_path_map_name = try(request_routing_rule.value.url_path_map_name, null)
+      priority = try(request_routing_rule.value.priority, null)
     }
   }
 }
