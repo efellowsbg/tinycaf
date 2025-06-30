@@ -4,7 +4,7 @@ resource "azurerm_web_application_firewall_policy" "main" {
   location            = local.location
 
   dynamic "policy_settings" {
-    for_each = can(var.settings.identity) ? [1] : []
+    for_each = can(var.settings.policy_settings) ? [1] : []
     content {
       enabled                     = try(var.settings.policy_settings.enabled, true)
       mode                        = try(var.settings.policy_settings.mode, "Prevention")
