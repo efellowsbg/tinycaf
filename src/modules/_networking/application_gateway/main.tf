@@ -164,6 +164,7 @@ resource "azurerm_application_gateway" "main" {
       }
     }
   }
+
   dynamic "request_routing_rule" {
     for_each = try(var.settings.request_routing_rules, {})
     content {
