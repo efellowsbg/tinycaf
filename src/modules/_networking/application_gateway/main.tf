@@ -83,7 +83,15 @@ resource "azurerm_application_gateway" "main" {
       )
     }
   }
-
+  dynamic "ssl_certificate" {
+    for_each = try(var.settings.ssl_certificates, {})
+    content {
+      name     = ssl_certificate.value.name
+      data     = try(ssl_certificate.value.data,null)
+      password = try(ssl_certificate.value.password, null)
+      key_vault_secret_id = try(ssl_certificate.value.key_vault_secret_id, null)
+    }
+  }
   dynamic "frontend_ip_configuration" {
     for_each = try(var.settings.frontend_ip_configurations, [])
     content {
@@ -136,7 +144,26 @@ resource "azurerm_application_gateway" "main" {
       path = try(backend_http_settings.value.path, null)
     }
   }
-
+  dynamic "probe" {
+    for_each = try(var.settings.probes, {})
+    content {
+      name                = probe.value.name
+      host = try(probe.value.host, null)
+      protocol            = probe.value.protocol
+      path                = probe.value.path
+      interval            = try(probe.value.interval, 30)
+      timeout             = try(probe.value.timeout, 30)
+      minimum_servers = try(probe.value.minimum_servers, 0)
+      unhealthy_threshold = try(probe.value.unhealthy_threshold, 3)
+      dynamic "match" {
+        for_each = try(probe.value.match, {})
+        content {
+          body = try(match.value.body, null)
+          status_code = try(match.value.status_code, ["200-399"])
+        }
+      }
+    }
+  }
   dynamic "request_routing_rule" {
     for_each = try(var.settings.request_routing_rules, {})
     content {
