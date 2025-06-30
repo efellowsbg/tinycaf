@@ -20,33 +20,33 @@ resource "azurerm_web_application_firewall_policy" "this" {
   }
 
   dynamic "custom_rules" {
-  for_each = try(var.settings.custom_rules, {})
-  content {
-    name      = try(custom_rules.value.name, null)
-    priority  = custom_rules.value.priority
-    rule_type = custom_rules.value.rule_type
+    for_each = try(var.settings.custom_rules, {})
+    content {
+      name      = try(custom_rules.value.name, null)
+      priority  = custom_rules.value.priority
+      rule_type = custom_rules.value.rule_type
+      action    = custom_rules.value.action
 
-    dynamic "match_conditions" {
-      for_each = try(custom_rules.value.match_conditions, [])
-      content {
-        operator         = match_conditions.value.operator
-        match_values     = try(match_conditions.value.match_values, [])
-        negation_condition = try(match_conditions.value.negation_condition, null)
-        transforms       = try(match_conditions.value.transforms, [])
+      dynamic "match_conditions" {
+        for_each = try(custom_rules.value.match_conditions, [])
+        content {
+          operator           = match_conditions.value.operator
+          match_values       = try(match_conditions.value.match_values, [])
+          negation_condition = try(match_conditions.value.negation_condition, null)
+          transforms         = try(match_conditions.value.transforms, [])
 
-        dynamic "match_variables" {
-          for_each = try(match_conditions.value.match_variables, [])
-          content {
-            variable_name = match_variables.value.variable_name
-            selector      = try(match_variables.value.selector, null)
+          dynamic "match_variables" {
+            for_each = try(match_conditions.value.match_variables, [])
+            content {
+              variable_name = match_variables.value.variable_name
+              selector      = try(match_variables.value.selector, null)
+            }
           }
         }
       }
     }
-
-    action = custom_rules.value.action
   }
-}
+
 
   dynamic "managed_rules" {
     for_each = can(var.settings.managed_rules) ? [1] : []
