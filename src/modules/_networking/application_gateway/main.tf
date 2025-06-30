@@ -53,11 +53,11 @@ resource "azurerm_application_gateway" "main" {
     }
   }
   dynamic "http_listener" {
-    for_each = try(var.settings.http_listeners, [])
+    for_each = try(var.settings.http_listeners, {}) # 👈 правилно при map
     content {
       name                           = each.value.name
-      frontend_ip_configuration_name = each.value.frontend_ip_configuration_name
-      frontend_port_name             = each.value.frontend_port_name
+      frontend_ip_configuration_name = each.value.frontend_ip_configuration_ref
+      frontend_port_name             = each.value.frontend_port_ref
       protocol                       = each.value.protocol
       host_name                      = try(each.value.host_name, null)
       ssl_certificate_name           = try(each.value.ssl_certificate_name, null)
