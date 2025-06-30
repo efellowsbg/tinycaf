@@ -5,17 +5,16 @@ resource "azurerm_application_gateway" "main" {
   enable_http2        = try(var.settings.enable_http2, true)
   tags                = local.tags
   fips_enabled        = try(var.settings.fips_enabled, false)
-
   firewall_policy_id = try(
     var.resources[
       try(var.settings.firewall_policy_lz_key, var.client_config.landingzone_key)
-    ].waf_policies[var.settings.firewall_policy_ref].id,
+    ].waf_policies[var.settings.firewall_policy_ref].id,var.settings.firewall_policy_id,
     null
   )
 
   force_firewall_policy_association = try(
     var.settings.force_firewall_policy_association,
-    false
+    true
   )
 
   dynamic "identity" {
@@ -130,6 +129,7 @@ resource "azurerm_application_gateway" "main" {
       pick_host_name_from_backend_address = try(backend_http_settings.value.pick_host_name_from_backend_address, false)
       probe_name                          = try(backend_http_settings.value.probe_name, null)
       request_timeout                     = try(backend_http_settings.value.request_timeout, 350)
+      path = try(backend_http_settings.value.path, null)
     }
   }
 
