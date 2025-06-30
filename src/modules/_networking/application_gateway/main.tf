@@ -61,20 +61,24 @@ resource "azurerm_application_gateway" "main" {
     for_each = try(var.settings.http_listeners, {})
     content {
       name                            = http_listener.value.name
-      frontend_ip_configuration_name = http_listener.value.frontend_ip_configuration_ref
-      frontend_port_name             = http_listener.value.frontend_port_ref
+      frontend_ip_configuration_name = http_listener.value.frontend_ip_configuration_name
+      frontend_port_name             = http_listener.value.frontend_port_name
       protocol                       = http_listener.value.protocol
+      firewall_policy_id = try(
+        var.resources[
+          try(http_listener.value.firewall_policy_lz_key, var.client_config.landingzone_key)
+        ].waf_policies[
+          http_listener.value.firewall_policy_ref
+        ].id,
+        http_listener.value.firewall_policy_id,
+        null
+      )
       host_name                      = try(http_listener.value.host_name, null)
       ssl_certificate_name           = try(http_listener.value.ssl_certificate_name, null)
       host_names                     = try(http_listener.value.host_names, [])
       require_sni                    = try(http_listener.value.require_sni, true)
-      ssl_certificate_id = try(
-        var.resources[
-          try(http_listener.value.ssl_certificate_lz_key, var.client_config.landingzone_key)
-        ].application_gateways[
-          http_listener.value.ssl_certificate_ref
-        ].ssl_certificates[http_listener.value.ssl_certificate_name].id,
-        http_listener.value.ssl_certificate_id,
+      ssl_profile_name = try(
+        http_listener.value.ssl_profile_name,
         null
       )
     }
