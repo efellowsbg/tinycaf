@@ -5,130 +5,142 @@ resource "azurerm_application_gateway" "main" {
   enable_http2        = try(var.settings.enable_http2, true)
   tags                = local.tags
   fips_enabled        = try(var.settings.fips_enabled, false)
+
   firewall_policy_id = try(
     var.resources[
       try(var.settings.firewall_policy_lz_key, var.client_config.landingzone_key)
     ].waf_policies[var.settings.firewall_policy_ref].id,
     null
   )
+
   force_firewall_policy_association = try(
     var.settings.force_firewall_policy_association,
     false
   )
+
   dynamic "identity" {
     for_each = can(var.settings.identity) ? [1] : []
-
     content {
       type         = try(var.settings.identity.type, null)
       identity_ids = try(local.identity_ids, null)
     }
   }
+
   sku {
     name     = try(var.settings.sku.name, "Standard_v2")
     tier     = try(var.settings.sku.tier, "Standard_v2")
     capacity = try(var.settings.sku.capacity, 2)
   }
+
   dynamic "gateway_ip_configuration" {
     for_each = try(var.settings.gateway_ip_configurations, [])
     content {
-      name = each.value.name
+      name = gateway_ip_configuration.value.name
       subnet_id = try(
         var.resources[
-          try(each.value.subnet_lz_key, var.client_config.landingzone_key)
-          ].virtual_networks[
-          split("/", each.value.subnet_ref)[0]
-          ].subnets[
-          split("/", each.value.subnet_ref)[1]
+          try(gateway_ip_configuration.value.subnet_lz_key, var.client_config.landingzone_key)
+        ].virtual_networks[
+          split("/", gateway_ip_configuration.value.subnet_ref)[0]
+        ].subnets[
+          split("/", gateway_ip_configuration.value.subnet_ref)[1]
         ].id,
-        each.value.subnet_id,
+        gateway_ip_configuration.value.subnet_id,
         null
       )
     }
   }
+
   dynamic "frontend_port" {
     for_each = try(var.settings.frontend_ports, [])
     content {
-      name = each.value.name
-      port = each.value.port
+      name = frontend_port.value.name
+      port = frontend_port.value.port
     }
   }
+
   dynamic "http_listener" {
-    for_each = try(var.settings.http_listeners, {}) # 👈 правилно при map
+    for_each = try(var.settings.http_listeners, {})
     content {
-      name                           = each.value.name
-      frontend_ip_configuration_name = each.value.frontend_ip_configuration_ref
-      frontend_port_name             = each.value.frontend_port_ref
-      protocol                       = each.value.protocol
-      host_name                      = try(each.value.host_name, null)
-      ssl_certificate_name           = try(each.value.ssl_certificate_name, null)
-      host_names                     = try(each.value.host_names, [])
-      require_sni                    = try(each.value.require_sni, true)
+      name                            = http_listener.value.name
+      frontend_ip_configuration_name = http_listener.value.frontend_ip_configuration_ref
+      frontend_port_name             = http_listener.value.frontend_port_ref
+      protocol                       = http_listener.value.protocol
+      host_name                      = try(http_listener.value.host_name, null)
+      ssl_certificate_name           = try(http_listener.value.ssl_certificate_name, null)
+      host_names                     = try(http_listener.value.host_names, [])
+      require_sni                    = try(http_listener.value.require_sni, true)
       ssl_certificate_id = try(
         var.resources[
-          try(each.value.ssl_certificate_lz_key, var.client_config.landingzone_key)
-          ].application_gateways[
-          each.value.ssl_certificate_ref
-        ].ssl_certificates[each.value.ssl_certificate_name].id,
-        each.value.ssl_certificate_id,
+          try(http_listener.value.ssl_certificate_lz_key, var.client_config.landingzone_key)
+        ].application_gateways[
+          http_listener.value.ssl_certificate_ref
+        ].ssl_certificates[http_listener.value.ssl_certificate_name].id,
+        http_listener.value.ssl_certificate_id,
         null
       )
     }
   }
+
   dynamic "frontend_ip_configuration" {
     for_each = try(var.settings.frontend_ip_configurations, [])
     content {
-      name = each.value.name
+      name = frontend_ip_configuration.value.name
       subnet_id = try(
         var.resources[
-          try(each.value.subnet_lz_key, var.client_config.landingzone_key)
-          ].virtual_networks[
-          split("/", each.value.subnet_ref)[0]
-          ].subnets[
-          split("/", each.value.subnet_ref)[1]
+          try(frontend_ip_configuration.value.subnet_lz_key, var.client_config.landingzone_key)
+        ].virtual_networks[
+          split("/", frontend_ip_configuration.value.subnet_ref)[0]
+        ].subnets[
+          split("/", frontend_ip_configuration.value.subnet_ref)[1]
         ].id,
-        each.value.subnet_id,
+        frontend_ip_configuration.value.subnet_id,
         null
       )
       public_ip_address_id = try(
         var.resources[
-          try(each.value.public_ip_lz_key, var.client_config.landingzone_key)
-          ].public_ips[
-        each.value.public_ip_ref].id, each.value.public_ip_id,
+          try(frontend_ip_configuration.value.public_ip_lz_key, var.client_config.landingzone_key)
+        ].public_ips[
+          frontend_ip_configuration.value.public_ip_ref
+        ].id,
+        frontend_ip_configuration.value.public_ip_id,
         null
       )
-      private_ip_address            = try(each.value.private_ip_address, null)
-      private_ip_address_allocation = try(each.value.private_ip_address_allocation, null)
+      private_ip_address            = try(frontend_ip_configuration.value.private_ip_address, null)
+      private_ip_address_allocation = try(frontend_ip_configuration.value.private_ip_address_allocation, null)
     }
   }
+
   dynamic "backend_address_pool" {
     for_each = try(var.settings.backend_address_pools, [])
     content {
-      name         = each.value.name
-      fqdns        = try(each.value.fqdns, [])
-      ip_addresses = try(each.value.ip_addresses, [])
+      name         = backend_address_pool.value.name
+      fqdns        = try(backend_address_pool.value.fqdns, [])
+      ip_addresses = try(backend_address_pool.value.ip_addresses, [])
     }
   }
+
   dynamic "backend_http_settings" {
     for_each = try(var.settings.backend_http_settings, [])
     content {
-      name                                = each.value.name
-      cookie_based_affinity               = try(each.value.cookie_based_affinity, "Disabled")
-      port                                = each.value.port
-      protocol                            = each.value.protocol
-      affinity_cookie_name                = try(each.value.affinity_cookie_name, null)
-      pick_host_name_from_backend_address = try(each.value.pick_host_name_from_backend_address, false)
-      probe_name                          = try(each.value.probe_name, null)
-      request_timeout                     = try(each.value.request_timeout, 350)
+      name                                = backend_http_settings.value.name
+      cookie_based_affinity               = try(backend_http_settings.value.cookie_based_affinity, "Disabled")
+      port                                = backend_http_settings.value.port
+      protocol                            = backend_http_settings.value.protocol
+      affinity_cookie_name                = try(backend_http_settings.value.affinity_cookie_name, null)
+      pick_host_name_from_backend_address = try(backend_http_settings.value.pick_host_name_from_backend_address, false)
+      probe_name                          = try(backend_http_settings.value.probe_name, null)
+      request_timeout                     = try(backend_http_settings.value.request_timeout, 350)
     }
   }
+
   dynamic "request_routing_rule" {
     for_each = try(var.settings.request_routing_rules, {})
     content {
-      name                       = each.value.name
-      rule_type                  = each.value.rule_type
-      http_listener_name         = each.value.http_listener_name
-      backend_address_pool_name  = try(each.value.backend_address_pool_name, null)
-      backend_http_settings_name = try(each.value.backend_http_settings_name, null)
+      name                       = request_routing_rule.value.name
+      rule_type                  = request_routing_rule.value.rule_type
+      http_listener_name         = request_routing_rule.value.http_listener_name
+      backend_address_pool_name  = try(request_routing_rule.value.backend_address_pool_name, null)
+      backend_http_settings_name = try(request_routing_rule.value.backend_http_settings_name, null)
     }
   }
 }
