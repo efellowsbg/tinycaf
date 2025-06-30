@@ -26,9 +26,9 @@ resource "azurerm_application_gateway" "main" {
   }
 
   sku {
-    name     = try(var.settings.sku.name, "Standard_v2")
-    tier     = try(var.settings.sku.tier, "Standard_v2")
-    capacity = try(var.settings.sku.capacity, 2)
+    name     = try(var.settings.sku.name, "WAF_v2")
+    tier     = try(var.settings.sku.tier, "WAF_v2")
+    capacity = try(var.settings.sku.capacity, 1)
   }
 
   dynamic "gateway_ip_configuration" {
