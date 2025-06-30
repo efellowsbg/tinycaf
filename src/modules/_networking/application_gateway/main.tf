@@ -29,7 +29,7 @@ resource "azurerm_application_gateway" "main" {
     capacity = try(var.settings.sku.capacity, 2)
   }
   dynamic "gateway_ip_configuration" {
-    for_each = var.settings.gateway_ip_configuration
+    for_each = try(var.settings.gateway_ip_configurations, [])
     content {
       name = each.value.name
       subnet_id = try(
@@ -46,14 +46,14 @@ resource "azurerm_application_gateway" "main" {
     }
   }
   dynamic "frontend_port" {
-    for_each = var.settings.frontend_ports
+    for_each = try(var.settings.frontend_ports, [])
     content {
       name = each.value.name
       port = each.value.port
     }
   }
   dynamic "http_listener" {
-    for_each = var.settings.http_listeners
+    for_each = try(var.settings.http_listeners, [])
     content {
       name                           = each.value.name
       frontend_ip_configuration_name = each.value.frontend_ip_configuration_name
@@ -75,7 +75,7 @@ resource "azurerm_application_gateway" "main" {
     }
   }
   dynamic "frontend_ip_configuration" {
-    for_each = var.settings.frontend_ip_configurations
+    for_each = try(var.settings.frontend_ip_configurations, [])
     content {
       name = each.value.name
       subnet_id = try(
@@ -101,7 +101,7 @@ resource "azurerm_application_gateway" "main" {
     }
   }
   dynamic "backend_address_pool" {
-    for_each = var.settings.backend_address_pools
+    for_each = try(var.settings.backend_address_pools, [])
     content {
       name         = each.value.name
       fqdns        = try(each.value.fqdns, [])
@@ -109,7 +109,7 @@ resource "azurerm_application_gateway" "main" {
     }
   }
   dynamic "backend_http_settings" {
-    for_each = var.settings.backend_http_settings
+    for_each = try(var.settings.backend_http_settings, [])
     content {
       name                                = each.value.name
       cookie_based_affinity               = try(each.value.cookie_based_affinity, "Disabled")
@@ -122,7 +122,7 @@ resource "azurerm_application_gateway" "main" {
     }
   }
   dynamic "request_routing_rule" {
-    for_each = var.settings.request_routing_rules
+    for_each = try(var.settings.request_routing_rules, {})
     content {
       name                       = each.value.name
       rule_type                  = each.value.rule_type
