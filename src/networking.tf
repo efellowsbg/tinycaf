@@ -47,6 +47,34 @@ module "vnet_peerings" {
   }
 }
 
+module "application_gateways" {
+  source   = "./modules/_networking/application_gateway"
+  for_each = var.application_gateways
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        virtual_networks   = module.virtual_networks
+        resource_groups    = module.resource_groups
+        public_ips         = module.public_ips
+        managed_identities = module.managed_identities
+        waf_policies       = module.waf_policies
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
+  }
+}
+
+
 module "virtual_network_gateways" {
   source   = "./modules/_networking/virtual_network_gateway"
   for_each = var.virtual_network_gateways
