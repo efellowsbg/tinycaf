@@ -1,4 +1,4 @@
-resource "azurerm_web_application_firewall_policy" "this" {
+resource "azurerm_web_application_firewall_policy" "main" {
   name                = var.settings.name
   resource_group_name = local.resource_group_name
   location            = local.location
