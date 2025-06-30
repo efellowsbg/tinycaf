@@ -52,20 +52,22 @@ resource "azurerm_web_application_firewall_policy" "main" {
     for_each = can(var.settings.managed_rules) ? [1] : []
     content {
       dynamic "exclusion" {
-        for_each = can(var.settings.managed_rules.exclusion) ? [1] : []
+        for_each = try(var.settings.managed_rules.exclusion, [])
         content {
           match_variable          = exclusion.value.match_variable
           selector                = exclusion.value.selector
           selector_match_operator = try(exclusion.value.selector_match_operator, "Equals")
+
           dynamic "excluded_rule_set" {
             for_each = try(exclusion.value.excluded_rule_set, [])
             content {
               type    = try(excluded_rule_set.value.type, null)
               version = try(excluded_rule_set.value.version, null)
+
               dynamic "rule_group" {
                 for_each = try(excluded_rule_set.value.rule_group, [])
                 content {
-                  rule_group_name = rule_group.value.name
+                  rule_group_name = rule_group.value.rule_group_name
                   excluded_rules  = try(rule_group.value.excluded_rules, [])
                 }
               }
@@ -73,6 +75,7 @@ resource "azurerm_web_application_firewall_policy" "main" {
           }
         }
       }
+
 
       dynamic "managed_rule_set" {
         for_each = try(var.settings.managed_rules.managed_rule_set, [])
