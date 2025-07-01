@@ -24,12 +24,8 @@ resource "azurerm_role_assignment" "main" {
 
   scope = try(
     var.resource_type == "subnets" ?
-    var.resources.virtual_networks[split(each.value.resource_key, "/")[0]]
-    .subnets[split(each.value.resource_key, "/")[1]]
-    .id :
-    var.resources[var.resource_type][each.value.resource_key].id,
-    null
-  )
+    var.resources[
+      try(var.settings.subnet_lz_key, var.client_config.landingzone_key)].virtual_networks[split(each.value.resource_key, "/")[0]].subnets[split(each.value.resource_key, "/")[1]].id : var.resources[var.resource_type][each.value.resource_key].id, null )
 
   principal_id = try(
     # If principal is directly an ID (like object_ids), use it. Otherwise, resolve via var.resources.
