@@ -68,7 +68,7 @@ resource "random_password" "admin" {
 }
 
 resource "azurerm_key_vault_secret" "admin_password" {
-  count        = try(length(trimspace(var.settings.keyvault_ref)) > 0, false) ? 1 : 0
+  count        = try(length(trimspace(var.settings.key_vault_ref)) > 0, false) ? 1 : 0
   name         = "${var.settings.name}-mssqlmiadmin-password"
   value        = random_password.admin[0].result
   key_vault_id = local.key_vault_id
