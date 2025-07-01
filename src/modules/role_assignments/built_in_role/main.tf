@@ -24,7 +24,7 @@ resource "azurerm_role_assignment" "main" {
 
   scope = try(
     each.value.resource_type == "subnets" ?
-    "resources" :
+    "/subscriptions/9xxxxxxxxxxxxxxxxxxxxx8a6e/resourceGroups/rg-sandbox/providers/Microsoft.Network/virtualNetworks/vnet-sandbox-westeurope/subnets/snet-sandbox-aks-westeurope" :
     var.resources[var.resource_type][each.value.resource_key].id,
     null
   )
