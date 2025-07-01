@@ -57,7 +57,7 @@ resource "azurerm_mssql_managed_instance" "main" {
 }
 
 resource "random_password" "admin" {
-  count            = try(length(trimspace(var.settings.keyvault_ref)) > 0, false) ? 1 : 0
+  count            = try(length(trimspace(var.settings.key_vault_ref)) > 0, false) ? 1 : 0
   length           = 15
   min_upper        = 2
   min_lower        = 2
