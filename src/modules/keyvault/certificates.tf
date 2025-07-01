@@ -1,6 +1,6 @@
-module "secrets" {
+module "certufucates" {
   source   = "./keyvault_certificate"
-  for_each = try(var.settings.certificate, {})
+  for_each = try(var.settings.certificates, {})
 
   settings        = var.settings
   keyvault_id     = azurerm_key_vault.main.id
