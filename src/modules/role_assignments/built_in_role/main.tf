@@ -23,6 +23,11 @@ resource "azurerm_role_assignment" "main" {
   })
 
   scope = try(
+    each.value.resource_type == "subnets" ?
+    var.resources[var.client_config.landingzone_key]
+    .virtual_networks[split("/", each.value.resource_key)[0]]
+    .subnets[split("/", each.value.resource_key)[1]]
+    .id :
     var.resources[each.value.resource_type][each.value.resource_key].id,
     null
   )
