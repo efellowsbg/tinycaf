@@ -3,7 +3,7 @@ resource "azurerm_key_vault_certificate" "main" {
   key_vault_id = var.keyvault_id
   certificate {
     contents = data.azurerm_key_vault_secret.main.value
-    password = try(var.certificate.password,"")
+    password = try(var.certificate.password, "")
   }
 }
 

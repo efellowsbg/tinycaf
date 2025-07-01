@@ -13,7 +13,7 @@ module "built_in_roles" {
   resource_type   = each.value.resource_type # Pass the resource type dynamically
   global_settings = var.global_settings
   resources       = var.resources
-  client_config = var.client_config
+  client_config   = var.client_config
 }
 
 module "custom_roles" {

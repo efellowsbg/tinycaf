@@ -8,7 +8,7 @@ resource "azurerm_application_gateway" "main" {
   firewall_policy_id = try(
     var.resources[
       try(var.settings.firewall_policy_lz_key, var.client_config.landingzone_key)
-    ].waf_policies[var.settings.firewall_policy_ref].id,var.settings.firewall_policy_id,
+    ].waf_policies[var.settings.firewall_policy_ref].id, var.settings.firewall_policy_id,
     null
   )
 
@@ -38,9 +38,9 @@ resource "azurerm_application_gateway" "main" {
       subnet_id = try(
         var.resources[
           try(gateway_ip_configuration.value.subnet_lz_key, var.client_config.landingzone_key)
-        ].virtual_networks[
+          ].virtual_networks[
           split("/", gateway_ip_configuration.value.subnet_ref)[0]
-        ].subnets[
+          ].subnets[
           split("/", gateway_ip_configuration.value.subnet_ref)[1]
         ].id,
         gateway_ip_configuration.value.subnet_id,
@@ -60,23 +60,23 @@ resource "azurerm_application_gateway" "main" {
   dynamic "http_listener" {
     for_each = try(var.settings.http_listeners, {})
     content {
-      name                            = http_listener.value.name
+      name                           = http_listener.value.name
       frontend_ip_configuration_name = http_listener.value.frontend_ip_configuration_name
       frontend_port_name             = http_listener.value.frontend_port_name
       protocol                       = http_listener.value.protocol
       firewall_policy_id = try(
         var.resources[
           try(http_listener.value.firewall_policy_lz_key, var.client_config.landingzone_key)
-        ].waf_policies[
+          ].waf_policies[
           http_listener.value.firewall_policy_ref
         ].id,
         http_listener.value.firewall_policy_id,
         null
       )
-      host_name                      = try(http_listener.value.host_name, null)
-      ssl_certificate_name           = try(http_listener.value.ssl_certificate_name, null)
-      host_names                     = try(http_listener.value.host_names, [])
-      require_sni                    = try(http_listener.value.require_sni, true)
+      host_name            = try(http_listener.value.host_name, null)
+      ssl_certificate_name = try(http_listener.value.ssl_certificate_name, null)
+      host_names           = try(http_listener.value.host_names, [])
+      require_sni          = try(http_listener.value.require_sni, true)
       ssl_profile_name = try(
         http_listener.value.ssl_profile_name,
         null
@@ -86,9 +86,9 @@ resource "azurerm_application_gateway" "main" {
   dynamic "ssl_certificate" {
     for_each = try(var.settings.ssl_certificates, {})
     content {
-      name     = ssl_certificate.value.name
-      data     = try(ssl_certificate.value.data,null)
-      password = try(ssl_certificate.value.password, null)
+      name                = ssl_certificate.value.name
+      data                = try(ssl_certificate.value.data, null)
+      password            = try(ssl_certificate.value.password, null)
       key_vault_secret_id = try(ssl_certificate.value.key_vault_secret_id, null)
     }
   }
@@ -99,9 +99,9 @@ resource "azurerm_application_gateway" "main" {
       subnet_id = try(
         var.resources[
           try(frontend_ip_configuration.value.subnet_lz_key, var.client_config.landingzone_key)
-        ].virtual_networks[
+          ].virtual_networks[
           split("/", frontend_ip_configuration.value.subnet_ref)[0]
-        ].subnets[
+          ].subnets[
           split("/", frontend_ip_configuration.value.subnet_ref)[1]
         ].id,
         frontend_ip_configuration.value.subnet_id,
@@ -110,7 +110,7 @@ resource "azurerm_application_gateway" "main" {
       public_ip_address_id = try(
         var.resources[
           try(frontend_ip_configuration.value.public_ip_lz_key, var.client_config.landingzone_key)
-        ].public_ips[
+          ].public_ips[
           frontend_ip_configuration.value.public_ip_ref
         ].id,
         frontend_ip_configuration.value.public_ip_id,
@@ -141,24 +141,24 @@ resource "azurerm_application_gateway" "main" {
       pick_host_name_from_backend_address = try(backend_http_settings.value.pick_host_name_from_backend_address, false)
       probe_name                          = try(backend_http_settings.value.probe_name, null)
       request_timeout                     = try(backend_http_settings.value.request_timeout, 350)
-      path = try(backend_http_settings.value.path, null)
+      path                                = try(backend_http_settings.value.path, null)
     }
   }
   dynamic "probe" {
     for_each = try(var.settings.probes, {})
     content {
       name                = probe.value.name
-      host = try(probe.value.host, null)
+      host                = try(probe.value.host, null)
       protocol            = probe.value.protocol
       path                = probe.value.path
       interval            = try(probe.value.interval, 30)
       timeout             = try(probe.value.timeout, 30)
-      minimum_servers = try(probe.value.minimum_servers, 0)
+      minimum_servers     = try(probe.value.minimum_servers, 0)
       unhealthy_threshold = try(probe.value.unhealthy_threshold, 3)
       dynamic "match" {
         for_each = try(probe.value.match, {})
         content {
-          body = try(match.value.body, null)
+          body        = try(match.value.body, null)
           status_code = try(match.value.status_code, ["200-399"])
         }
       }
@@ -168,15 +168,15 @@ resource "azurerm_application_gateway" "main" {
   dynamic "request_routing_rule" {
     for_each = try(var.settings.request_routing_rules, {})
     content {
-      name                       = request_routing_rule.value.name
-      rule_type                  = request_routing_rule.value.rule_type
-      http_listener_name         = request_routing_rule.value.http_listener_name
-      backend_address_pool_name  = try(request_routing_rule.value.backend_address_pool_name, null)
-      backend_http_settings_name = try(request_routing_rule.value.backend_http_settings_name, null)
+      name                        = request_routing_rule.value.name
+      rule_type                   = request_routing_rule.value.rule_type
+      http_listener_name          = request_routing_rule.value.http_listener_name
+      backend_address_pool_name   = try(request_routing_rule.value.backend_address_pool_name, null)
+      backend_http_settings_name  = try(request_routing_rule.value.backend_http_settings_name, null)
       redirect_configuration_name = try(request_routing_rule.value.redirect_configuration_name, null)
-      rewrite_rule_set_name = try(request_routing_rule.value.rewrite_rule_set_name, null)
-      url_path_map_name = try(request_routing_rule.value.url_path_map_name, null)
-      priority = try(request_routing_rule.value.priority, null)
+      rewrite_rule_set_name       = try(request_routing_rule.value.rewrite_rule_set_name, null)
+      url_path_map_name           = try(request_routing_rule.value.url_path_map_name, null)
+      priority                    = try(request_routing_rule.value.priority, null)
     }
   }
 }

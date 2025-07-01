@@ -10,4 +10,3 @@ output "versionless_id" {
 output "version" {
   value = azurerm_key_vault_certificate.main.version
 }
-

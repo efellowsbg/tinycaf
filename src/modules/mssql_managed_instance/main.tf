@@ -10,7 +10,7 @@ resource "azurerm_mssql_managed_instance" "main" {
   storage_size_in_gb = try(var.settings.storage_size_in_gb, "32")
   vcores             = try(var.settings.vcores, "4")
 
-  administrator_login            = var.settings.key_vault_ref != null ? try(var.settings.administrator_login,"mssqlmiadmin") : null
+  administrator_login            = var.settings.key_vault_ref != null ? try(var.settings.administrator_login, "mssqlmiadmin") : null
   administrator_login_password   = var.settings.key_vault_ref != null ? random_password.admin[0].result : null
   collation                      = try(var.settings.collation, null)
   dns_zone_partner_id            = try(var.settings.dns_zone_partner_id, null)
@@ -57,18 +57,18 @@ resource "azurerm_mssql_managed_instance" "main" {
 }
 
 resource "random_password" "admin" {
-  count            = try(length(trimspace(var.settings.key_vault_ref)) > 0, false) ? 1 : 0
-  length           = 24
-  min_upper        = 0
-  min_lower        = 0
-  min_special      = 0
-  numeric          = true
-  special          = true
+  count       = try(length(trimspace(var.settings.key_vault_ref)) > 0, false) ? 1 : 0
+  length      = 24
+  min_upper   = 0
+  min_lower   = 0
+  min_special = 0
+  numeric     = true
+  special     = true
 }
 
 resource "azurerm_key_vault_secret" "admin_password" {
   count        = try(length(trimspace(var.settings.key_vault_ref)) > 0, false) ? 1 : 0
-  name         = try(var.settings.keyvault_secret_name,"${var.settings.name}-mssqlmiadmin-password")
+  name         = try(var.settings.keyvault_secret_name, "${var.settings.name}-mssqlmiadmin-password")
   value        = random_password.admin[0].result
   key_vault_id = local.key_vault_id
 }
