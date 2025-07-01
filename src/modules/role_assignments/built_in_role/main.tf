@@ -1,60 +1,42 @@
-# resource "azurerm_role_assignment" "main" {
-#   for_each = tomap({
-#     for item in flatten([
-#       for role_definition_name, resources in var.settings : [
-#         for resource_key, resource_details in resources : [
-#           for principal_type, principals in try(resource_details, {}) : [
-#             for principal in(
-#               # Handle cases where the principal is a list (like object_ids) or a single value
-#               can(principals) && length(principals) > 0 ? principals : []
-#               ) : {
-#               role_definition_name = role_definition_name
-#               resource_key         = resource_key
-#               resource_type        = var.resource_type
-#               principal_type       = principal_type
-#               principal            = principal
-#             }
-#           ]
-#         ]
-#       ]
-#     ]) :
-#     # Ensure unique keys for each role assignment
-#     "${item.role_definition_name}-${item.resource_key}-${item.principal_type}-${item.principal}" => item
-#   })
+resource "azurerm_role_assignment" "main" {
+  for_each = tomap({
+    for item in flatten([
+      for role_definition_name, resources in var.settings : [
+        for resource_key, resource_details in resources : [
+          for principal_type, principals in try(resource_details, {}) : [
+            for principal in(
+              # Handle cases where the principal is a list (like object_ids) or a single value
+              can(principals) && length(principals) > 0 ? principals : []
+              ) : {
+              role_definition_name = role_definition_name
+              resource_key         = resource_key
+              resource_type        = var.resource_type
+              principal_type       = principal_type
+              principal            = principal
+            }
+          ]
+        ]
+      ]
+    ]) :
+    # Ensure unique keys for each role assignment
+    "${item.role_definition_name}-${item.resource_key}-${item.principal_type}-${item.principal}" => item
+  })
 
-#   scope = try(
-#     var.resource_type == "subnets" ?
-#     var.resources.virtual_networks[split(each.value.resource_key, "/")[0]]
-#     .subnets[split(each.value.resource_key, "/")[1]]
-#     .id :
-#     var.resources[var.resource_type][each.value.resource_key].id,
-#     null
-#   )
-#   principal_id = try(
-#     # If principal is directly an ID (like object_ids), use it. Otherwise, resolve via var.resources.
-#     each.value.principal_type == "object_ids"
-#     ? each.value.principal
-#     : var.resources[each.value.principal_type][each.value.principal].principal_id,
-#     null
-#   )
+  scope = try(
+    each.value.resource_type == "subnets" ?
+    var.resources.virtual_networks[split(each.value.resource_key, "/")[0]]
+    .subnets[split(each.value.resource_key, "/")[1]]
+    .id :
+    var.resources[var.resource_type][each.value.resource_key].id,
+    null
+  )
+  principal_id = try(
+    # If principal is directly an ID (like object_ids), use it. Otherwise, resolve via var.resources.
+    each.value.principal_type == "object_ids"
+    ? each.value.principal
+    : var.resources[each.value.principal_type][each.value.principal].principal_id,
+    null
+  )
 
-#   role_definition_name = each.value.role_definition_name
-# }
-
-
-resource "null_resource" "debug_subnet" {
-  for_each = var.resource_type == "subnets" ? {
-    "${each.value.resource_key}" = each.value
-  } : {}
-
-  triggers = {
-    vnet_key   = split(each.value.resource_key, "/")[0]
-    subnet_key = split(each.value.resource_key, "/")[1]
-    subnet_id  = try(
-      var.resources.virtual_networks[split(each.value.resource_key, "/")[0]]
-      .subnets[split(each.value.resource_key, "/")[1]]
-      .id,
-      "NOT_FOUND"
-    )
-  }
+  role_definition_name = each.value.role_definition_name
 }
