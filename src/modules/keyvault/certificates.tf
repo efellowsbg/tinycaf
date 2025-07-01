@@ -1,4 +1,4 @@
-module "certufucates" {
+module "certificates" {
   source   = "./keyvault_certificate"
   for_each = try(var.settings.certificates, {})
 
