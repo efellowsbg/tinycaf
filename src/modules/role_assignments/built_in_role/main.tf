@@ -22,15 +22,25 @@ resource "azurerm_role_assignment" "main" {
     "${item.role_definition_name}-${item.resource_key}-${item.principal_type}-${item.principal}" => item
   })
 
-  scope = try(
-    var.resources[each.value.resource_type][each.value.resource_key].id,
+  scope = try(var.resources[
+    try(var.settings.lz_key, var.client_config.landingzone_key)
+    ].virtual_networks[
+    split("/", each.value.resource_key)[0]
+    ].subnets[
+    split("/", each.value.resource_key)[1]
+    ].id,
+    var.resources[
+    try(var.settings.lz_key, var.client_config.landingzone_key)
+    ][var.resource_type][each.value.resource_key].id,
     null
   )
   principal_id = try(
     # If principal is directly an ID (like object_ids), use it. Otherwise, resolve via var.resources.
     each.value.principal_type == "object_ids"
     ? each.value.principal
-    : var.resources[each.value.principal_type][each.value.principal].principal_id,
+    : var.resources[
+    try(var.settings.lz_key, var.client_config.landingzone_key)
+    ][each.value.principal_type][each.value.principal].principal_id,
     null
   )
 
