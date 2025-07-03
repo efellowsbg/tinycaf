@@ -101,3 +101,24 @@ resource "azurerm_key_vault_secret" "admin_password" {
   value        = random_password.admin["admin"].result
   key_vault_id = local.key_vault_id
 }
+
+
+resource "azurerm_mssql_virtual_machine" "main" {
+  for_each = can(var.settings.mssql_vm) ? var.settings.mssql_vm : {}
+  virtual_machine_id = azurerm_virtual_machine.main.id
+  sql_license_type   = try(each.value.sql_license_type, "PAYG")
+  r_services_enabled = try(each.value.r_services_enabled, false)
+  sql_connectivity_port = try(each.value.sql_connectivity_port, 1433)
+  sql_connectivity_type = try(each.value.sql_connectivity_type, "PRIVATE")
+  sql_connectivity_update_password = try(each.value.sql_connectivity_update_password, null)
+  sql_connectivity_update_username = try(each.value.sql_connectivity_update_username, null)
+  dynamic "auto_backup" {
+    for_each = can(each.value.auto_backup) ? [1] : []
+    content {
+      retention_period_in_days   = try(each.value.auto_backup.retention_period_in_days, null)
+      storage_account_access_key = try(each.value.auto_backup.storage_account_access_key, null)
+      storage_blob_endpoint      = try(each.value.auto_backup.storage_blob_endpoint, null)
+    }
+  }
+}
+
