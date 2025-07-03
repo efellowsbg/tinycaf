@@ -6,8 +6,8 @@ resource "azurerm_virtual_machine" "main" {
   vm_size               = var.settings.size
   tags                  = local.tags
 
-  delete_os_disk_on_termination    = try(var.settings.delete_os_disk_on_termination, true)
-  delete_data_disks_on_termination = try(var.settings.delete_data_disks_on_termination, true)
+  delete_os_disk_on_termination    = try(var.settings.delete_os_disk_on_termination, null)
+  delete_data_disks_on_termination = try(var.settings.delete_data_disks_on_termination, null)
 
   dynamic "os_profile" {
     for_each = can(var.settings.os_profile) ? [1] : []
