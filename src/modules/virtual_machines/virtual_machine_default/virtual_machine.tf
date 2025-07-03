@@ -59,7 +59,7 @@ resource "azurerm_virtual_machine" "main" {
       os_type                   = try(var.settings.storage_os_disk.os_type, null)
       disk_size_gb              = try(var.settings.storage_os_disk.disk_size_gb, null)
       image_uri                 = try(var.settings.storage_os_disk.image_uri, null)
-      write_accelerator_enabled = try(var.settings.storage_os_disk, null)
+      write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
     }
   }
 
