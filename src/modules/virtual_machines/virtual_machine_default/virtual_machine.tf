@@ -14,7 +14,7 @@ resource "azurerm_virtual_machine" "main" {
     content {
       computer_name  = var.settings.os_profile.name
       admin_username = var.settings.os_profile.admin_username
-      admin_password = try(random_password.admin.result, var.settings.os_profile.admin_password, null)
+      admin_password = try(random_password.admin["admin"].result, var.settings.os_profile.admin_password, null)
     }
   }
 
