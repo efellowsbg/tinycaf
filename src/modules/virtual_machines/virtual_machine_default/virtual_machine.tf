@@ -10,7 +10,7 @@ resource "azurerm_virtual_machine" "main" {
   delete_data_disks_on_termination = try(var.settings.delete_data_disks_on_termination, true)
 
   dynamic "os_profile" {
-    for_each = can(var.settings.os_profile) ? [1] : 0
+    for_each = can(var.settings.os_profile) ? [1] : []
     content {
       computer_name  = var.settings.os_profile.name
       admin_username = var.settings.os_profile.admin_username
@@ -19,7 +19,7 @@ resource "azurerm_virtual_machine" "main" {
   }
 
   dynamic "os_profile_windows_config" {
-    for_each = can(var.settings.os_profile_windows_config) ? [1] : 0
+    for_each = can(var.settings.os_profile_windows_config) ? [1] : []
     content {
       provision_vm_agent        = try(var.settings.os_profile_windows_config.provision_vm_agent, false)
       enable_automatic_upgrades = try(var.settings.os_profile_windows_config.enable_automatic_upgrades, false)
@@ -35,7 +35,7 @@ resource "azurerm_virtual_machine" "main" {
   }
 
   dynamic "os_profile_linux_config" {
-    for_each = can(var.settings.os_profile_linux_config) ? [1] : 0
+    for_each = can(var.settings.os_profile_linux_config) ? [1] : []
     content {
       disable_password_authentication = try(var.settings.os_profile_linux_config.disable_password_authentication, false)
       dynamic "ssh_keys" {
@@ -49,7 +49,7 @@ resource "azurerm_virtual_machine" "main" {
   }
 
   dynamic "storage_os_disk" {
-    for_each = can(var.settings.storage_os_disk) ? [1] : 0
+    for_each = can(var.settings.storage_os_disk) ? [1] : []
     content {
       name                      = try(var.settings.storage_os_disk.name, "${var.settings.name}-osdisk")
       caching                   = try(var.settings.storage_os_disk.caching, null)
@@ -64,7 +64,7 @@ resource "azurerm_virtual_machine" "main" {
   }
 
   dynamic "storage_image_reference" {
-    for_each = can(var.settings.storage_image_reference) ? [1] : 0
+    for_each = can(var.settings.storage_image_reference) ? [1] : []
     content {
       publisher = try(var.settings.storage_image_reference.publisher, null)
       offer     = try(var.settings.storage_image_reference.offer, null)
@@ -98,6 +98,6 @@ resource "random_password" "admin" {
 resource "azurerm_key_vault_secret" "admin_password" {
   for_each     = can(var.settings.os_profile.keyvault_ref) ? { "admin_password" = true } : {}
   name         = "${var.settings.name}-${var.settings.os_profile.admin_username}"
-  value        = random_password.admin.result
+  value        = random_password.admin["admin"].result
   key_vault_id = local.key_vault_id
 }
