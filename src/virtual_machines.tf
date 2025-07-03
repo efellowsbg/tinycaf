@@ -49,6 +49,12 @@ module "mssql_virtual_machines" {
           key => vm.windows_virtual_machines[0]
           if length(vm.windows_virtual_machines) > 0
         }
+        
+        virtual_machine_defaults = {
+          for key, vm in module.virtual_machines :
+          key => vm.virtual_machine_default[0]
+          if length(vm.virtual_machine_default) > 0
+        }
       }
     },
     {

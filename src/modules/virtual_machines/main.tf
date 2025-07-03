@@ -17,3 +17,13 @@ module "windows_virtual_machines" {
   resources       = var.resources
   client_config   = var.client_config
 }
+
+module "virtual_machines_default" {
+  source = "./virtual_machine_default"
+
+  count           = var.settings.type == "default" ? 1 : 0
+  settings        = var.settings
+  global_settings = var.global_settings
+  resources       = var.resources
+  client_config   = var.client_config
+}
