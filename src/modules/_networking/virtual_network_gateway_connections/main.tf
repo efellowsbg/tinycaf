@@ -3,6 +3,7 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
   location            = local.location
   resource_group_name = local.resource_group_name
   dpd_timeout_seconds = try(var.settings.dpd_timeout_seconds, null)
+  tags                = local.tags
 
   virtual_network_gateway_id         = local.virtual_network_gateway_id
   local_network_gateway_id           = local.local_network_gateway_id
