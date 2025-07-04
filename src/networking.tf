@@ -452,9 +452,9 @@ module "route_tables" {
   }
 }
 
-module "network_security_group_associations" {
-  source   = "./modules/_networking/network_security_group_association"
-  for_each = var.network_security_group_associations
+module "subnet_network_security_group_associations" {
+  source   = "./modules/_networking/subnet_network_security_group_association"
+  for_each = var.subnet_network_security_group_associations
 
   settings        = each.value
   global_settings = local.global_settings
