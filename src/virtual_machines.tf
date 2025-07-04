@@ -15,6 +15,7 @@ module "virtual_machines" {
         recovery_vaults      = module.recovery_vaults
         disk_encryption_sets = module.disk_encryption_sets
         public_ips           = module.public_ips
+        network_security_groups = module.network_security_groups
       }
     },
     {
