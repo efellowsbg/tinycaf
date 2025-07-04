@@ -3,39 +3,29 @@ resource "azurerm_network_security_group" "main" {
   resource_group_name = local.resource_group_name
   location            = local.location
   tags                = local.tags
+}
 
-  dynamic "security_rule" {
-    for_each = try(var.settings.security_rules, {})
 
-    content {
-      name      = security_rule.value.name
-      priority  = security_rule.value.priority
-      access    = security_rule.value.access
-      direction = security_rule.value.direction
-      protocol  = security_rule.value.protocol
+resource "azurerm_network_security_rule" "main" {
+  for_each = try(var.settings.security_rules, {})
 
-      description                                = try(security_rule.value.description, null)
-      source_port_range                          = try(security_rule.value.source_port_range, null)
-      source_port_ranges                         = try(security_rule.value.source_port_ranges, null)
-      destination_port_range                     = try(security_rule.value.destination_port_range, null)
-      destination_port_ranges                    = try(security_rule.value.destination_port_ranges, null)
-      source_address_prefix                      = try(security_rule.value.source_address_prefix, null)
-      source_address_prefixes                    = try(security_rule.value.source_address_prefixes, null)
-      source_application_security_group_ids      = try(security_rule.value.source_application_security_group_ids, null)
-      destination_address_prefix                 = try(security_rule.value.destination_address_prefix, null)
-      destination_address_prefixes               = try(security_rule.value.destination_address_prefixes, null)
-      destination_application_security_group_ids = try(security_rule.value.destination_application_security_group_ids, null)
-    }
-  }
+  name                        = each.value.name
+  priority                    = each.value.priority
+  access                      = each.value.access
+  direction                   = each.value.direction
+  protocol                    = each.value.protocol
+  resource_group_name         = local.resource_group_name
+  network_security_group_name = azurerm_network_security_group.main.name
 
-  dynamic "timeouts" {
-    for_each = can(var.settings.timeouts) ? [1] : []
-
-    content {
-      read   = try(var.settings.timeouts.read, null)
-      create = try(var.settings.timeouts.create, null)
-      update = try(var.settings.timeouts.update, null)
-      delete = try(var.settings.timeouts.delete, null)
-    }
-  }
+  description                                = try(each.value.description, null)
+  source_port_range                          = try(each.value.source_port_range, null)
+  source_port_ranges                         = try(each.value.source_port_ranges, null)
+  destination_port_range                     = try(each.value.destination_port_range, null)
+  destination_port_ranges                    = try(each.value.destination_port_ranges, null)
+  source_address_prefix                      = try(each.value.source_address_prefix, null)
+  source_address_prefixes                    = try(each.value.source_address_prefixes, null)
+  source_application_security_group_ids      = try(each.value.source_application_security_group_ids, null)
+  destination_address_prefix                 = try(each.value.destination_address_prefix, null)
+  destination_address_prefixes               = try(each.value.destination_address_prefixes, null)
+  destination_application_security_group_ids = try(each.value.destination_application_security_group_ids, null)
 }
