@@ -122,8 +122,8 @@ output "network_security_groups" {
   value = module.network_security_groups
 }
 
-output "network_security_group_associations" {
-  value = module.network_security_group_associations
+output "subnet_network_security_group_associations" {
+  value = module.subnet_network_security_group_associations
 }
 
 output "private_endpoints" {
