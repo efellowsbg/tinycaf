@@ -441,6 +441,7 @@ module "route_tables" {
     {
       (var.landingzone.key) = {
         resource_groups = module.resource_groups
+        virtual_networks = module.virtual_networks
       }
     },
     {
