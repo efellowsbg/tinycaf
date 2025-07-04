@@ -18,7 +18,7 @@ resource "azurerm_route_table" "main" {
 
 
 resource "azurerm_subnet_route_table_association" "main" {
-  for_each = var.settings.subnet_refs != null && length(var.settings.subnet_refs) > 0 ? {
+  for_each = try(length(var.settings.subnet_refs) > 0, false) ? {
     for idx, subnet_id in var.settings.subnet_refs : idx => subnet_id
   } : {}
 
