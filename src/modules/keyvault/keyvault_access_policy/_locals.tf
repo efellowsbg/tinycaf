@@ -31,7 +31,7 @@ locals {
         for ref in try(var.access_policies.managed_identity_refs, []) : {
           key = "${var.policy_name}_managed_identity_${ref}"
           object_id = var.resources[
-            try(var.settings.managed_identity_lz_key, var.client_config.landingzone_key)
+            try(var.access_policies.managed_identity_lz_key, var.client_config.landingzone_key)
           ].managed_identities[ref].principal_id
           key_permissions         = local.key_permissions
           secret_permissions      = local.secret_permissions
