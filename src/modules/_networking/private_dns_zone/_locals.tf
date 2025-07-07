@@ -26,13 +26,13 @@ locals {
   } : {}
 
   remote_vnet_refs_with_name = try(length(var.settings.remote_vnet_ref), 0) > 0 ? {
-  for vnet_raw in var.settings.remote_vnet_ref :
-  vnet_raw => {
-    name = var.resources[split("/", vnet_raw)[0]].virtual_networks[split("/", vnet_raw)[1]].name
-    id   = var.resources[split("/", vnet_raw)[0]].virtual_networks[split("/", vnet_raw)[1]].id
-    name_exact = length(split("/", vnet_raw)) > 2 ? split("/", vnet_raw)[2] : null
-  }
-} : {}
+    for vnet_raw in var.settings.remote_vnet_ref :
+    vnet_raw => {
+      name       = var.resources[split("/", vnet_raw)[0]].virtual_networks[split("/", vnet_raw)[1]].name
+      id         = var.resources[split("/", vnet_raw)[0]].virtual_networks[split("/", vnet_raw)[1]].id
+      name_exact = length(split("/", vnet_raw)) > 2 ? split("/", vnet_raw)[2] : null
+    }
+  } : {}
 
   vnet_ids_cleaned = try({
     for vnet_id in var.settings.vnet_ids :
