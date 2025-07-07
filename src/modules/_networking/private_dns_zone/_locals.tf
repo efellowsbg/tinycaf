@@ -25,6 +25,18 @@ locals {
     }
   } : {}
 
+  remote_vnet_refs_with_name = try(length(var.settings.remote_vnet_ref), 0) > 0 ? {
+    for vnet_raw in var.settings.remote_vnet_ref :
+    vnet_raw => {
+      lz_key     = split("/", vnet_raw)[0]
+      ref_key    = split("/", vnet_raw)[1]
+      name_exact = length(split("/", vnet_raw)) > 2 ? split("/", vnet_raw)[2] : null
+
+      name = var.resources[split("/", vnet_raw)[0]].virtual_networks[ref_key].name
+      id   = var.resources[split("/", vnet_raw)[0]].virtual_networks[ref_key].id
+    }
+  } : {}
+
   vnet_ids_cleaned = try({
     for vnet_id in var.settings.vnet_ids :
     vnet_id => {
@@ -47,7 +59,7 @@ locals {
   )
 
   # Final merged map of all vNets
-  vnet_ids = merge(local.vnet_refs, local.vnet_ids_cleaned, local.remote_vnet_refs)
+  vnet_ids = merge(local.vnet_refs, local.vnet_ids_cleaned, local.remote_vnet_refs, local.remote_vnet_refs_with_name)
 
   # local object used to map possible private dns zoone names
   zone_names = {
