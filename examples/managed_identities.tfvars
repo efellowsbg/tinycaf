@@ -1,7 +1,7 @@
 managed_identities = {
   id_test = {
-    name   = "id-test-dv-ne-01"
-    rg_ref = "rg_test"
+    name               = "id-test-dv-ne-01"
+    resource_group_ref = "rg_test"
   }
 }
 
