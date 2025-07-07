@@ -9,23 +9,19 @@ private_dns_zones = {
   acr = {
     resource_kind      = "container_registries"
     resource_group_ref = "rg_test"
-    lz_key             = "sandbox"
-    vnet_ref           = ["vnet_test", "vnet_test2"]
-  }
-
-  #Example for a remote vnet reference with a specific name
-  acr = {
-    resource_kind      = "container_registries"
-    resource_group_ref = "rg_test"
-    lz_key             = "sandbox"
-    vnet_ref           = ["vnet_test/customname1", "vnet_test2/customname3"]
-  }
-
-  #Example for a remote vnet reference for a multiple landing zones with a specific name
-  function_apps = {
-    resource_kind      = "function_apps"
-    resource_group_ref = "rg_test"
-    remote_vnet_ref    = ["sandbox/vnet_test/customname1", "uat/vnet_test2/customname3"]
+    vnet_links = {
+      link1 = {
+        vnet_ref = "vnet_test"
+        name     = "custom_name1"
+      }
+      link2 = {
+        vnet_ref = "vnet_test2"
+      }
+      link2 = {
+        vnet_ref = "sandbox/vnet_test2"
+        name     = "custom_name2"
+      }
+    }
   }
 }
 
