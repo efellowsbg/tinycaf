@@ -104,12 +104,12 @@ resource "azurerm_key_vault_secret" "admin_password" {
 
 
 resource "azurerm_mssql_virtual_machine" "main" {
-  for_each = can(var.settings.mssql_vm) ? var.settings.mssql_vm : {}
-  virtual_machine_id = azurerm_virtual_machine.main.id
-  sql_license_type   = try(each.value.sql_license_type, "PAYG")
-  r_services_enabled = try(each.value.r_services_enabled, false)
-  sql_connectivity_port = try(each.value.sql_connectivity_port, 1433)
-  sql_connectivity_type = try(each.value.sql_connectivity_type, "PRIVATE")
+  for_each                         = can(var.settings.mssql_vm) ? var.settings.mssql_vm : {}
+  virtual_machine_id               = azurerm_virtual_machine.main.id
+  sql_license_type                 = try(each.value.sql_license_type, "PAYG")
+  r_services_enabled               = try(each.value.r_services_enabled, false)
+  sql_connectivity_port            = try(each.value.sql_connectivity_port, 1433)
+  sql_connectivity_type            = try(each.value.sql_connectivity_type, "PRIVATE")
   sql_connectivity_update_password = try(each.value.sql_connectivity_update_password, null)
   sql_connectivity_update_username = try(each.value.sql_connectivity_update_username, null)
   dynamic "auto_backup" {
@@ -121,4 +121,3 @@ resource "azurerm_mssql_virtual_machine" "main" {
     }
   }
 }
-

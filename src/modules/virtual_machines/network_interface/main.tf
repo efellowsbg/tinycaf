@@ -46,7 +46,7 @@ resource "azurerm_network_interface_security_group_association" "main" {
 
   network_security_group_id = var.resources[
     try(each.value.network_security_group_lz_key, var.client_config.landingzone_key)
-  ].network_security_groups[
+    ].network_security_groups[
     each.value.network_security_group_ref
   ].id
 }

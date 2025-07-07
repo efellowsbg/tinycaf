@@ -113,7 +113,7 @@ resource "azurerm_kubernetes_cluster" "main" {
     for_each = can(var.settings.upgrade_override) ? [1] : []
     content {
       force_upgrade_enabled = try(var.settings.upgrade_override.force_upgrade_enabled, false)
-      effective_until = try(var.settings.upgrade_override.effective_until, null)
+      effective_until       = try(var.settings.upgrade_override.effective_until, null)
     }
   }
   dynamic "linux_profile" {

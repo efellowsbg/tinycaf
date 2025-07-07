@@ -22,13 +22,11 @@ resource "azurerm_subnet_route_table_association" "main" {
     for idx, subnet_id in var.settings.subnet_refs : idx => subnet_id
   } : {}
 
-  subnet_id      = var.resources[var.client_config.landingzone_key
-  ].virtual_networks[
+  subnet_id = var.resources[var.client_config.landingzone_key
+    ].virtual_networks[
     split("/", each.value)[0]
-  ].subnets[
+    ].subnets[
     split("/", each.value)[1]
   ].id
   route_table_id = azurerm_route_table.main.id
 }
-
-

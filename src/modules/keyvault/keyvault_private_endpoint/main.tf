@@ -4,7 +4,7 @@ resource "azurerm_private_endpoint" "main" {
   location            = local.location
   subnet_id           = local.subnet_id
 
-  tags = try(var.settings.private_endpoint.tags,local.tags)
+  tags = try(var.settings.private_endpoint.tags, local.tags)
 
   private_service_connection {
     name                           = try(var.settings.private_endpoint.private_service_connection.name, "psc-${var.settings.name}")

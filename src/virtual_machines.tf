@@ -9,12 +9,12 @@ module "virtual_machines" {
   resources = merge(
     {
       (var.landingzone.key) = {
-        resource_groups      = module.resource_groups
-        virtual_networks     = module.virtual_networks
-        keyvaults            = module.keyvaults
-        recovery_vaults      = module.recovery_vaults
-        disk_encryption_sets = module.disk_encryption_sets
-        public_ips           = module.public_ips
+        resource_groups         = module.resource_groups
+        virtual_networks        = module.virtual_networks
+        keyvaults               = module.keyvaults
+        recovery_vaults         = module.recovery_vaults
+        disk_encryption_sets    = module.disk_encryption_sets
+        public_ips              = module.public_ips
         network_security_groups = module.network_security_groups
       }
     },
@@ -50,7 +50,7 @@ module "mssql_virtual_machines" {
           key => vm.windows_virtual_machines[0]
           if length(vm.windows_virtual_machines) > 0
         }
-        
+
         virtual_machine_defaults = {
           for key, vm in module.virtual_machines :
           key => vm.virtual_machine_default[0]

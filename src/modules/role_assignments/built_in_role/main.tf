@@ -30,7 +30,7 @@ resource "azurerm_role_assignment" "main" {
     split("/", each.value.resource_key)[1]
     ].id,
     var.resources[
-    try(var.settings.lz_key, var.client_config.landingzone_key)
+      try(var.settings.lz_key, var.client_config.landingzone_key)
     ][var.resource_type][each.value.resource_key].id,
     null
   )
@@ -39,7 +39,7 @@ resource "azurerm_role_assignment" "main" {
     each.value.principal_type == "object_ids"
     ? each.value.principal
     : var.resources[
-    try(var.settings.lz_key, var.client_config.landingzone_key)
+      try(var.settings.lz_key, var.client_config.landingzone_key)
     ][each.value.principal_type][each.value.principal].principal_id,
     null
   )
