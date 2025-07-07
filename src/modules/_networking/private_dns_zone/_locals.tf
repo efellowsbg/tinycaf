@@ -2,18 +2,37 @@ locals {
   resource_group = var.resources[
     try(var.settings.lz_key, var.client_config.landingzone_key)
   ].resource_groups[var.settings.resource_group_ref]
+
   resource_group_name  = local.resource_group.name
   location             = local.resource_group.location
   registration_enabled = try(var.settings.registration_enabled, false)
 
   vnet_links_refs = try(length(var.settings.vnet_links), 0) > 0 ? {
     for link_key, link in var.settings.vnet_links : link_key => {
-      lz_key  = contains(split("/", link.vnet_ref), "/") ? split("/", link.vnet_ref)[0] : try(var.settings.lz_key, var.client_config.landingzone_key)
-      ref_key = contains(split("/", link.vnet_ref), "/") ? split("/", link.vnet_ref)[1] : link.vnet_ref
-
-      name       = try(link.name, var.resources[lz_key].virtual_networks[ref_key].name)
-      id         = var.resources[lz_key].virtual_networks[ref_key].id
       name_exact = try(link.name, null)
+
+      name = try(
+        link.name,
+        var.resources[
+          length(split("/", link.vnet_ref)) > 1 ?
+          split("/", link.vnet_ref)[0] :
+          try(var.settings.lz_key, var.client_config.landingzone_key)
+        ].virtual_networks[
+          length(split("/", link.vnet_ref)) > 1 ?
+          split("/", link.vnet_ref)[1] :
+          link.vnet_ref
+        ].name
+      )
+
+      id = var.resources[
+        length(split("/", link.vnet_ref)) > 1 ?
+        split("/", link.vnet_ref)[0] :
+        try(var.settings.lz_key, var.client_config.landingzone_key)
+      ].virtual_networks[
+        length(split("/", link.vnet_ref)) > 1 ?
+        split("/", link.vnet_ref)[1] :
+        link.vnet_ref
+      ].id
     }
   } : {}
 
@@ -26,11 +45,8 @@ locals {
     }
   }, {})
 
-
-  # Final merged map of all vNets
   vnet_ids = merge(local.vnet_links_refs, local.vnet_ids_cleaned)
 
-  # local object used to map possible private dns zoone names
   zone_names = {
     "storage_blob"         = "privatelink.blob.core.windows.net"
     "storage_tables"       = "privatelink.table.core.windows.net"
