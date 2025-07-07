@@ -17,7 +17,7 @@ locals {
           length(split("/", link.vnet_ref)) > 1 ?
           split("/", link.vnet_ref)[0] :
           try(var.settings.lz_key, var.client_config.landingzone_key)
-        ].virtual_networks[
+          ].virtual_networks[
           length(split("/", link.vnet_ref)) > 1 ?
           split("/", link.vnet_ref)[1] :
           link.vnet_ref
@@ -28,7 +28,7 @@ locals {
         length(split("/", link.vnet_ref)) > 1 ?
         split("/", link.vnet_ref)[0] :
         try(var.settings.lz_key, var.client_config.landingzone_key)
-      ].virtual_networks[
+        ].virtual_networks[
         length(split("/", link.vnet_ref)) > 1 ?
         split("/", link.vnet_ref)[1] :
         link.vnet_ref
