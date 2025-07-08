@@ -9,11 +9,9 @@ locals {
 
   vnet_links_refs = try(length(var.settings.vnet_links), 0) > 0 ? {
     for link_key, link in var.settings.vnet_links : link_key => {
-      name_exact = try(link.name, null)
-
       name = try(
         link.name,
-        var.resources[
+        "${var.resources[
           length(split("/", link.vnet_ref)) > 1 ?
           split("/", link.vnet_ref)[0] :
           try(var.settings.lz_key, var.client_config.landingzone_key)
@@ -21,7 +19,7 @@ locals {
           length(split("/", link.vnet_ref)) > 1 ?
           split("/", link.vnet_ref)[1] :
           link.vnet_ref
-        ].name
+        ].name}-${azurerm_private_dns_zone.main.name}-link"
       )
 
       id = var.resources[
@@ -41,7 +39,6 @@ locals {
     vnet_id => {
       name       = split("/", vnet_id)[length(split("/", vnet_id)) - 1]
       id         = vnet_id
-      name_exact = null
     }
   }, {})
 

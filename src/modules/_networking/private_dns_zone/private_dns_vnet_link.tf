@@ -1,7 +1,7 @@
 resource "azurerm_private_dns_zone_virtual_network_link" "main" {
   for_each = local.vnet_ids
 
-  name = try(each.value.name_exact, null) != null ? each.value.name_exact : "${each.value.name}-${azurerm_private_dns_zone.main.name}-link"
+  name = each.value.name
 
   private_dns_zone_name = azurerm_private_dns_zone.main.name
   resource_group_name   = azurerm_private_dns_zone.main.resource_group_name
