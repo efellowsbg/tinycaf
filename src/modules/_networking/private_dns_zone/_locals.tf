@@ -37,8 +37,8 @@ locals {
   vnet_ids_cleaned = try({
     for vnet_id in var.settings.vnet_ids :
     vnet_id => {
-      name       = split("/", vnet_id)[length(split("/", vnet_id)) - 1]
-      id         = vnet_id
+      name = split("/", vnet_id)[length(split("/", vnet_id)) - 1]
+      id   = vnet_id
     }
   }, {})
 
