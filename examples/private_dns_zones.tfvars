@@ -4,6 +4,25 @@ private_dns_zones = {
     resource_group_ref = "rg_test"
     vnet_ref           = ["vnet_test", "vnet_test2"]
   }
+
+  #Example for a remote vnet reference
+  acr = {
+    resource_kind      = "container_registries"
+    resource_group_ref = "rg_test"
+    vnet_links = {
+      link1 = {
+        vnet_ref = "vnet_test"
+        name     = "custom_name1"
+      }
+      link2 = {
+        vnet_ref = "vnet_test2"
+      }
+      link2 = {
+        vnet_ref = "sandbox/vnet_test2"
+        name     = "custom_name2"
+      }
+    }
+  }
 }
 
 # pre-requisites
