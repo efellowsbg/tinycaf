@@ -18,7 +18,7 @@ locals {
   private_connection_resource_id = try(
     var.resources[
       try(var.settings.lz_key, var.client_config.landingzone_key)
-    ][local.current_resource_ref].id,
+    ][local.current_module][local.current_resource_ref].id,
     var.settings.resource_ref
   )
 
