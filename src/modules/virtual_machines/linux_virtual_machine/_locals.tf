@@ -7,11 +7,11 @@ locals {
 
   network_interface_ids = module.network_interface.ids
 
-  key_vault_id = var.resources[
+  key_vault_id = try(var.resources[
     try(var.settings.keyvault_lz_key, var.client_config.landingzone_key)
     ].keyvaults[
     var.settings.keyvault_ref
-  ].id
+  ].id,null)
 
   vm_keys = { for key, ssh_key in var.settings.admin_ssh_key :
     key => tls_private_key.main[ssh_key.public_key_ref]
