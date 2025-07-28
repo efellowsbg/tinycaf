@@ -15,6 +15,14 @@ resource "azurerm_linux_virtual_machine" "main" {
       public_key = tls_private_key.main[admin_ssh_key.value.public_key_ref].public_key_openssh
     }
   }
+  dynamic "plan" {
+    for_each = can(var.settings.plan) ? [1] : []
+    content {
+      name  = var.settings.plan.name
+      product = var.settings.plan.product
+      publisher = var.settings.plan.publisher
+    }
+  }
 
   os_disk {
     caching                   = var.settings.os_disk.caching
