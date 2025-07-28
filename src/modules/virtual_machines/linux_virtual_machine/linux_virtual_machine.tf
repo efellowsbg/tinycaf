@@ -7,6 +7,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   network_interface_ids = local.network_interface_ids
   encryption_at_host_enabled = try(var.settings.encryption_at_host_enabled,null)
   disable_password_authentication = try(var.settings.disable_password_authentication,null)
+  availability_set_id = try(azurerm_availability_set.main.id,null)
 
   tags = local.tags
 
