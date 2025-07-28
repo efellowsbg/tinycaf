@@ -28,6 +28,6 @@ resource "random_password" "admin" {
 resource "azurerm_key_vault_secret" "admin_password" {
   count        = try(var.settings.disable_password_authentication, false) ? 0 : 1
   name         = "${var.settings.name}-${var.settings.admin_username}"
-  value        = random_password.admin.result
+  value        = random_password.admin[0].result
   key_vault_id = local.key_vault_id
 }
