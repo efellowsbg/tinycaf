@@ -153,3 +153,7 @@ output "azuread_applications" {
 output "azuread_service_principals" {
   value = module.azuread_service_principals
 }
+
+output "route_tables" {
+  value = module.route_tables
+}
