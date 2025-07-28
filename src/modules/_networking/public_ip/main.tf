@@ -7,4 +7,5 @@ resource "azurerm_public_ip" "main" {
   zones               = try(var.settings.zones, null)
   sku = try(var.settings.sku,null)
   sku_tier = try(var.settings.sku_tier,null)
+  domain_name_label = try(var.settings.domain_name_label,null)
 }
