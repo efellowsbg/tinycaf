@@ -3,6 +3,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   resource_group_name   = local.resource_group_name
   location              = local.location
   admin_username        = var.settings.admin_username
+  admin_password = try(random_password.admin.result,null)
   size                  = var.settings.size
   network_interface_ids = local.network_interface_ids
   encryption_at_host_enabled = try(var.settings.encryption_at_host_enabled,null)
