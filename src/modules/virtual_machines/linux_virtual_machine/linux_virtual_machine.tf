@@ -5,6 +5,8 @@ resource "azurerm_linux_virtual_machine" "main" {
   admin_username        = var.settings.admin_username
   size                  = var.settings.size
   network_interface_ids = local.network_interface_ids
+  encryption_at_host_enabled = try(var.settings.encryption_at_host_enabled,null)
+  disable_password_authentication = try(var.settings.disable_password_authentication,null)
 
   tags = local.tags
 

@@ -5,4 +5,6 @@ resource "azurerm_public_ip" "main" {
   allocation_method   = try(var.settings.allocation_method, "Static")
   tags                = local.tags
   zones               = try(var.settings.zones, null)
+  sku = try(var.settings.sku,null)
+  sku_tier = try(var.settings.sku_tier,null)
 }
