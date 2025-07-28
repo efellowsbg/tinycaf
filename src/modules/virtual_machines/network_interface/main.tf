@@ -3,6 +3,8 @@ resource "azurerm_network_interface" "main" {
   name                = each.value.name
   resource_group_name = local.resource_group_name
   location            = local.location
+  accelerated_networking_enabled = try(each.value.accelerated_networking_enabled,false)
+  ip_forwarding_enabled = try(each.value.ip_forwarding_enabled,false)
 
   tags = local.tags
 
