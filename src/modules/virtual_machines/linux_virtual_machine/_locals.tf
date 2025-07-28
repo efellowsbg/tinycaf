@@ -11,13 +11,16 @@ locals {
     try(var.settings.keyvault_lz_key, var.client_config.landingzone_key)
     ].keyvaults[
     var.settings.keyvault_ref
-  ].id,null)
+  ].id, null)
 
-  vm_keys = { for key, ssh_key in var.settings.admin_ssh_key :
+  vm_keys = {
+    for key, ssh_key in try(var.settings.admin_ssh_key, {}) :
     key => tls_private_key.main[ssh_key.public_key_ref]
   }
+
   private_keys_pem    = { for key, value in local.vm_keys : key => value.private_key_pem }
   public_keys_openssh = { for key, value in local.vm_keys : key => value.public_key_openssh }
+
 
   tags = merge(
     var.global_settings.tags,
