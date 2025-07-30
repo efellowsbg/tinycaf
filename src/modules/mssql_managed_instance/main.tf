@@ -10,7 +10,7 @@ resource "azurerm_mssql_managed_instance" "main" {
   storage_size_in_gb = try(var.settings.storage_size_in_gb, "32")
   vcores             = try(var.settings.vcores, "4")
 
-  administrator_login            = local.administrator_login
+  administrator_login            = try(var.settings.administrator_login, "mssqlmiadmin")
   administrator_login_password   = local.administrator_login_password
   collation                      = try(var.settings.collation, null)
   dns_zone_partner_id            = try(var.settings.dns_zone_partner_id, null)
