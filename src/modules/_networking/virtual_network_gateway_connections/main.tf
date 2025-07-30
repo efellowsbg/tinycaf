@@ -7,8 +7,8 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
 
   virtual_network_gateway_id         = local.virtual_network_gateway_id
   local_network_gateway_id           = local.local_network_gateway_id
-  ingress_nat_rule_ids               = try(var.settings.ingress_nat_rule_ids, [])
   egress_nat_rule_ids                = local.egress_nat_rule_ids
+  ingress_nat_rule_ids               = try(var.settings.ingress_nat_rule_ids, [])
   enable_bgp                         = try(var.settings.enable_bgp, false)
   type                               = try(var.settings.type, "IPsec")
   routing_weight                     = try(var.settings.routing_weight, null)
