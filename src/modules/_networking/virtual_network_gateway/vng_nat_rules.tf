@@ -8,7 +8,7 @@ resource "azurerm_virtual_network_gateway_nat_rule" "main" {
   ip_configuration_id        = try(each.value.ip_configuration_id, "")
 
   dynamic "external_mapping" {
-    for_each = each.value.external_mapping
+    for_each = try(each.value.external_mappings, {})
 
     content {
       address_space = external_mapping.value.address_space
@@ -17,7 +17,7 @@ resource "azurerm_virtual_network_gateway_nat_rule" "main" {
   }
 
   dynamic "internal_mapping" {
-    for_each = each.value.internal_mapping
+    for_each = try(each.value.internal_mappings, {})
 
     content {
       address_space = internal_mapping.value.address_space
