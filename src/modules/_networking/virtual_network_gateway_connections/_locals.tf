@@ -12,6 +12,13 @@ locals {
     null
   )
 
+  egress_nat_rule_ids = try([
+    for nat_rule_ref in try(var.settings.egress_nat_rule_refs, []) :
+    var.resources[
+      try(var.settings.lz_key, var.client_config.landingzone_key)
+    ].virtual_network_gateways[var.settings.virtual_network_gateway_re].azurerm_virtual_network_gateway_nat_rules[nat_rule_ref]
+  ], [])
+
   local_network_gateway_id = try(
     var.resources[
       try(var.settings.local_network_gateway_lz_key, var.client_config.landingzone_key)
