@@ -49,6 +49,7 @@ resource "azurerm_storage_account" "main" {
     for_each = can(var.settings.blob_properties) ? [1] : []
 
     content {
+      versioning_enabled = try(var.settings.blob_properties.versioning_enabled,false)
       dynamic "cors_rule" {
         for_each = can(var.settings.blob_properties.cors_rule) ? [1] : []
 
