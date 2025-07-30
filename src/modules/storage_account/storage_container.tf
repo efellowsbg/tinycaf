@@ -25,3 +25,12 @@ resource "azapi_resource" "main" {
     }
   }
 }
+
+
+terraform {
+ required_providers {
+  azapi = {
+   source = "Azure/azapi"
+   }
+  }
+}
