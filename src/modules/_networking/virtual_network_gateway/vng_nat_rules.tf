@@ -5,7 +5,7 @@ resource "azurerm_virtual_network_gateway_nat_rule" "main" {
   virtual_network_gateway_id = azurerm_virtual_network_gateway.main.id
   mode                       = try(each.value.mode, "EgressSnat")
   type                       = try(each.value.type, "Static")
-  ip_configuration_id        = try(each.value.ip_configuration_id, "")
+  ip_configuration_id        = try(each.value.ip_configuration_id, null)
 
   dynamic "external_mapping" {
     for_each = try(each.value.external_mappings, {})
