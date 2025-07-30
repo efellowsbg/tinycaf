@@ -29,6 +29,15 @@ locals {
     null
   )
 
+  administrator_login = try(
+    (
+      length(trimspace(var.settings.key_vault_ref)) > 0
+      ? try(var.settings.administrator_login, "mssqlmiadmin")
+      : null
+    ),
+    null
+  )
+
   administrator_login_password = try(
     (
       try(length(trimspace(var.settings.key_vault_ref)) > 0, false)
