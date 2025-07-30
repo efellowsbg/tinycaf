@@ -16,21 +16,21 @@ resource "azapi_resource" "main" {
   parent_id = "${azurerm_storage_account.main.id}/blobServices/default"
   body = {
     properties = {
-      defaultEncryptionScope      = try(each.value.default_encryption_scope,"$account-encryption-key")
-      denyEncryptionScopeOverride = try(each.value.deny_encryption_scope_override,false)
+      defaultEncryptionScope      = try(each.value.default_encryption_scope, "$account-encryption-key")
+      denyEncryptionScopeOverride = try(each.value.deny_encryption_scope_override, false)
       immutableStorageWithVersioning = {
-        enabled = try(each.value.enable_versioning,true)
+        enabled = try(each.value.enable_versioning, true)
       }
-      publicAccess = try(each.value.public_access,"None")
+      publicAccess = try(each.value.public_access, "None")
     }
   }
 }
 
 
 terraform {
- required_providers {
-  azapi = {
-   source = "Azure/azapi"
-   }
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
   }
 }
