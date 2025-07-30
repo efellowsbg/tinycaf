@@ -8,11 +8,14 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
   virtual_network_gateway_id         = local.virtual_network_gateway_id
   local_network_gateway_id           = local.local_network_gateway_id
   ingress_nat_rule_ids               = try(var.settings.ingress_nat_rule_ids, [])
+  egress_nat_rule_ids                = try(var.settings.egress_nat_rule_ids, [])
   enable_bgp                         = try(var.settings.enable_bgp, false)
   type                               = try(var.settings.type, "IPsec")
   routing_weight                     = try(var.settings.routing_weight, null)
   connection_protocol                = try(var.settings.connection_protocol, "IKEv2")
   use_policy_based_traffic_selectors = try(var.settings.use_policy_based_traffic_selectors, true)
+  express_route_gateway_bypass       = try(var.settings.express_route_gateway_bypass, false)
+  local_azure_ip_address_enabled     = try(var.settings.local_azure_ip_address_enabled, false)
 
   shared_key = try(var.settings.shared_key, null) != null ? var.settings.shared_key : (
     try(var.settings.shared_key_secret, null) != null && length(data.azurerm_key_vault_secret.main) > 0
