@@ -22,7 +22,7 @@ locals {
   local_network_gateway_id = try(
     var.resources[
       try(var.settings.local_network_gateway_lz_key, var.client_config.landingzone_key)
-    ].local_network_gateways[var.settings.local_network_gateway_ref].id,
+    ].local_network_gateways[var.settings.local_network_gateway_ref],
     null
   )
 
