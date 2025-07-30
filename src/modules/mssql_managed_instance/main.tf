@@ -11,7 +11,7 @@ resource "azurerm_mssql_managed_instance" "main" {
   vcores             = try(var.settings.vcores, "4")
 
   administrator_login            = var.settings.key_vault_ref != null ? try(var.settings.administrator_login, "mssqlmiadmin") : null
-  administrator_login_password   = var.settings.key_vault_ref != null ? random_password.admin[0].result : null
+  administrator_login_password   = local.administrator_login_password
   collation                      = try(var.settings.collation, null)
   dns_zone_partner_id            = try(var.settings.dns_zone_partner_id, null)
   maintenance_configuration_name = try(var.settings.maintenance_configuration_name, null)

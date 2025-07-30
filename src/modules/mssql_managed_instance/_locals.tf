@@ -19,12 +19,22 @@ locals {
       try(var.settings.identity.managed_identity_lz_key, var.client_config.landingzone_key)
     ].managed_identities[id_ref].id
   ]
+
   key_vault_id = try(
     var.resources[
       try(var.settings.key_vault_lz_key, var.client_config.landingzone_key)
       ].keyvaults[
       var.settings.key_vault_ref
     ].id,
+    null
+  )
+
+  administrator_login_password = try(
+    (
+      try(length(trimspace(var.settings.key_vault_ref)) > 0, false)
+      ? random_password.admin[0].result
+      : try(var.settings.administrator_login_password, random_password.admin[0].result)
+    ),
     null
   )
 
