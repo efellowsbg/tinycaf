@@ -5,6 +5,15 @@ locals {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
 
+  dns_zone_group = try(
+    var.resources[
+      try(var.settings.private_endpoint.dns_lz_key, var.client_config.landingzone_key)
+    ].private_dns_zones[var.settings.private_endpoint.private_dns_zone_group_ref],
+    null
+  )
+  dns_zone_group_name  = try(local.dns_zone_group.name, null)
+  private_dns_zone_ids = try([local.dns_zone_group.id], null)
+
   subnet_id = var.resources[
     try(var.settings.subnet_lz_key, var.client_config.landingzone_key)
     ].virtual_networks[
