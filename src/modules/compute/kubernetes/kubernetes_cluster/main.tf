@@ -143,8 +143,8 @@ resource "azurerm_kubernetes_cluster" "main" {
   dynamic "windows_profile" {
     for_each = can(var.settings.windows_profile) ? [1] : []
     content {
-      admin_username = try(var.settings.windows_profile, null)
-      admin_password = try(var.settings.windows_profile, null)
+      admin_username = try(var.settings.windows_profile.admin_username, null)
+      admin_password = try(var.settings.windows_profile.admin_password, null)
     }
   }
 }
