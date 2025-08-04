@@ -28,6 +28,19 @@ resource "azurerm_virtual_network_peering" "target" {
   use_remote_gateways          = true
 }
 
+resource "azurerm_virtual_network_peering" "custom" {
+  count = local.custom ? 1 : 0
+
+  name                         = try(var.settings.custom_name, "peering-${local.vnet_right.name}")
+  resource_group_name          = local.vnet_right.resource_group_name
+  virtual_network_name         = local.vnet_right.name
+  remote_virtual_network_id    = try(var.settings.remote_vnet_id, local.vnet_left.id)
+  allow_virtual_network_access = try(var.settings.allow_virtual_network_access, false)
+  allow_forwarded_traffic      = try(var.settings.allow_forwarded_traffic, false)
+  use_remote_gateways          = try(var.settings.use_remote_gateways, false)
+  allow_gateway_transit        = try(var.settings.allow_gateway_transit, false)
+}
+
 resource "azurerm_virtual_network_peering" "source" {
   count = local.source ? 1 : 0
 
