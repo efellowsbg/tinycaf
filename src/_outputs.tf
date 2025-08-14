@@ -157,3 +157,7 @@ output "azuread_service_principals" {
 output "route_tables" {
   value = module.route_tables
 }
+
+output "waf_policies" {
+  value = module.waf_policies
+}
