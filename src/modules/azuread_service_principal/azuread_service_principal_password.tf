@@ -5,7 +5,7 @@ resource "azuread_service_principal_password" "main" {
 
 resource "azurerm_key_vault_secret" "main" {
   count        = var.create_password ? 1 : 0
-  name         = azuread_service_principal_password.main[count.index].display_name
+  name         = azuread_service_principal.main.display_name
   value        = azuread_service_principal_password.main[count.index].value
   key_vault_id = try(
     var.resources[
