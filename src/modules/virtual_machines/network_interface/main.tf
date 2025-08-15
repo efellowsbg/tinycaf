@@ -15,9 +15,9 @@ resource "azurerm_network_interface" "main" {
       subnet_id = try(
         var.resources[
           try(ip_configuration.value.subnet_lz_key, var.client_config.landingzone_key)
-        ].virtual_networks[
+          ].virtual_networks[
           split("/", ip_configuration.value.subnet_ref)[0]
-        ].subnets[
+          ].subnets[
           split("/", ip_configuration.value.subnet_ref)[1]
         ].id,
         null
@@ -32,7 +32,7 @@ resource "azurerm_network_interface" "main" {
       public_ip_address_id = try(
         var.resources[
           try(ip_configuration.value.public_ip_lz_key, var.client_config.landingzone_key)
-        ].public_ips[
+          ].public_ips[
           ip_configuration.value.public_ip_ref
         ].id,
         null

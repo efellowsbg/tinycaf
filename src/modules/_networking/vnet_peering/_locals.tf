@@ -17,7 +17,7 @@ locals {
   direction = try(var.settings.direction, "<->")
   target    = local.direction == "target"
   source    = local.direction == "source"
-  custom = local.direction == "custom"
+  custom    = local.direction == "custom"
 
   # These use regex to simulate startswith/endswith
   peer_left_to_right = can(regex("->$", local.direction))

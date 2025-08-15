@@ -14,13 +14,13 @@ resource "tls_private_key" "main" {
 
 
 resource "azurerm_key_vault_secret" "main" {
-  count        = var.save_to_keyvault ? 1 : 0
-  name         = "${var.settings.name}-ssh-public-key"
-  value        = tls_private_key.main.public_key_openssh
+  count = var.save_to_keyvault ? 1 : 0
+  name  = "${var.settings.name}-ssh-public-key"
+  value = tls_private_key.main.public_key_openssh
   key_vault_id = try(
     var.resources[
       try(var.settings.keyvault_lz_key, var.client_config.landingzone_key)
-    ].keyvaults[
+      ].keyvaults[
       var.settings.keyvault_ref
     ].id,
     null
