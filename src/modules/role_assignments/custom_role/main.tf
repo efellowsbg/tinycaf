@@ -23,7 +23,9 @@ resource "azurerm_role_assignment" "main" {
   })
 
   scope = try(
-    var.resources[each.value.resource_type][each.value.resource_key].id,
+    var.resources[
+      try(var.settings.lz_key, var.client_config.landingzone_key)
+    ][each.value.resource_type][each.value.resource_key].id,
     null
   )
 
@@ -31,7 +33,9 @@ resource "azurerm_role_assignment" "main" {
     # If principal is directly an ID (like object_ids), use it. Otherwise, resolve via var.resources.
     each.value.principal_type == "object_ids"
     ? each.value.principal
-    : var.resources[each.value.principal_type][each.value.principal].principal_id,
+    : var.resources[
+      try(var.settings.lz_key, var.client_config.landingzone_key)
+    ][each.value.principal_type][each.value.principal].principal_id,
     null
   )
 

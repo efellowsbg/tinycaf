@@ -10,6 +10,11 @@ variable "resources" {
   description = "All required resources"
 }
 
+variable "client_config" {
+  description = "Client configuration for the module"
+  
+}
+
 variable "resource_type" {
   description = "The type of resource being processed (e.g., keyvaults)"
   type        = string
