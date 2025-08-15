@@ -1,9 +1,9 @@
 # self-protection
-CODEOWNERS @efellowsbg/TinyCAF
+CODEOWNERS @efellowsbg/tinycaf
 
 # pipelines
-.github @efellowsbg/TinyCAF
-.vscode @efellowsbg/TinyCAF
+.github @efellowsbg/tinycaf
+.vscode @efellowsbg/tinycaf
 
 # source code
-src @efellowsbg/TinyCAF
+src @efellowsbg/tinycaf
