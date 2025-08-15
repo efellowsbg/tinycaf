@@ -6,15 +6,17 @@ module "role_assignments" {
   resources = merge(
     {
       (var.landingzone.key) = {
-        resource_groups      = module.resource_groups
-        keyvaults            = module.keyvaults
-        managed_identities   = module.managed_identities
-        kubernetes_clusters  = module.kubernetes_clusters
-        virtual_networks     = module.virtual_networks
-        storage_accounts     = module.storage_accounts
-        role_definitions     = module.role_definitions
-        disk_encryption_sets = module.disk_encryption_sets
-        container_registries = module.container_registries
+        resource_groups            = module.resource_groups
+        keyvaults                  = module.keyvaults
+        managed_identities         = module.managed_identities
+        kubernetes_clusters        = module.kubernetes_clusters
+        virtual_networks           = module.virtual_networks
+        storage_accounts           = module.storage_accounts
+        azuread_service_principals = module.azuread_service_principals
+        azuread_applications       = module.azuread_applications
+        role_definitions           = module.role_definitions
+        disk_encryption_sets       = module.disk_encryption_sets
+        container_registries       = module.container_registries
         linux_virtual_machines = {
           for key, vm in module.virtual_machines :
           key => vm.linux_virtual_machines[0]

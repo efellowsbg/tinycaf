@@ -7,7 +7,14 @@ resource "azurerm_windows_virtual_machine" "main" {
   size                  = var.settings.size
   network_interface_ids = local.network_interface_ids
   tags                  = local.tags
-
+  dynamic "plan" {
+    for_each = can(var.settings.plan) ? [1] : []
+    content {
+      name      = var.settings.plan.name
+      product   = var.settings.plan.product
+      publisher = var.settings.plan.publisher
+    }
+  }
   os_disk {
     caching              = var.settings.os_disk.caching
     storage_account_type = var.settings.os_disk.storage_account_type

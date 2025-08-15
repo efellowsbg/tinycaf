@@ -1,37 +1,45 @@
 resource "azurerm_network_interface" "main" {
-  for_each            = var.settings.network_interfaces
-  name                = each.value.name
-  resource_group_name = local.resource_group_name
-  location            = local.location
+  for_each                       = var.settings.network_interfaces
+  name                           = each.value.name
+  resource_group_name            = local.resource_group_name
+  location                       = local.location
+  accelerated_networking_enabled = try(each.value.accelerated_networking_enabled, false)
+  ip_forwarding_enabled          = try(each.value.ip_forwarding_enabled, false)
+  tags                           = local.tags
 
-  tags = local.tags
+  dynamic "ip_configuration" {
+    for_each = lookup(local.nic_ip_configs, each.key, {})
+    content {
+      name = ip_configuration.value.name
 
-  ip_configuration {
-    name = each.value.ip_configuration.name
-    subnet_id = try(
-      var.resources[
-        try(each.value.ip_configuration.subnet_lz_key, var.client_config.landingzone_key)
-        ].virtual_networks[
-        split("/", each.value.ip_configuration.subnet_ref)[0]
-        ].subnets[
-        split("/", each.value.ip_configuration.subnet_ref)[1]
-      ].id,
-      null
-    )
+      subnet_id = try(
+        var.resources[
+          try(ip_configuration.value.subnet_lz_key, var.client_config.landingzone_key)
+          ].virtual_networks[
+          split("/", ip_configuration.value.subnet_ref)[0]
+          ].subnets[
+          split("/", ip_configuration.value.subnet_ref)[1]
+        ].id,
+        null
+      )
 
-    private_ip_address_allocation = try(each.value.ip_configuration.private_ip_address_allocation, "Dynamic")
-    private_ip_address = try(
-      each.value.ip_configuration.private_ip_address_allocation == "Static" ? each.value.ip_configuration.private_ip_address : null,
-      null
-    )
-    public_ip_address_id = try(
-      var.resources[
-        try(each.value.ip_configuration.public_ip_lz_key, var.client_config.landingzone_key)
-        ].public_ips[
-        each.value.ip_configuration.public_ip_ref
-      ].id,
-      null
-    )
+      private_ip_address_allocation = try(ip_configuration.value.private_ip_address_allocation, "Dynamic")
+      private_ip_address = try(
+        ip_configuration.value.private_ip_address_allocation == "Static" ? ip_configuration.value.private_ip_address : null,
+        null
+      )
+
+      public_ip_address_id = try(
+        var.resources[
+          try(ip_configuration.value.public_ip_lz_key, var.client_config.landingzone_key)
+          ].public_ips[
+          ip_configuration.value.public_ip_ref
+        ].id,
+        null
+      )
+
+      primary = try(ip_configuration.value.primary, false)
+    }
   }
 }
 

@@ -4,13 +4,11 @@ variable "global_settings" {
 
 variable "settings" {
   description = "All the configuration for this resource"
-
-  validation {
-    condition     = contains(["<-", "->", "<->", "target", "source", "custom"], try(var.settings.direction, "<->"))
-    error_message = "Allowed values for 'direction' are '<-', '->', '<->', 'target', 'source' or 'custom' . Defaults to '<->' if not set."
-  }
 }
 
+variable "save_to_keyvault" {
+  description = "Whether to save the SSH key to Azure Key Vault"
+}
 
 variable "resources" {
   description = "All required resources"
