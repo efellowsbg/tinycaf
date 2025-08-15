@@ -39,5 +39,7 @@ resource "azurerm_role_assignment" "main" {
     null
   )
 
-  role_definition_id = try(var.resources.role_definitions[each.value.role_definition_name].role_definition_resource_id, null)
+  role_definition_id = try(var.resources[
+      try(var.settings.lz_key, var.client_config.landingzone_key)
+    ].role_definitions[each.value.role_definition_name].role_definition_resource_id, null)
 }
