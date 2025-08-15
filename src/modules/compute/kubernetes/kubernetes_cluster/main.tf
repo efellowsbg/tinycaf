@@ -15,6 +15,11 @@ resource "azurerm_kubernetes_cluster" "main" {
   oidc_issuer_enabled                 = try(var.settings.oidc_issuer_enabled, false)
   workload_identity_enabled           = try(var.settings.oidc_issuer_enabled ? var.settings.workload_identity_enabled : false, false)
   open_service_mesh_enabled           = try(var.settings.open_service_mesh_enabled, null)
+  cost_analysis_enabled               = try(var.settings.cost_analysis_enabled, false)
+  image_cleaner_enabled               = try(var.settings.image_cleaner_enabled, false)
+  node_os_upgrade_channel             = try(var.settings.node_os_upgrade_channel, null)
+  image_cleaner_interval_hours        = try(var.settings.image_cleaner_interval_hours, null)
+  local_account_disabled              = try(var.settings.local_account_disabled, null)
 
   default_node_pool {
     vnet_subnet_id              = local.vnet_subnet_id
@@ -33,6 +38,7 @@ resource "azurerm_kubernetes_cluster" "main" {
     pod_subnet_id               = try(var.settings.default_node_pool.pod_subnet_id, null)
     temporary_name_for_rotation = try(var.settings.default_node_pool.temporary_name_for_rotation, null)
     host_encryption_enabled     = try(var.settings.default_node_pool.host_encryption_enabled, false)
+    fips_enabled                = try(var.settings.default_node_pool.fips_enabled, false)
 
     dynamic "upgrade_settings" {
       for_each = try(var.settings.default_node_pool.upgrade_settings[*], {})
@@ -49,7 +55,6 @@ resource "azurerm_kubernetes_cluster" "main" {
     network_plugin      = local.effective_network_profile.network_plugin
     network_mode        = local.effective_network_profile.network_mode
     network_policy      = local.effective_network_profile.network_policy
-    load_balancer_sku   = local.effective_network_profile.load_balancer_sku
     network_data_plane  = local.validated_network_data_plane
     network_plugin_mode = local.effective_network_profile.network_plugin_mode
     outbound_type       = local.effective_network_profile.outbound_type
@@ -57,10 +62,17 @@ resource "azurerm_kubernetes_cluster" "main" {
     service_cidr        = local.effective_network_profile.service_cidr
     service_cidrs       = local.effective_network_profile.service_cidrs
     pod_cidr            = local.validated_pod_cidr
+    ip_versions         = try(var.settings.ip_versions, ["IPv4"])
+    load_balancer_sku   = local.effective_network_profile.load_balancer_sku
+
+    dynamic "load_balancer_profile" {
+      for_each = can(var.settings.network_profile.load_balancer_profile) ? [1] : []
+      content {
+        backend_pool_type = try(load_balancer_profile.value.backend_pool_type, "NodeIPConfigurations")
+      }
+    }
   }
-  node_os_upgrade_channel      = try(var.settings.node_os_upgrade_channel, null)
-  image_cleaner_interval_hours = try(var.settings.image_cleaner_interval_hours, null)
-  local_account_disabled       = try(var.settings.local_account_disabled, null)
+
   identity {
     type         = try(var.settings.identity.type, "SystemAssigned")
     identity_ids = try(var.settings.identity.type == "UserAssigned" ? [local.managed_identity.id] : null, null)
@@ -109,6 +121,7 @@ resource "azurerm_kubernetes_cluster" "main" {
       user_assigned_identity_id = try(kubelet_identity.value.type == "UserAssigned" ? local.kubelet_identity.id : null, null)
     }
   }
+
   dynamic "upgrade_override" {
     for_each = can(var.settings.upgrade_override) ? [1] : []
     content {
@@ -116,6 +129,7 @@ resource "azurerm_kubernetes_cluster" "main" {
       effective_until       = try(var.settings.upgrade_override.effective_until, null)
     }
   }
+
   dynamic "linux_profile" {
     for_each = try(var.settings.linux_profile, null) == null ? [] : [1]
     content {
@@ -126,5 +140,11 @@ resource "azurerm_kubernetes_cluster" "main" {
     }
   }
 
-
+  dynamic "windows_profile" {
+    for_each = can(var.settings.windows_profile) ? [1] : []
+    content {
+      admin_username = try(var.settings.windows_profile.admin_username, null)
+      admin_password = try(var.settings.windows_profile.admin_password, null)
+    }
+  }
 }
