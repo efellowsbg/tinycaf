@@ -4,7 +4,7 @@ module "ssh_keys" {
 
   settings         = each.value
   global_settings  = local.global_settings
-  save_to_keyvault = try(each.value.keyvault_ref, false)
+  save_to_keyvault = try(trim(each.value.keyvault_ref) != "", false)
 
   resources = merge(
     {

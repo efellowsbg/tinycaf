@@ -8,8 +8,6 @@ variable "settings" {
 
 variable "save_to_keyvault" {
   description = "Whether to save the SSH key to Azure Key Vault"
-  type        = bool
-  default     = false
 }
 
 variable "resources" {
