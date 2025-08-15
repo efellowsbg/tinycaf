@@ -238,10 +238,13 @@ module "private_endpoints" {
   resources = merge(
     {
       (var.landingzone.key) = {
-        resource_groups   = module.resource_groups
-        virtual_networks  = module.virtual_networks
-        private_dns_zones = module.private_dns_zones
-        storage_accounts  = module.storage_accounts
+        resource_groups         = module.resource_groups
+        virtual_networks        = module.virtual_networks
+        private_dns_zones       = module.private_dns_zones
+        storage_accounts        = module.storage_accounts
+        container_registries    = module.container_registries
+        keyvaults               = module.keyvaults
+        mssql_managed_instances = module.mssql_managed_instances
       }
     },
     {

@@ -1,9 +1,9 @@
 # self-protection
-CODEOWNERS @mitiko
+CODEOWNERS @efellowsbg/TinyCAF
 
 # pipelines
-.github @mitiko
-.vscode @mitiko
+.github @efellowsbg/TinyCAF
+.vscode @efellowsbg/TinyCAF
 
 # source code
-src @mitiko
+src @efellowsbg/TinyCAF

@@ -15,6 +15,7 @@ module "mssql_managed_instances" {
         managed_identities      = module.managed_identities
         network_security_groups = module.network_security_groups
         keyvaults               = module.keyvaults
+        private_dns_zones       = module.private_dns_zones
       }
     },
     {
