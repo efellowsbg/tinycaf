@@ -6,6 +6,10 @@ variable "settings" {
   description = "All the configuration for this resource"
 }
 
+variable "subscription_id" {
+  description = "The ID of the subscription"
+}
+
 variable "resources" {
   description = "All required resources"
 }

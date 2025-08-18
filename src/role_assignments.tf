@@ -2,7 +2,7 @@ module "role_assignments" {
   source          = "./modules/role_assignments"
   settings        = var.role_assignments
   global_settings = local.global_settings
-
+  subscription_id = var.subscription_id
   resources = merge(
     {
       (var.landingzone.key) = {

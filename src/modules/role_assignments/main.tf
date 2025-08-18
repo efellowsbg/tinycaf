@@ -32,5 +32,6 @@ module "custom_roles" {
   global_settings = var.global_settings
   resources       = var.resources
   client_config   = var.client_config
+  subscription_id = var.subscription_id
 }
 
