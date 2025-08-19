@@ -63,6 +63,19 @@ resource "azurerm_virtual_machine" "main" {
     }
   }
 
+  dynamic "storage_data_disk" {
+    for_each = can(var.settings.storage_data_disk) ? var.settings.storage_data_disk : {}
+    content {
+      name                      = try(each.value.name, "${var.settings.name}-datadisk-${each.key}")
+      lun                       = try(each.value.lun, null)
+      caching                   = try(each.value.caching, null)
+      create_option             = try(each.value.create_option, "Empty")
+      managed_disk_type         = try(each.value.managed_disk_type, null)
+      disk_size_gb              = try(each.value.disk_size_gb, null)
+      write_accelerator_enabled = try(each.value.write_accelerator_enabled, null)
+    }
+  }
+
   dynamic "storage_image_reference" {
     for_each = can(var.settings.storage_image_reference) ? [1] : []
     content {
