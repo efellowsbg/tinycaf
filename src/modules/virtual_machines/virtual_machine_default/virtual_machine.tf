@@ -106,7 +106,7 @@ resource "azurerm_virtual_machine" "main" {
 
 resource "random_password" "admin" {
   for_each         = can(var.settings.os_profile.keyvault_ref) ? { "admin" = true } : {}
-  length           = 123
+  length           = 30
   min_upper        = 2
   min_lower        = 2
   min_special      = 2
