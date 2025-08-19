@@ -62,6 +62,14 @@ resource "azurerm_virtual_machine" "main" {
       write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
     }
   }
+  dynamic "plan" {
+    for_each = can(var.settings.plan) ? [1] : []
+    content {
+      name      = var.settings.plan.name
+      product   = var.settings.plan.product
+      publisher = var.settings.plan.publisher
+    }
+  }
 
   dynamic "storage_data_disk" {
     for_each = can(var.settings.storage_data_disk) ? var.settings.storage_data_disk : {}
