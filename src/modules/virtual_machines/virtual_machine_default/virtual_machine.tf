@@ -72,7 +72,7 @@ resource "azurerm_virtual_machine" "main" {
   }
 
   dynamic "storage_data_disk" {
-    for_each = can(var.settings.storage_data_disk) ? var.settings.storage_data_disk : {}
+    for_each             = try(var.settings.storage_data_disk, {})
     content {
       name                      = try(each.value.name, "${var.settings.name}-datadisk-${each.key}")
       lun                       = try(each.value.lun, null)
