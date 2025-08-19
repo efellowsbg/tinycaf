@@ -20,5 +20,5 @@ resource "azurerm_virtual_machine_data_disk_attachment" "main" {
   lun                = each.value.lun
   write_accelerator_enabled = try(each.value.write_accelerator_enabled, null)
   caching            = try(each.value.caching, "None")
-  create_option      = try(each.value.create_option, null)
+  create_option      = try(each.value.create_option_on_attach, null)
 }
