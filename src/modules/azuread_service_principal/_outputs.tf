@@ -2,6 +2,10 @@ output "object_id" {
   value = azuread_service_principal.main.object_id
 }
 
+output "principal_id" {
+  value = azuread_service_principal.main.object_id
+}
+
 output "app_role_ids" {
   value = azuread_service_principal.main.app_role_ids
 }

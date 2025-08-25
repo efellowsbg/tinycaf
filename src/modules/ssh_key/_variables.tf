@@ -6,8 +6,8 @@ variable "settings" {
   description = "All the configuration for this resource"
 }
 
-variable "subscription_id" {
-  description = "The ID of the subscription"
+variable "save_to_keyvault" {
+  description = "Whether to save the SSH key to Azure Key Vault"
 }
 
 variable "resources" {
@@ -15,11 +15,8 @@ variable "resources" {
 }
 
 variable "client_config" {
-  description = "Client configuration for the module"
-
-}
-
-variable "resource_type" {
-  description = "The type of resource being processed (e.g., keyvaults)"
-  type        = string
+  description = "Client config such as current landingzone key"
+  type = object({
+    landingzone_key = string
+  })
 }

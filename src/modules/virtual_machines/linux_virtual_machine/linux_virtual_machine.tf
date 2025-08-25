@@ -1,10 +1,15 @@
 resource "azurerm_linux_virtual_machine" "main" {
-  name                  = var.settings.name
-  resource_group_name   = local.resource_group_name
-  location              = local.location
-  admin_username        = var.settings.admin_username
-  size                  = var.settings.size
-  network_interface_ids = local.network_interface_ids
+  name                            = var.settings.name
+  resource_group_name             = local.resource_group_name
+  location                        = local.location
+  admin_username                  = var.settings.admin_username
+  admin_password                  = try(random_password.admin[0].result, null)
+  size                            = var.settings.size
+  network_interface_ids           = local.network_interface_ids
+  encryption_at_host_enabled      = try(var.settings.encryption_at_host_enabled, null)
+  disable_password_authentication = try(var.settings.disable_password_authentication, null)
+  availability_set_id             = try(one(azurerm_availability_set.main[*].id), null)
+
 
   tags = local.tags
 
@@ -13,6 +18,14 @@ resource "azurerm_linux_virtual_machine" "main" {
     content {
       username   = admin_ssh_key.value.username
       public_key = tls_private_key.main[admin_ssh_key.value.public_key_ref].public_key_openssh
+    }
+  }
+  dynamic "plan" {
+    for_each = can(var.settings.plan) ? [1] : []
+    content {
+      name      = var.settings.plan.name
+      product   = var.settings.plan.product
+      publisher = var.settings.plan.publisher
     }
   }
 
