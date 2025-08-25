@@ -28,7 +28,7 @@ resource "azurerm_linux_virtual_machine" "main" {
       publisher = var.settings.plan.publisher
     }
   }
-  
+
   os_disk {
     caching                   = var.settings.os_disk.caching
     disk_size_gb              = try(var.settings.os_disk.disk_size_gb, null)

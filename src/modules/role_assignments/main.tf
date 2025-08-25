@@ -34,4 +34,3 @@ module "custom_roles" {
   client_config   = var.client_config
   subscription_id = var.subscription_id
 }
-

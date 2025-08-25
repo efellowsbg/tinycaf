@@ -16,7 +16,7 @@ variable "resources" {
 
 variable "client_config" {
   description = "Client configuration for the module"
-  
+
 }
 
 variable "resource_type" {

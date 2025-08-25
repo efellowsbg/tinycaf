@@ -1,5 +1,5 @@
 resource "azurerm_managed_disk" "main" {
-  for_each             = try(var.settings.data_disks, {})
+  for_each = try(var.settings.data_disks, {})
 
   name                 = each.value.name
   location             = local.location
@@ -15,10 +15,10 @@ resource "azurerm_managed_disk" "main" {
 resource "azurerm_virtual_machine_data_disk_attachment" "main" {
   for_each = try(var.settings.data_disks, {})
 
-  managed_disk_id   = azurerm_managed_disk.main[each.key].id
-  virtual_machine_id = azurerm_linux_virtual_machine.main.id
-  lun                = each.value.lun
+  managed_disk_id           = azurerm_managed_disk.main[each.key].id
+  virtual_machine_id        = azurerm_linux_virtual_machine.main.id
+  lun                       = each.value.lun
   write_accelerator_enabled = try(each.value.write_accelerator_enabled, null)
-  caching            = try(each.value.caching, "None")
-  create_option      = try(each.value.create_option_on_attach, null)
+  caching                   = try(each.value.caching, "None")
+  create_option             = try(each.value.create_option_on_attach, null)
 }
