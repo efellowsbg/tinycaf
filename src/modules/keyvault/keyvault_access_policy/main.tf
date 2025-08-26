@@ -10,3 +10,9 @@ module "access_policy" {
   certificate_permissions = each.value.certificate_permissions
   storage_permissions     = each.value.storage_permissions
 }
+
+
+data "azuread_user" "kv_policy_users" {
+  for_each            = toset(try(var.access_policies.user_principal_names, []))
+  user_principal_name = each.key
+}
