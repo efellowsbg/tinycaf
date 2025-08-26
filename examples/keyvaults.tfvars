@@ -2,6 +2,15 @@ keyvaults = {
   kv_test = {
     name               = "kv-test-dv-ne-01"
     resource_group_ref = "rg_test"
+    access_policies = {
+      access_policy_01 = {
+        secret_permissions      = ["Get", "List", "Set", "Delete", "Recover", "Backup", "Restore", "Purge"]
+        key_permissions         = ["Get", "List", "Update", "Create", "Import", "Decrypt", "Delete", "Encrypt", "Recover", "Backup", "Restore", "Purge", "Sign", "UnwrapKey", "Verify", "WrapKey"]
+        certificate_permissions = ["Backup", "Create", "Delete", "DeleteIssuers", "Get", "GetIssuers", "Import", "List", "ListIssuers", "ManageContacts", "ManageIssuers", "Recover", "Restore", "SetIssuers", "Update", "Purge"]
+        object_ids              = ["00000000-0000-0000-0000-000000000000"]
+        user_principal_names    = ["user.one@test.com", "user.two@test.com"]
+      }
+    }
     network_rules = {
       default_action = "Deny"
       allowed_ips    = ["10.10.10.10", "20.20.20.20"]
