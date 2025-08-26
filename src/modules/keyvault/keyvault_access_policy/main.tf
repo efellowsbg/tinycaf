@@ -13,6 +13,6 @@ module "access_policy" {
 
 
 data "azuread_user" "kv_policy_users" {
-  for_each = toset(try(var.access_policies.user_principal_name_refs, []))
+  for_each            = toset(try(var.access_policies.user_principal_names, []))
   user_principal_name = each.key
 }
