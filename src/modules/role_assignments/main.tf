@@ -31,4 +31,6 @@ module "custom_roles" {
   resource_type   = each.value.resource_type # Pass the resource type dynamically
   global_settings = var.global_settings
   resources       = var.resources
+  client_config   = var.client_config
+  subscription_id = var.subscription_id
 }

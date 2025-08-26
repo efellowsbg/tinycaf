@@ -62,6 +62,27 @@ resource "azurerm_virtual_machine" "main" {
       write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
     }
   }
+  dynamic "plan" {
+    for_each = can(var.settings.plan) ? [1] : []
+    content {
+      name      = var.settings.plan.name
+      product   = var.settings.plan.product
+      publisher = var.settings.plan.publisher
+    }
+  }
+
+  dynamic "storage_data_disk" {
+    for_each = try(var.settings.storage_data_disk, {})
+    content {
+      name                      = try(storage_data_disk.value.name, "${var.settings.name}-datadisk-${storage_data_disk.key}")
+      lun                       = try(storage_data_disk.value.lun, null)
+      caching                   = try(storage_data_disk.value.caching, null)
+      create_option             = try(storage_data_disk.value.create_option, "Empty")
+      managed_disk_type         = try(storage_data_disk.value.managed_disk_type, null)
+      disk_size_gb              = try(storage_data_disk.value.disk_size_gb, null)
+      write_accelerator_enabled = try(storage_data_disk.value.write_accelerator_enabled, null)
+    }
+  }
 
   dynamic "storage_image_reference" {
     for_each = can(var.settings.storage_image_reference) ? [1] : []
@@ -85,7 +106,7 @@ resource "azurerm_virtual_machine" "main" {
 
 resource "random_password" "admin" {
   for_each         = can(var.settings.os_profile.keyvault_ref) ? { "admin" = true } : {}
-  length           = 123
+  length           = 30
   min_upper        = 2
   min_lower        = 2
   min_special      = 2

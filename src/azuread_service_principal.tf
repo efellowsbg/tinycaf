@@ -8,6 +8,7 @@ module "azuread_service_principals" {
     {
       (var.landingzone.key) = {
         azuread_applications = module.azuread_applications
+        keyvaults            = module.keyvaults
       }
     },
     {
