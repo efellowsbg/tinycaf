@@ -6,7 +6,7 @@ terraform {
     }
     azapi = {
       source  = "Azure/azapi"
-      version = "2.5.0" // version
+      version = "2.5.0"
     }
   }
 }
@@ -18,8 +18,4 @@ provider "azurerm" {
   client_id       = var.client_id
   tenant_id       = var.tenant_id
   subscription_id = var.subscription_id
-}
-
-provider "azapi" {
-  # Configuration options
 }
