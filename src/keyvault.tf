@@ -12,7 +12,6 @@ module "keyvaults" {
         managed_identities = module.managed_identities
         private_dns_zones  = module.private_dns_zones
         azuread_applications = module.azuread_applications
-        azuread_service_principals = module.azuread_service_principals
       }
     },
     {
