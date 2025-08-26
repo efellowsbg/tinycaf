@@ -62,6 +62,18 @@ locals {
         }
       ],
       [
+        for ref in try(var.access_policies.azuread_service_principal_refs, []) : {
+          key = "${var.policy_name}_azuread_service_principal_${ref}"
+          object_id = var.resources[
+            try(var.access_policies.azuread_service_principal_lz_key, var.client_config.landingzone_key)
+          ].azuread_service_principals[ref].principal_id
+          key_permissions         = local.key_permissions
+          secret_permissions      = local.secret_permissions
+          certificate_permissions = local.certificate_permissions
+          storage_permissions     = local.storage_permissions
+        }
+      ],
+      [
         for include in [true] : {
           key                     = "${var.policy_name}_logged_in_user"
           object_id               = var.global_settings.object_id
