@@ -49,19 +49,38 @@ resource "azurerm_virtual_machine" "main" {
   }
 
   dynamic "storage_os_disk" {
-    for_each = can(var.settings.storage_os_disk) ? [1] : []
+    for_each = local.create_managed_disk ? [1] : []
     content {
       name                      = try(var.settings.storage_os_disk.name, "${var.settings.name}-osdisk")
       caching                   = try(var.settings.storage_os_disk.caching, null)
       create_option             = try(var.settings.storage_os_disk.create_option, "FromImage")
-      managed_disk_type         = try(var.settings.storage_os_disk.managed_disk_type, null)
-      managed_disk_id           = try(var.settings.storage_os_disk.managed_disk_id, null)
       os_type                   = try(var.settings.storage_os_disk.os_type, null)
       disk_size_gb              = try(var.settings.storage_os_disk.disk_size_gb, null)
       image_uri                 = try(var.settings.storage_os_disk.image_uri, null)
       write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
+
+      managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
+      managed_disk_id   = try(var.settings.storage_os_disk.managed_disk_id, null)
+
+      vhd_uri = null
     }
   }
+  dynamic "storage_os_disk" {
+    for_each = local.create_managed_disk ? [] : [1]
+    content {
+      name                      = try(var.settings.storage_os_disk.name, "${var.settings.name}-osdisk")
+      caching                   = try(var.settings.storage_os_disk.caching, null)
+      create_option             = try(var.settings.storage_os_disk.create_option, "FromImage")
+      os_type                   = try(var.settings.storage_os_disk.os_type, null)
+      disk_size_gb              = try(var.settings.storage_os_disk.disk_size_gb, null)
+      image_uri                 = try(var.settings.storage_os_disk.image_uri, null)
+      write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
+      vhd_uri = try(var.settings.storage_os_disk.vhd_uri, null)
+      managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
+      managed_disk_id   = try(var.settings.storage_os_disk.managed_disk_id, null)
+    }
+  }
+
   dynamic "plan" {
     for_each = can(var.settings.plan) ? [1] : []
     content {
