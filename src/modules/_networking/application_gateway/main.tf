@@ -85,7 +85,7 @@ resource "azurerm_application_gateway" "main" {
       )
 
       dynamic "custom_error_configuration" {
-        for_each = can(http_listener.value.custom_error_configuration) ? [1] : []
+        for_each = try(http_listener.value.custom_error_configuration, {})
         content {
           status_code           = custom_error_configuration.value.status_code
           custom_error_page_url = custom_error_configuration.value.custom_error_page_url
