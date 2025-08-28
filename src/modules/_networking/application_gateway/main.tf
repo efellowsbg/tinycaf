@@ -64,6 +64,11 @@ resource "azurerm_application_gateway" "main" {
       frontend_ip_configuration_name = http_listener.value.frontend_ip_configuration_name
       frontend_port_name             = http_listener.value.frontend_port_name
       protocol                       = http_listener.value.protocol
+      host_name                      = try(http_listener.value.host_name, null)
+      ssl_certificate_name           = try(http_listener.value.ssl_certificate_name, null)
+      host_names                     = try(http_listener.value.host_names, [])
+      require_sni                    = try(http_listener.value.require_sni, true)
+
       firewall_policy_id = try(
         var.resources[
           try(http_listener.value.firewall_policy_lz_key, var.client_config.landingzone_key)
@@ -73,14 +78,19 @@ resource "azurerm_application_gateway" "main" {
         http_listener.value.firewall_policy_id,
         null
       )
-      host_name            = try(http_listener.value.host_name, null)
-      ssl_certificate_name = try(http_listener.value.ssl_certificate_name, null)
-      host_names           = try(http_listener.value.host_names, [])
-      require_sni          = try(http_listener.value.require_sni, true)
+
       ssl_profile_name = try(
         http_listener.value.ssl_profile_name,
         null
       )
+
+      dynamic "custom_error_configuration" {
+        for_each = can(http_listener.value.custom_error_configuration) ? [1] : []
+        content {
+          status_code           = custom_error_configuration.value.status_code
+          custom_error_page_url = custom_error_configuration.value.custom_error_page_url
+        }
+      }
     }
   }
   dynamic "ssl_certificate" {
