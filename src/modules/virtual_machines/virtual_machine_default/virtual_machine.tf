@@ -52,10 +52,9 @@ resource "azurerm_virtual_machine" "main" {
     for_each = local.create_managed_disk ? [1] : []
     content {
       name                      = try(var.settings.storage_os_disk.name, "${var.settings.name}-osdisk")
-      caching                   = try(var.settings.storage_os_disk.caching, null)
+      caching                   = try(var.settings.storage_os_disk.caching, "ReadWrite")
       create_option             = try(var.settings.storage_os_disk.create_option, "Attach")
       os_type                   = try(var.settings.storage_os_disk.os_type, null)
-      disk_size_gb              = try(var.settings.storage_os_disk.disk_size_gb, null)
       image_uri                 = try(var.settings.storage_os_disk.image_uri, null)
       write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
 
@@ -129,7 +128,7 @@ resource "azurerm_managed_disk" "main" {
   location             = local.resource_group.location
   resource_group_name  = local.resource_group.name
   storage_account_type = try(var.settings.storage_os_disk.managed_disk_type, "Standard_LRS")
-  create_option        = try(var.settings.storage_os_disk.create_option, "Attach")
+  create_option        = try(var.settings.storage_os_disk.disk_create_option, "Attach")
   disk_size_gb         = try(var.settings.storage_os_disk.disk_size_gb, 30)
 
   tags = local.tags
