@@ -121,12 +121,16 @@ resource "azurerm_virtual_machine" "main" {
   }
 }
 
+data "azurerm_resource_group" "main" {
+  name = local.resource_group.name
+}
+
 resource "azurerm_managed_disk" "main" {
   count                = local.create_managed_disk ? 1 : 0
   
   name                 = try(var.settings.storage_os_disk.name, "${var.settings.name}-osdisk")
   location             = local.resource_group.location
-  resource_group_name  = local.resource_group.name
+  resource_group_name  = data.azurerm_resource_group.main.name
   storage_account_type = try(var.settings.storage_os_disk.managed_disk_type, "Standard_LRS")
   create_option        = try(var.settings.storage_os_disk.disk_create_option, "Attach")
   disk_size_gb         = try(var.settings.storage_os_disk.disk_size_gb, 30)
