@@ -58,7 +58,11 @@ resource "azurerm_virtual_machine" "main" {
       write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
 
       managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
-      managed_disk_id   = (try(var.settings.storage_os_disk.config_drift, false) ? data.azurerm_managed_disk.main.id : azurerm_managed_disk.main.id)
+      managed_disk_id = (
+        try(var.settings.storage_os_disk.config_drift, false)
+        ? one(data.azurerm_managed_disk.main[*].id) 
+        : one(azurerm_managed_disk.main[*].id)     
+      )
 
       vhd_uri = null
     }
@@ -136,9 +140,9 @@ resource "azurerm_managed_disk" "main" {
 }
 
 data "azurerm_managed_disk" "main" {
-  count = local.create_managed_disk ? 1 : 0
-  name = azurerm_managed_disk.main[0].name
-  resource_group_name = azurerm_managed_disk.main[0].resource_group_name
+  count               = try(var.settings.storage_os_disk.config_drift, false) ? 1 : 0
+  name                = var.settings.storage_os_disk.name
+  resource_group_name = local.resource_group_name
 }
 
 resource "random_password" "admin" {
