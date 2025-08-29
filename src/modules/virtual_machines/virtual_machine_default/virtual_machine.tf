@@ -59,7 +59,7 @@ resource "azurerm_virtual_machine" "main" {
       write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
 
       managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
-      managed_disk_id   = one(azurerm_managed_disk.main[*].id)
+      managed_disk_id   = azurerm_managed_disk.main[0].id
 
       vhd_uri = null
     }
@@ -122,7 +122,7 @@ resource "azurerm_virtual_machine" "main" {
 }
 
 resource "azurerm_managed_disk" "main" {
-  for_each = local.create_managed_disk ? [1] : []
+  count                = local.create_managed_disk ? 1 : 0
   
   name                 = try(var.settings.storage_os_disk.name, "${var.settings.name}-osdisk")
   location             = local.resource_group.location
