@@ -130,7 +130,8 @@ resource "azurerm_managed_disk" "main" {
   storage_account_type = try(var.settings.storage_os_disk.managed_disk_type, "Standard_LRS")
   create_option        = try(var.settings.storage_os_disk.disk_create_option, "Attach")
   disk_size_gb         = try(var.settings.storage_os_disk.disk_size_gb, 30)
-
+  hyper_v_generation = try(var.settings.storage_os_disk.hyper_v_generation, null)
+  source_resource_id = try(var.settings.storage_os_disk.source_disk_id, null)
   tags = local.tags
 }
 
