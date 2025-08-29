@@ -60,8 +60,8 @@ resource "azurerm_virtual_machine" "main" {
       managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
       managed_disk_id = (
         try(var.settings.storage_os_disk.config_drift, false)
-        ? one(data.azurerm_managed_disk.main[*].id) 
-        : one(azurerm_managed_disk.main[*].id)     
+        ? one(data.azurerm_managed_disk.main[*].id)
+        : one(azurerm_managed_disk.main[*].id)
       )
 
       vhd_uri = null
@@ -137,6 +137,7 @@ resource "azurerm_managed_disk" "main" {
   hyper_v_generation   = try(var.settings.storage_os_disk.hyper_v_generation, null)
   source_resource_id   = try(var.settings.storage_os_disk.source_disk_id, null)
   tags                 = local.tags
+  os_type              = try(var.settings.storage_os_disk.os_type, null)
 }
 
 data "azurerm_managed_disk" "main" {
