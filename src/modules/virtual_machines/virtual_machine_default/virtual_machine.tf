@@ -4,7 +4,6 @@ resource "azurerm_virtual_machine" "main" {
   resource_group_name   = local.resource_group_name
   network_interface_ids = local.network_interface_ids
   vm_size               = var.settings.size
-  tags                  = local.tags
 
   delete_os_disk_on_termination    = try(var.settings.delete_os_disk_on_termination, null)
   delete_data_disks_on_termination = try(var.settings.delete_data_disks_on_termination, null)
@@ -59,7 +58,7 @@ resource "azurerm_virtual_machine" "main" {
       write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
 
       managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
-      managed_disk_id   = azurerm_managed_disk.main[0].id
+      managed_disk_id   = data.azurerm_managed_disk.main[0].id
 
       vhd_uri = null
     }
@@ -134,6 +133,12 @@ resource "azurerm_managed_disk" "main" {
   hyper_v_generation   = try(var.settings.storage_os_disk.hyper_v_generation, null)
   source_resource_id   = try(var.settings.storage_os_disk.source_disk_id, null)
   tags                 = local.tags
+}
+
+data "azurerm_managed_disk" "main" {
+  count = local.create_managed_disk ? 1 : 0
+  name = azurerm_managed_disk.main[0].name
+  resource_group_name = azurerm_managed_disk.main[0].resource_group_name
 }
 
 resource "random_password" "admin" {
