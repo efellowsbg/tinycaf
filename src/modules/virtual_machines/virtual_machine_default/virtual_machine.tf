@@ -53,14 +53,14 @@ resource "azurerm_virtual_machine" "main" {
     content {
       name                      = try(var.settings.storage_os_disk.name, "${var.settings.name}-osdisk")
       caching                   = try(var.settings.storage_os_disk.caching, null)
-      create_option             = try(var.settings.storage_os_disk.create_option, "FromImage")
+      create_option             = try(var.settings.storage_os_disk.create_option, "Attach")
       os_type                   = try(var.settings.storage_os_disk.os_type, null)
       disk_size_gb              = try(var.settings.storage_os_disk.disk_size_gb, null)
       image_uri                 = try(var.settings.storage_os_disk.image_uri, null)
       write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
 
       managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
-      managed_disk_id   = try(var.settings.storage_os_disk.managed_disk_id, null)
+      managed_disk_id   = one(azurerm_managed_disk.main[*].id)
 
       vhd_uri = null
     }
@@ -71,13 +71,12 @@ resource "azurerm_virtual_machine" "main" {
       name                      = try(var.settings.storage_os_disk.name, "${var.settings.name}-osdisk")
       caching                   = try(var.settings.storage_os_disk.caching, null)
       create_option             = try(var.settings.storage_os_disk.create_option, "FromImage")
+      managed_disk_type         = try(var.settings.storage_os_disk.managed_disk_type, null)
+      managed_disk_id           = try(var.settings.storage_os_disk.managed_disk_id, null)
       os_type                   = try(var.settings.storage_os_disk.os_type, null)
       disk_size_gb              = try(var.settings.storage_os_disk.disk_size_gb, null)
       image_uri                 = try(var.settings.storage_os_disk.image_uri, null)
       write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
-      vhd_uri = try(var.settings.storage_os_disk.vhd_uri, null)
-      managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
-      managed_disk_id   = try(var.settings.storage_os_disk.managed_disk_id, null)
     }
   }
 
@@ -121,6 +120,19 @@ resource "azurerm_virtual_machine" "main" {
       identity_ids = try(local.identity_ids, null)
     }
   }
+}
+
+resource "azurerm_managed_disk" "main" {
+  for_each = local.create_managed_disk ? [1] : []
+  
+  name                 = try(var.settings.storage_os_disk.name, "${var.settings.name}-osdisk")
+  location             = local.resource_group.location
+  resource_group_name  = local.resource_group.name
+  storage_account_type = try(var.settings.storage_os_disk.managed_disk_type, "Standard_LRS")
+  create_option        = try(var.settings.storage_os_disk.create_option, "Attach")
+  disk_size_gb         = try(var.settings.storage_os_disk.disk_size_gb, 30)
+
+  tags = local.tags
 }
 
 resource "random_password" "admin" {
