@@ -58,13 +58,8 @@ resource "azurerm_virtual_machine" "main" {
       write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
 
       managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
-      managed_disk_id = (
-        try(var.settings.storage_os_disk.config_drift, false)
-        ? one(data.azurerm_managed_disk.main[*].id)
-        : one(azurerm_managed_disk.main[*].id)
-      )
-
-      vhd_uri = null
+      managed_disk_id   = try(azurerm_managed_disk.main[*].id, var.settings.storage_os_disk.managed_disk_id, null)
+      vhd_uri           = null
     }
   }
   dynamic "storage_os_disk" {
@@ -130,7 +125,7 @@ resource "azurerm_managed_disk" "main" {
 
   name                 = try(var.settings.storage_os_disk.name, "${var.settings.name}-osdisk")
   location             = local.resource_group.location
-  resource_group_name  = (try(var.settings.storage_os_disk.use_capital_on_rg, false) ? upper(local.resource_group.name) : local.resource_group.name)
+  resource_group_name  = local.resource_group.name
   storage_account_type = try(var.settings.storage_os_disk.managed_disk_type, "Standard_LRS")
   create_option        = try(var.settings.storage_os_disk.disk_create_option, "Attach")
   disk_size_gb         = try(var.settings.storage_os_disk.disk_size_gb, 30)
@@ -140,11 +135,6 @@ resource "azurerm_managed_disk" "main" {
   os_type              = try(var.settings.storage_os_disk.os_type, null)
 }
 
-data "azurerm_managed_disk" "main" {
-  count               = try(var.settings.storage_os_disk.config_drift, false) ? 1 : 0
-  name                = var.settings.storage_os_disk.name
-  resource_group_name = local.resource_group_name
-}
 
 resource "random_password" "admin" {
   for_each         = can(var.settings.os_profile.keyvault_ref) ? { "admin" = true } : {}
