@@ -58,8 +58,11 @@ resource "azurerm_virtual_machine" "main" {
       write_accelerator_enabled = try(var.settings.storage_os_disk.write_accelerator_enabled, null)
 
       managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
-      managed_disk_id   = try(azurerm_managed_disk.main[*].id, var.settings.storage_os_disk.managed_disk_id, null)
-      vhd_uri           = null
+      managed_disk_id = coalesce(
+        try(one(azurerm_managed_disk.main[*].id), null),
+        var.settings.storage_os_disk.managed_disk_id
+      )
+      vhd_uri = null
     }
   }
   dynamic "storage_os_disk" {
