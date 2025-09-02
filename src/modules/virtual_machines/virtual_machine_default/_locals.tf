@@ -23,5 +23,5 @@ locals {
     ].managed_identities[id_ref].id
   ]
   create_managed_disk = try(coalesce(var.settings.storage_os_disk.create_disk, false), false)
-  
+
 }
