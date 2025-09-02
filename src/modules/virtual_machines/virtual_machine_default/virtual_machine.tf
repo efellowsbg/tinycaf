@@ -59,7 +59,9 @@ resource "azurerm_virtual_machine" "main" {
 
       managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
       managed_disk_id = (
-        try(var.settings.storage_os_disk.config_drift, false)
+        var.settings.storage_os_disk.config_drift && var.settings.storage_os_disk.managed_disk_small_letters
+        ? lower(one(data.azurerm_managed_disk.main[*].id))
+        : var.settings.storage_os_disk.config_drift
         ? one(data.azurerm_managed_disk.main[*].id)
         : one(azurerm_managed_disk.main[*].id)
       )
