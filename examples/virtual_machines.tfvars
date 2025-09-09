@@ -50,7 +50,7 @@ virtual_machines = {
     admin_username     = "adminuser"
     keyvault_ref       = "kv-test"
     identity = {
-      type             = "SystemAssigned,UserAssigned"
+      type             = "SystemAssigned, UserAssigned"
       identity_ids_ref = ["mi_test"]
     }
 
