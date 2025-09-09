@@ -12,6 +12,10 @@ virtual_machines = {
       storage_account_type = "Standard_LRS"
     }
 
+    identity = {
+      type = "SystemAssigned"
+    }
+
     source_image_reference = {
       publisher = "MicrosoftWindowsServer"
       offer     = "WindowsServer"
@@ -45,6 +49,10 @@ virtual_machines = {
     size               = "Standard_F2"
     admin_username     = "adminuser"
     keyvault_ref       = "kv-test"
+    identity = {
+      type             = "SystemAssigned,UserAssigned"
+      identity_ids_ref = ["mi_test"]
+    }
 
     network_interfaces = {
       nic_3 = {
