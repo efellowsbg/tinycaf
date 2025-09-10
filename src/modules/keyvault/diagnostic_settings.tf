@@ -6,6 +6,6 @@ module "diagnostic_settings" {
 
   resource_id = azurerm_key_vault.main.id
 
-  resources     = var.diagnostic_resources
+  resources     = var.resources
   client_config = var.client_config
 }

@@ -12,15 +12,7 @@ module "keyvaults" {
         managed_identities       = module.managed_identities
         private_dns_zones        = module.private_dns_zones
         azuread_applications     = module.azuread_applications
-      }
-    },
-    {
-      for k, v in module.remote_states : k => v.outputs
-    }
-  )
-  diagnostic_resources = merge(
-    {
-      (var.landingzone.key) = {
+        storage_accounts         = module.storage_accounts
         log_analytics_workspaces = module.log_analytics_workspaces
       }
     },
@@ -33,3 +25,4 @@ module "keyvaults" {
     landingzone_key = var.landingzone.key
   }
 }
+
