@@ -1,5 +1,5 @@
 module "diagnostic_settings" {
-  source          = "./diagnostic_setting"
+  source          = "./modules/diagnostic_setting"
   for_each        = var.diagnostic_settings
   settings        = each.value
   global_settings = var.global_settings
