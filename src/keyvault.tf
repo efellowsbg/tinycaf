@@ -12,8 +12,6 @@ module "keyvaults" {
         managed_identities       = module.managed_identities
         private_dns_zones        = module.private_dns_zones
         azuread_applications     = module.azuread_applications
-        storage_accounts         = module.storage_accounts
-        log_analytics_workspaces = module.log_analytics_workspaces
       }
     },
     {
@@ -31,6 +29,7 @@ module "keyvaults" {
       for k, v in module.remote_states : k => v.outputs
     }
   )
+
   client_config = {
     landingzone_key = var.landingzone.key
   }
