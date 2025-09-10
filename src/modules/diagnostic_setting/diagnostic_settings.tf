@@ -4,7 +4,6 @@ resource "azurerm_monitor_diagnostic_setting" "main" {
     try(var.settings.target_lz_key, var.client_config.landingzone_key)
   ].var.settings.target_resource_type[var.settings.target_resource_ref].id
   log_analytics_workspace_id = local.log_analytics_workspace_id
-  storage_account_id         = local.storage_account_id
   dynamic "enabled_log" {
     for_each = try(var.settings.logs, {})
     content {

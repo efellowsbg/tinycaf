@@ -9,7 +9,6 @@ module "diagnostic_settings" {
       (var.landingzone.key) = {
         keyvaults                = module.keyvaults
         log_analytics_workspaces = module.log_analytics_workspaces
-        storage_accounts         = module.storage_accounts
       }
     },
     {
