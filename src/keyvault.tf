@@ -7,13 +7,11 @@ module "keyvaults" {
   resources = merge(
     {
       (var.landingzone.key) = {
-        resource_groups          = module.resource_groups
-        virtual_networks         = module.virtual_networks
-        managed_identities       = module.managed_identities
-        private_dns_zones        = module.private_dns_zones
-        azuread_applications     = module.azuread_applications
-        storage_accounts         = module.storage_accounts
-        log_analytics_workspaces = module.log_analytics_workspaces
+        resource_groups      = module.resource_groups
+        virtual_networks     = module.virtual_networks
+        managed_identities   = module.managed_identities
+        private_dns_zones    = module.private_dns_zones
+        azuread_applications = module.azuread_applications
       }
     },
     {
@@ -25,4 +23,3 @@ module "keyvaults" {
     landingzone_key = var.landingzone.key
   }
 }
-
