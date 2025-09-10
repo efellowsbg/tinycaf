@@ -7,4 +7,10 @@ locals {
     try(var.settings.log_analytics_workspace_id, null)
   )
 
+  storage_account_id = coalesce(
+    try(var.resources[
+      try(var.settings.storage_account_lz_key, var.client_config.landingzone_key)
+    ].storage_accounts[var.settings.storage_account_ref].id, null),
+    try(var.settings.storage_account_id, null)
+  )
 }
