@@ -21,7 +21,6 @@ module "keyvaults" {
   diagnostic_resources = merge(
     {
       (var.landingzone.key) = {
-        storage_accounts         = module.storage_accounts
         log_analytics_workspaces = module.log_analytics_workspaces
       }
     },
