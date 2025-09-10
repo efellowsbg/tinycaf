@@ -12,6 +12,7 @@ module "log_analytics_workspaces" {
       (var.landingzone.key) = {
         resource_groups    = module.resource_groups
         managed_identities = module.managed_identities
+        storage_accounts   = module.storage_accounts
       }
     },
     {
