@@ -20,6 +20,17 @@ module "keyvaults" {
       for k, v in module.remote_states : k => v.outputs
     }
   )
+  diagnostic_resources = merge(
+    {
+      (var.landingzone.key) = {
+        storage_accounts         = module.storage_accounts
+        log_analytics_workspaces = module.log_analytics_workspaces
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
   client_config = {
     landingzone_key = var.landingzone.key
   }

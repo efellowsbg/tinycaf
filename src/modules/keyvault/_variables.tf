@@ -10,6 +10,10 @@ variable "resources" {
   description = "All required resources"
 }
 
+variable "diagnostic_resources" {
+  description = "All required resources for diagnostic settings"
+}
+
 variable "client_config" {
   description = "Client config such as current landingzone key"
   type = object({
