@@ -1,3 +1,3 @@
 output "id" {
-  value = azurerm_container_registry.main.id
+  value = azurerm_monitor_diagnostic_setting.main.id
 }

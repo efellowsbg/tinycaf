@@ -16,3 +16,8 @@ variable "client_config" {
     landingzone_key = string
   })
 }
+
+variable "resource_id" {
+  description = "The ID of the resource to which the diagnostic setting will be applied"
+  type        = string
+}
