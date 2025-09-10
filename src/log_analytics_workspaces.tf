@@ -4,9 +4,6 @@ module "log_analytics_workspaces" {
 
   settings        = each.value
   global_settings = local.global_settings
-
-
-
   resources = merge(
     {
       (var.landingzone.key) = {
@@ -22,4 +19,5 @@ module "log_analytics_workspaces" {
   client_config = {
     landingzone_key = var.landingzone.key
   }
+
 }

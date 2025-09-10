@@ -1,3 +1,20 @@
+# Diagnostic settings
+diagnostic_settings = {
+  setting1 = {
+    name                 = "TestSetting1"
+    log_analytics_ref    = "testw1"
+    target_resource_type = "keyvaults"
+    target_resource_ref  = "kv_test"
+    logs = {
+      log1 = {
+        category = "AuditEvent"
+      }
+    }
+  }
+}
+
+
+# pre-requisites
 keyvaults = {
   kv_test = {
     name               = "kv-test-dv-ne-01"
