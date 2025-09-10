@@ -23,7 +23,20 @@ keyvaults = {
         }
       }
     }
+    # Diagnostic settings
+    diagnostic_settings = {
+      setting1 = {
+        name = "TestSetting1"
+        log_analytics_ref = "testw1"
+        logs = {
+          log1 = {
+            category = "AuditEvent"
+          }
+        }
+      }
+    }
   }
+
 }
 
 # pre-requisites
@@ -45,6 +58,16 @@ virtual_networks = {
     }
   }
 }
+
+
+log_analytics_workspaces = {
+    testw1 = {
+        name                = "testw1-tc66"
+        resource_group_ref = "rg_test"
+        retention_in_days   = 30
+    }
+}
+
 
 resource_groups = {
   rg_test = {
