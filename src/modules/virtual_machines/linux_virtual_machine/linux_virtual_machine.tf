@@ -10,7 +10,14 @@ resource "azurerm_linux_virtual_machine" "main" {
   disable_password_authentication = try(var.settings.disable_password_authentication, null)
   availability_set_id             = try(one(azurerm_availability_set.main[*].id), null)
 
+  dynamic "identity" {
+    for_each = can(var.settings.identity) ? [1] : []
 
+    content {
+      type         = var.settings.identity.type
+      identity_ids = try(local.identity_ids, null)
+    }
+  }
   tags = local.tags
 
   dynamic "admin_ssh_key" {
