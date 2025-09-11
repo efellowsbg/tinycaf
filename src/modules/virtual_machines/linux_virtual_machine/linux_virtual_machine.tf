@@ -43,4 +43,8 @@ resource "azurerm_linux_virtual_machine" "main" {
     sku       = var.settings.source_image_reference.sku
     version   = var.settings.source_image_reference.version
   }
+  timeouts {
+    create = "60m"
+    delete = "30m"
+  }
 }
