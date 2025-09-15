@@ -18,7 +18,8 @@ private_dns_zones = {
         vnet_ref = "vnet_test2"
       }
       link2 = {
-        vnet_ref = "sandbox/vnet_test2"
+        lz_key = "sandbox"
+        vnet_ref = "vnet_test2"
         name     = "custom_name2"
       }
     }
