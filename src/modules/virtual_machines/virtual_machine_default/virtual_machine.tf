@@ -8,6 +8,7 @@ resource "azurerm_virtual_machine" "main" {
   delete_os_disk_on_termination    = try(var.settings.delete_os_disk_on_termination, null)
   delete_data_disks_on_termination = try(var.settings.delete_data_disks_on_termination, null)
   primary_network_interface_id     = try(module.network_interface.ids[0], null)
+  license_type = try(var.settings.license_type, null)
   dynamic "os_profile" {
     for_each = can(var.settings.os_profile) ? [1] : []
     content {
