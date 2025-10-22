@@ -18,6 +18,8 @@ variable "mssql_virtual_machines" { default = {} }
 
 variable "application_gateways" { default = {} }
 
+variable "diagnostic_settings" { default = {} }
+
 variable "subnet_nat_gateway_associations" { default = {} }
 
 variable "subnet_route_table_associations" { default = {} }

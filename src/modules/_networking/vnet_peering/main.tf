@@ -5,7 +5,7 @@ resource "azurerm_virtual_network_peering" "left_to_right" {
   resource_group_name       = local.vnet_left.resource_group_name
   virtual_network_name      = local.vnet_left.name
   remote_virtual_network_id = local.vnet_right.id
-  use_remote_gateways       = try(var.settings.use_remote_gateways, true)
+  use_remote_gateways       = try(var.settings.use_remote_gateways, false)
 }
 
 resource "azurerm_virtual_network_peering" "right_to_left" {
@@ -15,7 +15,7 @@ resource "azurerm_virtual_network_peering" "right_to_left" {
   resource_group_name       = local.vnet_right.resource_group_name
   virtual_network_name      = local.vnet_right.name
   remote_virtual_network_id = local.vnet_left.id
-  allow_gateway_transit     = try(var.settings.allow_gateway_transit, true)
+  allow_gateway_transit     = try(var.settings.allow_gateway_transit, false)
 }
 
 resource "azurerm_virtual_network_peering" "target" {
