@@ -6,7 +6,7 @@ locals {
   location            = local.resource_group.location
 
   network_interface_ids = module.network_interface.ids
-
+  create_managed_disk = try(coalesce(var.settings.os_disk.create_disk, false), false)
   key_vault_id = try(var.resources[
     try(var.settings.keyvault_lz_key, var.client_config.landingzone_key)
     ].keyvaults[
