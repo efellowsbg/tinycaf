@@ -10,7 +10,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   disable_password_authentication = try(var.settings.disable_password_authentication, null)
   availability_set_id             = try(one(azurerm_availability_set.main[*].id), null)
 
-
+  os_managed_disk_id = try(var.settings.os_disk.create_disk, false) ? azurerm_managed_disk.creation.id : null
   tags = local.tags
 
   dynamic "admin_ssh_key" {
@@ -28,7 +28,6 @@ resource "azurerm_linux_virtual_machine" "main" {
       publisher = var.settings.plan.publisher
     }
   }
-  os_managed_disk_id = try(var.settings.os_disk.create_disk, false) ? azurerm_managed_disk.creation.id : null
   os_disk {
     caching                   = var.settings.os_disk.caching
     disk_size_gb              = try(var.settings.os_disk.disk_size_gb, null)

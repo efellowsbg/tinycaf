@@ -28,7 +28,28 @@ resource "azurerm_logic_app_standard" "main" {
       identity_ids = try(local.identity_ids, null)
     }
   }
-
+  dynamic "ip_restriction" {
+    for_each = can(var.settings.ip_restriction) ? var.settings.ip_restriction : []
+    content {
+      ip_address  = try(ip_restriction.value.ip_address_or_range, null)
+      description = try(ip_restriction.value.description, null)
+      service_tag = try(ip_restriction.value.service_tag, null)
+      virtual_network_subnet_id = try(
+        var.resources[
+          try(ip_restriction.value.subnet_lz_key, var.client_config.landingzone_key)
+          ].virtual_networks[
+          split("/", ip_restriction.value.subnet_ref)[0]
+          ].subnets[
+          split("/", ip_restriction.value.subnet_ref)[1]
+        ].id,
+        null
+      )
+      headers  = try(ip_restriction.value.headers, null)
+      name     = try(ip_restriction.value.name, null)
+      action   = try(ip_restriction.value.action, null)
+      priority = try(ip_restriction.value.priority, null)
+    }
+  }
   dynamic "site_config" {
     for_each = can(var.settings.site_config) ? [1] : []
     content {
@@ -40,8 +61,6 @@ resource "azurerm_logic_app_standard" "main" {
       ftps_state                       = try(var.settings.site_config.ftps_state, null)
       health_check_path                = try(var.settings.site_config.health_check_path, null)
       http2_enabled                    = try(var.settings.site_config.http2_enabled, null)
-      ip_restriction                   = try(var.settings.site_config.ip_restriction, [])
-      scm_ip_restriction               = try(var.settings.site_config.scm_ip_restriction, [])
       scm_use_main_ip_restriction      = try(var.settings.site_config.scm_use_main_ip_restriction, null)
       scm_min_tls_version              = try(var.settings.site_config.scm_min_tls_version, null)
       scm_type                         = try(var.settings.site_config.scm_type, null)
