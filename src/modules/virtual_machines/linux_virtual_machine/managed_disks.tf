@@ -41,4 +41,3 @@ resource "azurerm_managed_disk" "creation" {
   tags    = local.tags
   os_type = try(var.settings.os_disk.managed_disk.os_type, null)
 }
-

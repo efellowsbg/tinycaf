@@ -9,7 +9,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   encryption_at_host_enabled      = try(var.settings.encryption_at_host_enabled, null)
   disable_password_authentication = try(var.settings.disable_password_authentication, null)
   availability_set_id             = try(one(azurerm_availability_set.main[*].id), null)
-  os_managed_disk_id = try(var.settings.os_disk.create_disk, false) ? azurerm_managed_disk.creation[*].id : null
+  os_managed_disk_id              = try(var.settings.os_disk.create_disk, false) ? azurerm_managed_disk.creation[*].id : null
   dynamic "identity" {
     for_each = can(var.settings.identity) ? [1] : []
 
@@ -55,4 +55,3 @@ resource "azurerm_linux_virtual_machine" "main" {
     delete = "30m"
   }
 }
-

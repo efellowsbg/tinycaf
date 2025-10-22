@@ -6,7 +6,7 @@ locals {
   location            = local.resource_group.location
 
   network_interface_ids = module.network_interface.ids
-  create_managed_disk = try(coalesce(var.settings.os_disk.create_disk, false), false)
+  create_managed_disk   = try(coalesce(var.settings.os_disk.create_disk, false), false)
   identity_ids = [
     for id_ref in try(var.settings.identity.identity_ids_ref, []) :
     var.resources[
