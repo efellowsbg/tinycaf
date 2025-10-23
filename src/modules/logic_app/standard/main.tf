@@ -28,7 +28,6 @@ resource "azurerm_logic_app_standard" "main" {
       identity_ids = try(local.identity_ids, null)
     }
   }
-
   dynamic "site_config" {
     for_each = can(var.settings.site_config) ? [1] : []
     content {
@@ -40,8 +39,6 @@ resource "azurerm_logic_app_standard" "main" {
       ftps_state                       = try(var.settings.site_config.ftps_state, null)
       health_check_path                = try(var.settings.site_config.health_check_path, null)
       http2_enabled                    = try(var.settings.site_config.http2_enabled, null)
-      ip_restriction                   = try(var.settings.site_config.ip_restriction, null)
-      scm_ip_restriction               = try(var.settings.site_config.scm_ip_restriction, null)
       scm_use_main_ip_restriction      = try(var.settings.site_config.scm_use_main_ip_restriction, null)
       scm_min_tls_version              = try(var.settings.site_config.scm_min_tls_version, null)
       scm_type                         = try(var.settings.site_config.scm_type, null)
@@ -57,6 +54,66 @@ resource "azurerm_logic_app_standard" "main" {
         content {
           allowed_origins     = try(var.settings.site_config.cors.allowed_origins, [])
           support_credentials = try(var.settings.site_config.cors.support_credentials, null)
+        }
+      }
+      dynamic "ip_restriction" {
+        for_each = can(var.settings.site_config.ip_restriction) ? var.settings.site_config.ip_restriction : []
+        content {
+          ip_address  = try(ip_restriction.value.ip_address_or_range, null)
+          description = try(ip_restriction.value.description, null)
+          service_tag = try(ip_restriction.value.service_tag, null)
+          virtual_network_subnet_id = try(
+            var.resources[
+              try(ip_restriction.value.subnet_lz_key, var.client_config.landingzone_key)
+              ].virtual_networks[
+              split("/", ip_restriction.value.subnet_ref)[0]
+              ].subnets[
+              split("/", ip_restriction.value.subnet_ref)[1]
+            ].id,
+            null
+          )
+          dynamic "headers" {
+            for_each = can(ip_restriction.value.headers) ? ip_restriction.value.headers : []
+            content {
+              x_azure_fdid      = try(headers.value.x_azure_fdid, null)
+              x_fd_health_probe = try(headers.value.x_fd_health_probe, null)
+              x_forwarded_for   = try(headers.value.x_forwarded_for, null)
+              x_forwarded_host  = try(headers.value.x_forwarded_host, null)
+            }
+          }
+          name     = try(ip_restriction.value.name, null)
+          action   = try(ip_restriction.value.action, null)
+          priority = try(ip_restriction.value.priority, null)
+        }
+      }
+      dynamic "scm_ip_restriction" {
+        for_each = can(var.settings.site_config.scm_ip_restriction) ? var.settings.site_config.scm_ip_restriction : []
+        content {
+          ip_address  = try(scm_ip_restriction.value.ip_address_or_range, null)
+          description = try(scm_ip_restriction.value.description, null)
+          service_tag = try(scm_ip_restriction.value.service_tag, null)
+          virtual_network_subnet_id = try(
+            var.resources[
+              try(scm_ip_restriction.value.subnet_lz_key, var.client_config.landingzone_key)
+              ].virtual_networks[
+              split("/", scm_ip_restriction.value.subnet_ref)[0]
+              ].subnets[
+              split("/", scm_ip_restriction.value.subnet_ref)[1]
+            ].id,
+            null
+          )
+          dynamic "headers" {
+            for_each = can(scm_ip_restriction.value.headers) ? scm_ip_restriction.value.headers : []
+            content {
+              x_azure_fdid      = try(headers.value.x_azure_fdid, null)
+              x_fd_health_probe = try(headers.value.x_fd_health_probe, null)
+              x_forwarded_for   = try(headers.value.x_forwarded_for, null)
+              x_forwarded_host  = try(headers.value.x_forwarded_host, null)
+            }
+          }
+          name     = try(scm_ip_restriction.value.name, null)
+          action   = try(scm_ip_restriction.value.action, null)
+          priority = try(scm_ip_restriction.value.priority, null)
         }
       }
     }
