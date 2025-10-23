@@ -75,10 +75,10 @@ resource "azurerm_logic_app_standard" "main" {
           dynamic "headers" {
             for_each = can(ip_restriction.value.headers) ? ip_restriction.value.headers : []
             content {
-              x_azure_fdid = try(headers.value.x_azure_fdid, null)
+              x_azure_fdid      = try(headers.value.x_azure_fdid, null)
               x_fd_health_probe = try(headers.value.x_fd_health_probe, null)
-              x_forwarded_for = try(headers.value.x_forwarded_for, null)
-              x_forwarded_host = try(headers.value.x_forwarded_host, null)
+              x_forwarded_for   = try(headers.value.x_forwarded_for, null)
+              x_forwarded_host  = try(headers.value.x_forwarded_host, null)
             }
           }
           name     = try(ip_restriction.value.name, null)
@@ -105,10 +105,10 @@ resource "azurerm_logic_app_standard" "main" {
           dynamic "headers" {
             for_each = can(scm_ip_restriction.value.headers) ? scm_ip_restriction.value.headers : []
             content {
-              x_azure_fdid = try(headers.value.x_azure_fdid, null)
+              x_azure_fdid      = try(headers.value.x_azure_fdid, null)
               x_fd_health_probe = try(headers.value.x_fd_health_probe, null)
-              x_forwarded_for = try(headers.value.x_forwarded_for, null)
-              x_forwarded_host = try(headers.value.x_forwarded_host, null)
+              x_forwarded_for   = try(headers.value.x_forwarded_for, null)
+              x_forwarded_host  = try(headers.value.x_forwarded_host, null)
             }
           }
           name     = try(scm_ip_restriction.value.name, null)
