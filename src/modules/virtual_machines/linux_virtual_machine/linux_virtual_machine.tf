@@ -43,12 +43,14 @@ resource "azurerm_linux_virtual_machine" "main" {
     disk_encryption_set_id    = can(var.settings.os_disk.disk_encryption_set_key) ? var.resources.disk_encryption_sets[var.settings.os_disk.disk_encryption_set_key].id : null
   }
 
-
-  source_image_reference {
-    publisher = var.settings.source_image_reference.publisher
-    offer     = var.settings.source_image_reference.offer
-    sku       = var.settings.source_image_reference.sku
-    version   = var.settings.source_image_reference.version
+  dynamic "source_image_reference" {
+    for_each = can(var.settings.source_image_reference) ? [1] : []
+    content {
+      publisher = var.settings.source_image_reference.publisher
+      offer     = var.settings.source_image_reference.offer
+      sku       = var.settings.source_image_reference.sku
+      version   = var.settings.source_image_reference.version
+    }
   }
   timeouts {
     create = "60m"
