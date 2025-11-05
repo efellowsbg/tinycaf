@@ -18,4 +18,5 @@ output "pass_key_id" {
 output "client_secret_value" {
   value       = length(azuread_application_password.main) > 0 ? azuread_application_password.main[0].value : null
   description = "Client secret value"
+  sensitive   = true
 }
