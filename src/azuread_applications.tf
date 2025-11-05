@@ -8,6 +8,7 @@ module "azuread_applications" {
   resources = merge(
     {
       (var.landingzone.key) = {
+        keyvaults = module.keyvaults
       }
     },
     {
