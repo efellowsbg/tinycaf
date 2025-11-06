@@ -1,5 +1,5 @@
 resource "azuread_application_password" "main" {
-  count = try(var.settings.create_password, null) == null ? 0 : 1
+  # count = try(var.settings.create_password, null) == null ? 0 : 1
 
   application_id      = azuread_application.main.id
   display_name        = try(var.settings.create_password.display_name, null)
