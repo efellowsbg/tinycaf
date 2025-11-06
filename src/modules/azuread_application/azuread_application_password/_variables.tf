@@ -10,9 +10,9 @@ variable "resources" {
   description = "All required resources"
 }
 
-# variable "key_vault_id" {
-#   description = "The KV where the secret will be stored"
-# }
+variable "application_id" {
+  description = "The ID of the Azure AD application for which to create the password"
+}
 
 variable "client_config" {
   description = "Client config such as current landingzone key"

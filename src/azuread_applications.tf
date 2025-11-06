@@ -21,10 +21,15 @@ module "azuread_applications" {
 
 module "azuread_application_passwords" {
   source = "./modules/azuread_application/azuread_application_password"
-  count  = try(var.azuread_applications.create_password, null) == null ? 0 : 1
-  # for_each = var.azuread_applications
+  for_each = {
+    for instance, cfg in var.azuread_applications :
+    instance => cfg
+    if try(cfg.create_password, null) != null
+  }
   settings        = var.azuread_applications
   global_settings = local.global_settings
+
+  application_id = module.azuread_applications[each.key].application_id
 
   client_config = {
     landingzone_key = var.landingzone.key
