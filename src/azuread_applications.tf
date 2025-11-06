@@ -5,11 +5,6 @@ module "azuread_applications" {
   settings        = each.value
   global_settings = local.global_settings
 
-  # key_vault_id = try(
-  #   module.keyvaults[each.value.create_password.keyvault_ref].id,
-  #   null
-  # )
-
   client_config = {
     landingzone_key = var.landingzone.key
   }
