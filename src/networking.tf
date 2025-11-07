@@ -186,8 +186,7 @@ module "dns_zones" {
   resources = merge(
     {
       (var.landingzone.key) = {
-        resource_groups  = module.resource_groups
-        virtual_networks = module.virtual_networks
+        resource_groups = module.resource_groups
       }
     },
     {
