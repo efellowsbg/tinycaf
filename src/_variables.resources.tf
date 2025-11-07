@@ -99,3 +99,5 @@ variable "logic_apps_standard" { default = {} }
 variable "dns_zones" { default = {} }
 
 variable "private_dns_cname_records" { default = {} }
+
+variable "azuread_groups" { default = {} }
