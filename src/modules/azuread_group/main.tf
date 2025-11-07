@@ -22,11 +22,11 @@ resource "azuread_group" "main" {
   visibility                 = try(var.settings.visibility, null)
   writeback_enabled          = try(var.settings.writeback_enabled, null)
 
-  dynamic "dynamic_membership_rule" {
-    for_each = can(var.settings.dynamic_membership_rule) ? [1] : []
+  dynamic "dynamic_membership" {
+    for_each = can(var.settings.dynamic_membership) ? [1] : []
     content {
-      enabled = var.settings.dynamic_membership_rule.enabled
-      rule    = var.settings.dynamic_membership_rule.rule
+      enabled = var.settings.dynamic_membership.enabled
+      rule    = var.settings.dynamic_membership.rule
     }
   }
 }
