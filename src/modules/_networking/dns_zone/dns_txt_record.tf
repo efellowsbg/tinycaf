@@ -8,7 +8,7 @@ resource "azurerm_dns_txt_record" "main" {
   tags                = try(var.settings.txt_records[each.key].tags, local.tags)
 
   dynamic "record" {
-    for_each = try(var.settings.txt_records[each.key].records, {})
+    for_each = var.settings.txt_records[each.key].records
     content {
       value = record.value.value
     }
