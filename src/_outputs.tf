@@ -161,3 +161,15 @@ output "route_tables" {
 output "waf_policies" {
   value = module.waf_policies
 }
+
+output "dns_zones" {
+  value = module.dns_zones
+}
+
+output "private_dns_cname_records" {
+  value = module.private_dns_cname_records
+}
+
+output "azuread_groups" {
+  value = module.azuread_groups
+}
