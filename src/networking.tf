@@ -249,6 +249,30 @@ module "private_dns_a_records" {
   }
 }
 
+module "private_dns_cname_records" {
+  source   = "./modules/_networking/private_dns_cname_record"
+  for_each = var.private_dns_cname_records
+
+  settings        = each.value
+  global_settings = local.global_settings
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups   = module.resource_groups
+        private_dns_zones = module.private_dns_zones
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
+  }
+}
+
 module "private_endpoints" {
   source   = "./modules/_networking/private_endpoint"
   for_each = var.private_endpoints
