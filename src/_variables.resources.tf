@@ -95,3 +95,5 @@ variable "recovery_vaults" { default = {} }
 variable "disk_encryption_sets" { default = {} }
 
 variable "logic_apps_standard" { default = {} }
+
+variable "dns_zones" { default = {} }

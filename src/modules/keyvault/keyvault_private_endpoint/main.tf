@@ -14,8 +14,12 @@ resource "azurerm_private_endpoint" "main" {
     private_connection_resource_alias = try(var.settings.private_endpoint.private_service_connection.private_connection_resource_alias, null)
     subresource_names                 = try(var.settings.private_endpoint.private_service_connection.subresource_names, null)
   }
-  private_dns_zone_group {
-    name                 = try(var.settings.private_endpoint.dns_group_name, "default")
-    private_dns_zone_ids = local.dns_zone_ids
+
+  dynamic "private_dns_zone_group" {
+    for_each = length(local.dns_zone_ids) > 0 ? [local.dns_zone_ids] : []
+    content {
+      name                 = try(var.settings.private_endpoint.dns_group_name, "default")
+      private_dns_zone_ids = local.dns_zone_ids
+    }
   }
 }
