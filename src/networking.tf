@@ -175,6 +175,30 @@ module "private_dns_zones" {
   }
 }
 
+module "dns_zones" {
+  source   = "./modules/_networking/dns_zone"
+  for_each = var.dns_zones
+
+  global_settings = var.global_settings
+  settings        = each.value
+
+
+  resources = merge(
+    {
+      (var.landingzone.key) = {
+        resource_groups  = module.resource_groups
+        virtual_networks = module.virtual_networks
+      }
+    },
+    {
+      for k, v in module.remote_states : k => v.outputs
+    }
+  )
+  client_config = {
+    landingzone_key = var.landingzone.key
+  }
+}
+
 module "virtual_network_gateway_connections" {
   source   = "./modules/_networking/virtual_network_gateway_connections"
   for_each = var.virtual_network_gateway_connections
