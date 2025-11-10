@@ -2,10 +2,11 @@ locals {
   resource_group = var.resources[
     try(var.settings.lz_key, var.client_config.landingzone_key)
   ].resource_groups[var.settings.resource_group_ref]
-  resource_group_name = local.resource_group.name
-  location            = local.resource_group.location
-
-  network_interface_ids = module.network_interface.ids
+  resource_group_name        = local.resource_group.name
+  location                   = local.resource_group.location
+  config_drift               = try(var.settings.storage_os_disk.config_drift, false)
+  managed_disk_small_letters = try(var.settings.storage_os_disk.managed_disk_small_letters, false)
+  network_interface_ids      = module.network_interface.ids
   key_vault_id = try(var.resources[
     try(var.settings.os_profile.keyvault_lz_key, var.client_config.landingzone_key)
     ].keyvaults[

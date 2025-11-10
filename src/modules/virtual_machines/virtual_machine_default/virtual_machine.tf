@@ -60,9 +60,9 @@ resource "azurerm_virtual_machine" "main" {
 
       managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
       managed_disk_id = (
-        var.settings.storage_os_disk.config_drift && var.settings.storage_os_disk.managed_disk_small_letters
+        local.config_drift && local.managed_disk_small_letters
         ? lower(one(data.azurerm_managed_disk.main[*].id))
-        : var.settings.storage_os_disk.config_drift
+        : local.config_drift
         ? one(data.azurerm_managed_disk.main[*].id)
         : one(azurerm_managed_disk.main[*].id)
       )
@@ -141,10 +141,11 @@ resource "azurerm_managed_disk" "main" {
   source_resource_id   = try(var.settings.storage_os_disk.source_disk_id, null)
   tags                 = local.tags
   os_type              = try(var.settings.storage_os_disk.os_type, null)
+  upload_size_bytes    = try(var.settings.storage_os_disk.upload_size_bytes, null)
 }
 
 data "azurerm_managed_disk" "main" {
-  count               = try(var.settings.storage_os_disk.config_drift, false) ? 1 : 0
+  count               = try(local.config_drift, false) ? 1 : 0
   name                = var.settings.storage_os_disk.name
   resource_group_name = local.resource_group_name
 }
