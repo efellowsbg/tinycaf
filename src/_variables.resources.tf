@@ -101,3 +101,5 @@ variable "dns_zones" { default = {} }
 variable "private_dns_cname_records" { default = {} }
 
 variable "azuread_groups" { default = {} }
+
+variable "bastion_hosts" { default = {} }
