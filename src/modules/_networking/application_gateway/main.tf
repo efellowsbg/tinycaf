@@ -25,6 +25,38 @@ resource "azurerm_application_gateway" "main" {
     }
   }
 
+  dynamic "waf_configuration" {
+    for_each = can(var.settings.waf_configuration) ? [1] : []
+    content {
+      enabled                  = var.settings.waf_configuration.enabled
+      firewall_mode            = var.settings.waf_configuration.firewall_mode
+      rule_set_version         = var.settings.waf_configuration.rule_set_version
+      rule_set_type            = try(var.settings.waf_configuration.rule_set_type, null)
+      file_upload_limit_mb     = try(var.settings.waf_configuration.file_upload_limit_mb, null)
+      request_body_check       = try(var.settings.waf_configuration.request_body_check, null)
+      max_request_body_size_kb = try(var.settings.waf_configuration.max_request_body_size_kb, null)
+
+      dynamic "disabled_rule_group" {
+        for_each = try(var.settings.waf_configuration.disabled_rule_groups, {})
+        content {
+          rule_group_name = disabled_rule_group.value.rule_group_name
+          rules           = try(disabled_rule_group.value.rules, null)
+        }
+      }
+
+      dynamic "exclusion" {
+        for_each = try(var.settings.waf_configuration.exclusions, {})
+        content {
+          match_variable          = exclusion.value.match_variable
+          selector_match_operator = try(exclusion.value.selector_match_operator, null)
+          selector                = try(exclusion.value.selector, null)
+        }
+      }
+
+    }
+  }
+
+
   sku {
     name     = try(var.settings.sku.name, "WAF_v2")
     tier     = try(var.settings.sku.tier, "WAF_v2")
