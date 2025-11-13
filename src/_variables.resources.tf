@@ -105,3 +105,5 @@ variable "private_dns_cname_records" { default = {} }
 variable "azuread_groups" { default = {} }
 
 variable "bastion_hosts" { default = {} }
+
+variable "automation_runbooks" { default = {} }
