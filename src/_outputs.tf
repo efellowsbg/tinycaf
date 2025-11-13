@@ -189,3 +189,7 @@ output "automation_runbooks" {
 output "automation_schedules" {
   value = module.automation_schedules
 }
+
+output "automation_jobs_schedules" {
+  value = module.automation_jobs_schedules
+}
