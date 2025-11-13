@@ -11,9 +11,9 @@ module "automation_accounts" {
   resources = merge(
     {
       (var.landingzone.key) = {
-        resource_groups    = var.resource_groups
-        managed_identities = var.managed_identities
-        key_vault_keys     = var.key_vault_keys
+        resource_groups    = module.resource_groups
+        managed_identities = module.managed_identities
+        key_vault_keys     = module.key_vault_keys
       }
     },
     {
