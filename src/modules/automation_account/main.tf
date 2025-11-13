@@ -27,8 +27,8 @@ resource "azurerm_automation_account" "main" {
     content {
       key_vault_key_id = try(
         var.resources[
-          try(var.settings.encryption.keys_lz_key, var.client_config.landingzone_key)
-        ].key_vault_keys[var.settings.encryption.key_ref].id,
+          try(var.settings.encryption.kv_key_lz_key, var.client_config.landingzone_key)
+        ].key_vault_keys[var.settings.encryption.key_ref].versionless_id,
         var.settings.encryption.key_vault_key_id
       )
       user_assigned_identity_id = try(
