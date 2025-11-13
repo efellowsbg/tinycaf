@@ -96,6 +96,8 @@ variable "disk_encryption_sets" { default = {} }
 
 variable "logic_apps_standard" { default = {} }
 
+variable "automation_accounts" { default = {} }
+
 variable "dns_zones" { default = {} }
 
 variable "private_dns_cname_records" { default = {} }

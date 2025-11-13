@@ -162,6 +162,10 @@ output "waf_policies" {
   value = module.waf_policies
 }
 
+output "automation_accounts" {
+  value = module.automation_accounts
+}
+
 output "dns_zones" {
   value = module.dns_zones
 }
