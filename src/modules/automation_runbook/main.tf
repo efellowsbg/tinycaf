@@ -52,7 +52,7 @@ resource "azurerm_automation_runbook" "main" {
       dynamic "parameters" {
         for_each = try(var.settings.draft.parameters, [])
         content {
-          key           = parameters.value.key
+          key           = lower(parameters.value.key)
           type          = parameters.value.type
           mandatory     = try(parameters.value.mandatory, null)
           position      = try(parameters.value.position, null)
