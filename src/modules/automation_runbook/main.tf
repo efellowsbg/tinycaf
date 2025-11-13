@@ -59,28 +59,9 @@ resource "azurerm_automation_runbook" "main" {
           default_value = try(parameters.value.default_value, null)
         }
       }
-
-      # dynamic "parameters" {
-      #   for_each = try(var.settings.draft.parameters, [])
-      #   content {
-      #     key           = lower(parameters.value.key)
-      #     type          = parameters.value.type
-      #     mandatory     = try(parameters.value.mandatory, null)
-      #     position      = try(parameters.value.position, null)
-      #     default_value = try(parameters.value.default_value, null)
-      #   }
-      # }
     }
   }
 
-  # dynamic "job_schedule" {
-  #   for_each = try(var.settings.job_schedules, {})
-  #   content {
-  #     schedule_name = job_schedule.value.schedule_name
-  #     parameters    = try(job_schedule.value.parameters, null)
-  #     run_on        = try(job_schedule.value.run_on, null)
-  #   }
-  # }
   dynamic "job_schedule" {
     for_each = try(var.settings.job_schedules, {})
     content {
