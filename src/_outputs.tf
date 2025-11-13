@@ -173,3 +173,7 @@ output "private_dns_cname_records" {
 output "azuread_groups" {
   value = module.azuread_groups
 }
+
+output "bastion_hosts" {
+  value = module.bastion_hosts
+}

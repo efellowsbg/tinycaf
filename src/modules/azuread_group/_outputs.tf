@@ -1,5 +1,5 @@
 output "mail" {
-  value = azuread_group.main.id
+  value = azuread_group.main.mail
 }
 
 output "object_id" {
