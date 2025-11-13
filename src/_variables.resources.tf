@@ -107,3 +107,5 @@ variable "azuread_groups" { default = {} }
 variable "bastion_hosts" { default = {} }
 
 variable "automation_runbooks" { default = {} }
+
+variable "automation_schedules" { default = {} }
