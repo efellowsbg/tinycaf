@@ -14,10 +14,4 @@ locals {
   schedule_name = var.resources[
     try(var.settings.schedule_lz_key, var.client_config.landingzone_key)
   ].automation_schedules[var.settings.schedule_ref].name
-
-  tags = merge(
-    var.global_settings.tags,
-    var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
-    try(var.settings.tags, {})
-  )
 }
