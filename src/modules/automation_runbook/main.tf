@@ -42,8 +42,8 @@ resource "azurerm_automation_runbook" "main" {
           dynamic "hash" {
             for_each = can(var.settings.draft.content_link.hash) ? [1] : []
             content {
-              algorithm = var.settings.draft.content_link.algorithm
-              value     = var.settings.draft.content_link.value
+              algorithm = var.settings.draft.content_link.hash.algorithm
+              value     = var.settings.draft.content_link.hash.value
             }
           }
         }
