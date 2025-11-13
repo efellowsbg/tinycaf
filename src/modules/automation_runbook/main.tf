@@ -3,9 +3,9 @@ resource "azurerm_automation_runbook" "main" {
   runbook_type             = var.settings.runbook_type
   log_progress             = var.settings.log_progress
   log_verbose              = var.settings.log_verbose
-  resource_group_name      = local.resource_group_name
-  location                 = local.location
-  automation_account_name  = local.automation_account_name
+  resource_group_name      = try(local.resource_group_name, var.settings.resource_group_name)
+  location                 = try(local.location, var.settings.location)
+  automation_account_name  = try(local.automation_account_name, var.settings.automation_account_name)
   tags                     = local.tags
   description              = try(var.settings.description, null)
   content                  = try(var.settings.content, null)
