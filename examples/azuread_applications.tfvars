@@ -3,7 +3,20 @@ azuread_applications = {
     display_name     = "example-ad-app"
     identifier_uris  = ["api://example-app"]
     sign_in_audience = "AzureADMultipleOrgs"
-
+    # ===========================================================================
+    # Optional creating of client secret[azuread_application_password] and save it in the referenced KeyVault
+    # KeyVault MUST be already created
+    create_client_secret = {
+      keyvault_ref = "kv_test"
+    }
+    # Optional creating of azuread_application_federated_identity_credential
+    create_fed_credentials = {
+      description = "Deployments for my-repo"
+      audiences   = ["api://AzureADTokenExchange"]
+      issuer      = "https://token.actions.githubusercontent.com"
+      subject     = "repo:my-organization/my-repo:environment:prod"
+    }
+    # ===========================================================================
     api = {
       mapped_claims_enabled          = "true"
       requested_access_token_version = "2"
