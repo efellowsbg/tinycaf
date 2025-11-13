@@ -12,6 +12,7 @@ module "automation_runbooks" {
     {
       (var.landingzone.key) = {
         automation_accounts = module.automation_accounts
+        resource_grous      = module.resource_groups
       }
     },
     {
