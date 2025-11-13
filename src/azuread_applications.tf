@@ -26,9 +26,10 @@ module "azuread_application_passwords" {
     instance => cfg
     if try(cfg.create_password, null) != null
   }
-  settings        = each.value
-  global_settings = local.global_settings
-  application_id  = module.azuread_applications[each.key].id
+  settings         = each.value
+  global_settings  = local.global_settings
+  application_id   = module.azuread_applications[each.key].id
+  application_name = module.azuread_applications[each.key].display_name
 
   client_config = {
     landingzone_key = var.landingzone.key
