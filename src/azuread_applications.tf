@@ -24,7 +24,7 @@ module "azuread_application_passwords" {
   for_each = {
     for instance, cfg in var.azuread_applications :
     instance => cfg
-    if try(cfg.create_password, null) != null
+    if try(cfg.create_client_secret, null) != null
   }
   settings         = each.value
   global_settings  = local.global_settings
