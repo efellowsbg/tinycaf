@@ -185,3 +185,7 @@ output "bastion_hosts" {
 output "automation_runbooks" {
   value = module.automation_runbooks
 }
+
+output "automation_schedules" {
+  value = module.automation_schedules
+}
