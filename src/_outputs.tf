@@ -181,3 +181,7 @@ output "azuread_groups" {
 output "bastion_hosts" {
   value = module.bastion_hosts
 }
+
+output "automation_runbooks" {
+  value = module.automation_runbooks
+}
