@@ -182,6 +182,10 @@ output "bastion_hosts" {
   value = module.bastion_hosts
 }
 
+output "subscriptions" {
+  value = module.subscriptions
+}
+
 output "automation_runbooks" {
   value = module.automation_runbooks
 }
