@@ -113,3 +113,5 @@ variable "automation_runbooks" { default = {} }
 variable "automation_schedules" { default = {} }
 
 variable "automation_jobs_schedules" { default = {} }
+
+variable "azuread_administrative_units" { default = {} }
