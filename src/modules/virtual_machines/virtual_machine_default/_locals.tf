@@ -24,5 +24,11 @@ locals {
     ].managed_identities[id_ref].id
   ]
   create_managed_disk = try(coalesce(var.settings.storage_os_disk.create_disk, false), false)
+  storage_data_disks  = try(var.settings.storage_data_disk, {})
 
+  create_data_managed_disk = {
+    for k, v in local.storage_data_disks :
+    k => v
+    if try(v.create_data_managed_disk, false)
+  }
 }
