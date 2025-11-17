@@ -190,6 +190,10 @@ output "automation_runbooks" {
   value = module.automation_runbooks
 }
 
+output "azuread_users" {
+  value = module.azuread_users
+}
+
 output "automation_schedules" {
   value = module.automation_schedules
 }
