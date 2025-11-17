@@ -189,7 +189,6 @@ resource "azurerm_managed_disk" "data" {
   disk_size_gb         = try(each.value.disk_size_gb, 30)
   tags                 = local.tags
 
-  hyper_v_generation = try(each.value.hyper_v_generation, null)
   source_resource_id = try(each.value.source_disk_id, null)
   os_type            = try(each.value.os_type, null)
   upload_size_bytes  = try(each.value.upload_size_bytes, null)
