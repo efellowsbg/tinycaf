@@ -4,6 +4,7 @@ module "azuread_users" {
 
   settings        = each.value
   global_settings = local.global_settings
+
   resources = merge(
     {
       (var.landingzone.key) = {
@@ -16,5 +17,4 @@ module "azuread_users" {
   client_config = {
     landingzone_key = var.landingzone.key
   }
-  create_password = try(each.value.create_password, false)
 }
