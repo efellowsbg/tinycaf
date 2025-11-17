@@ -197,3 +197,7 @@ output "automation_schedules" {
 output "automation_jobs_schedules" {
   value = module.automation_jobs_schedules
 }
+
+output "azuread_administrative_units" {
+  value = module.azuread_administrative_units
+}
