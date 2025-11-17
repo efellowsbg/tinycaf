@@ -35,12 +35,4 @@ resource "azuread_user" "main" {
   street_address              = try(var.settings.street_address, null)
   surname                     = try(var.settings.surname, null)
   usage_location              = try(var.settings.usage_location, null)
-
-  dynamic "dynamic_membership" {
-    for_each = can(var.settings.dynamic_membership) ? [1] : []
-    content {
-      enabled = var.settings.dynamic_membership.enabled
-      rule    = var.settings.dynamic_membership.rule
-    }
-  }
 }
