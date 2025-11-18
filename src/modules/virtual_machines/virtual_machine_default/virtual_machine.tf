@@ -60,9 +60,9 @@ resource "azurerm_virtual_machine" "main" {
 
       managed_disk_type = try(var.settings.storage_os_disk.managed_disk_type, null)
       managed_disk_id = (
-        var.settings.storage_os_disk.config_drift && var.settings.storage_os_disk.managed_disk_small_letters
+        local.config_drift && local.managed_disk_small_letters
         ? lower(one(data.azurerm_managed_disk.main[*].id))
-        : var.settings.storage_os_disk.config_drift
+        : local.config_drift
         ? one(data.azurerm_managed_disk.main[*].id)
         : one(azurerm_managed_disk.main[*].id)
       )
@@ -95,15 +95,35 @@ resource "azurerm_virtual_machine" "main" {
   }
 
   dynamic "storage_data_disk" {
-    for_each = try(var.settings.storage_data_disk, {})
+    for_each = local.storage_data_disks
+
     content {
-      name                      = try(storage_data_disk.value.name, "${var.settings.name}-datadisk-${storage_data_disk.key}")
+      name = try(
+        storage_data_disk.value.name,
+        "${var.settings.name}-datadisk-${storage_data_disk.key}"
+      )
+
       lun                       = try(storage_data_disk.value.lun, null)
       caching                   = try(storage_data_disk.value.caching, null)
-      create_option             = try(storage_data_disk.value.create_option, "Empty")
-      managed_disk_type         = try(storage_data_disk.value.managed_disk_type, null)
-      disk_size_gb              = try(storage_data_disk.value.disk_size_gb, null)
       write_accelerator_enabled = try(storage_data_disk.value.write_accelerator_enabled, null)
+
+      # Do we have a created managed disk for this key?
+      # (i.e. was create_data_managed_disk = true?)
+      create_option = can(azurerm_managed_disk.data[storage_data_disk.key]) ? try(storage_data_disk.value.create_option, "Attach") : try(storage_data_disk.value.create_option, "Empty")
+
+      managed_disk_id = can(azurerm_managed_disk.data[storage_data_disk.key]) ? (
+        try(local.config_drift, false)
+        ? (
+          try(local.managed_disk_small_letters, false)
+          ? lower(data.azurerm_managed_disk.data[storage_data_disk.key].id)
+          : data.azurerm_managed_disk.data[storage_data_disk.key].id
+        )
+        : azurerm_managed_disk.data[storage_data_disk.key].id
+      ) : try(storage_data_disk.value.managed_disk_id, null)
+
+      managed_disk_type = can(azurerm_managed_disk.data[storage_data_disk.key]) ? null : try(storage_data_disk.value.managed_disk_type, null)
+
+      disk_size_gb = can(azurerm_managed_disk.data[storage_data_disk.key]) ? null : try(storage_data_disk.value.disk_size_gb, null)
     }
   }
 
@@ -127,7 +147,15 @@ resource "azurerm_virtual_machine" "main" {
   }
 }
 
-
+data "azurerm_managed_disk" "data" {
+  for_each = {
+    for k, v in local.create_data_managed_disk :
+    k => v
+    if try(v.config_drift, false)
+  }
+  name                = try(each.value.name, "${var.settings.name}-datadisk-${each.key}")
+  resource_group_name = local.resource_group_name
+}
 resource "azurerm_managed_disk" "main" {
   count = local.create_managed_disk ? 1 : 0
 
@@ -141,12 +169,29 @@ resource "azurerm_managed_disk" "main" {
   source_resource_id   = try(var.settings.storage_os_disk.source_disk_id, null)
   tags                 = local.tags
   os_type              = try(var.settings.storage_os_disk.os_type, null)
+  upload_size_bytes    = try(var.settings.storage_os_disk.upload_size_bytes, null)
 }
 
 data "azurerm_managed_disk" "main" {
-  count               = try(var.settings.storage_os_disk.config_drift, false) ? 1 : 0
+  count               = try(local.config_drift, false) ? 1 : 0
   name                = var.settings.storage_os_disk.name
   resource_group_name = local.resource_group_name
+}
+
+resource "azurerm_managed_disk" "data" {
+  for_each = local.create_data_managed_disk
+
+  name                 = try(each.value.name, "${var.settings.name}-datadisk-${each.key}")
+  location             = local.resource_group.location
+  resource_group_name  = local.resource_group.name
+  storage_account_type = try(each.value.managed_disk_type, "Standard_LRS")
+  create_option        = try(each.value.disk_create_option, "Attach")
+  disk_size_gb         = try(each.value.disk_size_gb, 30)
+  tags                 = local.tags
+
+  source_resource_id = try(each.value.source_disk_id, null)
+  os_type            = try(each.value.os_type, null)
+  upload_size_bytes  = try(each.value.upload_size_bytes, null)
 }
 
 resource "random_password" "admin" {
