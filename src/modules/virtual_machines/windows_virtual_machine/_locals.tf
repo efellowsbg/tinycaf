@@ -21,7 +21,7 @@ locals {
         try(var.settings.identity.managed_identity_lz_key, var.client_config.landingzone_key)
       ].managed_identities[id_ref].id
     ],
-    try(var.settings.identity_ids, null)
+    try(var.settings.identity.identity_ids, null)
   )
 
   tags = merge(
