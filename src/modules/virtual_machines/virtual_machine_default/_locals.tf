@@ -12,17 +12,19 @@ locals {
     ].keyvaults[
     var.settings.os_profile.keyvault_ref
   ].id, null)
-  tags = merge(
-    var.global_settings.tags,
-    var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
-    try(var.settings.tags, {})
-  )
+
   identity_ids = [
     for id_ref in try(var.settings.identity.identity_ids_ref, []) :
     var.resources[
       try(var.settings.identity.managed_identity_lz_key, var.client_config.landingzone_key)
     ].managed_identities[id_ref].id
   ]
+
+  tags = merge(
+    var.global_settings.tags,
+    var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
+    try(var.settings.tags, {})
+  )
   create_managed_disk = try(coalesce(var.settings.storage_os_disk.create_disk, false), false)
   storage_data_disks  = try(var.settings.storage_data_disk, {})
 
