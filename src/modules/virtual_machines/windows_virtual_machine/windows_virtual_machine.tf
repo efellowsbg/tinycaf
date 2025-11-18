@@ -44,15 +44,14 @@ resource "azurerm_windows_virtual_machine" "main" {
 }
 
 resource "random_password" "admin" {
-  length           = 123
-  min_upper        = 2
-  min_lower        = 2
-  min_special      = 2
-  numeric          = true
-  special          = true
-  override_special = "!@#$%&"
+  length           = try(var.settings.password_settings.length, 123)
+  min_upper        = try(var.settings.password_settings.min_upper, 2)
+  min_lower        = try(var.settings.password_settings.min_lower, 2)
+  min_special      = try(var.settings.password_settings.min_special, 2)
+  numeric          = try(var.settings.password_settings.numeric, true)
+  special          = try(var.settings.password_settings.special, true)
+  override_special = try(var.settings.password_settings.override_special, "!@#$%&")
 }
-
 
 resource "azurerm_key_vault_secret" "admin_password" {
   name         = "${var.settings.name}-${var.settings.admin_username}"
