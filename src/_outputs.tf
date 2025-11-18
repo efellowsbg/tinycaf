@@ -86,6 +86,10 @@ output "postgres" {
   value = module.postgres
 }
 
+output "postgresql_flexible_servers" {
+  value = module.postgres
+}
+
 output "container_registries" {
   value = module.container_registries
 }
