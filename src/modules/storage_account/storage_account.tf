@@ -4,10 +4,10 @@ resource "azurerm_storage_account" "main" {
   location            = local.location
   tags                = local.tags
 
-  account_kind             = try(var.settings.account_kind, "StorageV2")
-  account_tier             = try(var.settings.account_tier, "Standard")
-  account_replication_type = var.settings.account_replication_type
-
+  account_kind                      = try(var.settings.account_kind, "StorageV2")
+  account_tier                      = try(var.settings.account_tier, "Standard")
+  account_replication_type          = var.settings.account_replication_type
+  public_network_access_enabled     = try(var.settings.public_network_access_enabled, null)
   allow_nested_items_to_be_public   = try(var.settings.allow_nested_items_to_be_public, null)
   cross_tenant_replication_enabled  = try(var.settings.cross_tenant_replication_enabled, null)
   large_file_share_enabled          = try(var.settings.large_file_share_enabled, null)
