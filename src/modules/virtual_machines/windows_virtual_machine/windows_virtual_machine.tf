@@ -32,7 +32,7 @@ resource "azurerm_windows_virtual_machine" "main" {
 
     content {
       type         = var.settings.identity.type
-      identity_ids = try(local.identity_ids, null)
+      identity_ids = local.identity_ids
     }
   }
   source_image_reference {
