@@ -15,7 +15,7 @@ locals {
   secret_url = try(
     var.resources[
       try(var.settings.encryption_settings.disk_encryption_key.lz_key, var.client_config.landingzone_key)
-    ].keyvaults[var.settings.encryption_settings.disk_encryption_key.keyvault_ref].module.secrets[secret_ref].id,
+    ].keyvaults[var.settings.encryption_settings.disk_encryption_key.keyvault_ref].secrets[var.settings.encryption_settings.disk_encryption_key.secret_ref].id,
     var.settings.encryption_settings.disk_encryption_key.secret_url
   )
 
