@@ -41,16 +41,36 @@ resource "azurerm_managed_disk" "main" {
       dynamic "disk_encryption_key" {
         for_each = can(var.settings.encryption_settings.disk_encryption_key) ? [1] : []
         content {
-          secret_url      = local.secret_url
-          source_vault_id = local.disk_source_vault_id
+          secret_url = try(
+            var.resources[
+              try(var.settings.encryption_settings.disk_encryption_key.lz_key, var.client_config.landingzone_key)
+            ].keyvaults[var.settings.encryption_settings.disk_encryption_key.keyvault_ref].secrets[var.settings.encryption_settings.disk_encryption_key.secret_ref].id,
+            var.settings.encryption_settings.disk_encryption_key.secret_url
+          )
+          source_vault_id = try(
+            var.resources[
+              try(var.settings.encryption_settings.disk_encryption_key.lz_key, var.client_config.landingzone_key)
+            ].keyvaults[var.settings.encryption_settings.disk_encryption_key.keyvault_ref].id,
+            var.settings.encryption_settings.disk_encryption_key.source_vault_id
+          )
         }
       }
 
       dynamic "key_encryption_key" {
         for_each = can(var.settings.encryption_settings.key_encryption_key) ? [1] : []
         content {
-          key_url         = local.key_url
-          source_vault_id = local.key_source_vault_id
+          key_url = try(
+            var.resources[
+              try(var.settings.encryption_settings.key_encryption_key.lz_key, var.client_config.landingzone_key)
+            ].key_vault_keys[var.settings.encryption_settings.key_encryption_key.key_ref].versionless_id,
+            var.settings.encryption_settings.key_encryption_key.key_url
+          )
+          source_vault_id = try(
+            var.resources[
+              try(var.settings.encryption_settings.key_encryption_key.lz_key, var.client_config.landingzone_key)
+            ].keyvaults[var.settings.encryption_settings.key_encryption_key.keyvault_ref].id,
+            var.settings.encryption_settings.key_encryption_key.key_source_vault_id
+          )
         }
       }
     }
