@@ -8,7 +8,10 @@ module "managed_disks" {
   resources = merge(
     {
       (var.landingzone.key) = {
-        resource_groups = module.resource_groups
+        resource_groups  = module.resource_groups
+        keyvaults        = module.keyvaults
+        storage_accounts = module.storage_accounts
+        key_vault_keys   = module.key_vault_keys
       }
     },
     {
