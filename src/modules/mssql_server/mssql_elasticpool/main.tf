@@ -19,7 +19,7 @@ resource "azurerm_mssql_elasticpool" "main" {
   }
 
   per_database_settings {
-    min_capacity = var.elasticpools.per_database_settings.min_capacity
     max_capacity = var.elasticpools.per_database_settings.max_capacity
+    min_capacity = try(var.elasticpools.per_database_settings.min_capacity, 0)
   }
 }
