@@ -1,6 +1,6 @@
 module "mssql_databases" {
   source   = "./mssql_database"
-  for_each = try(var.settings.mssql_databases, {})
+  for_each = try(var.settings.databases, {})
 
   settings        = var.settings
   mssql_server_id = azurerm_mssql_server.main.id
