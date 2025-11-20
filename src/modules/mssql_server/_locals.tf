@@ -26,12 +26,6 @@ locals {
     try(var.settings.primary_user_assigned_identity_id, null)
   )
 
-  tags = merge(
-    var.global_settings.tags,
-    var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
-    try(var.settings.tags, {})
-  )
-
   key_vault_id = try(
     var.resources[
       try(var.settings.key_vault_lz_key, var.client_config.landingzone_key)
@@ -48,5 +42,11 @@ locals {
       : try(var.settings.administrator_login_password, random_password.admin[0].result)
     ),
     null
+  )
+
+  tags = merge(
+    var.global_settings.tags,
+    var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},
+    try(var.settings.tags, {})
   )
 }
