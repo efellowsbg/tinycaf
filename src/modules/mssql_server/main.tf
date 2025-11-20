@@ -12,10 +12,10 @@ resource "azurerm_mssql_server" "main" {
   primary_user_assigned_identity_id            = local.primary_user_assigned_identity_id
   transparent_data_encryption_key_vault_key_id = local.transparent_data_encryption_key_vault_key_id
 
-  administrator_login                     = try(var.settings.administrator_login, "mssql${var.settings.name}admin")
-  administrator_login_password            = local.administrator_login_password
-  administrator_login_password_wo         = try(var.settings.administrator_login_password_wo, null)
-  administrator_login_password_wo_version = try(var.settings.administrator_login_password_wo_version, null)
+  administrator_login          = try(var.settings.administrator_login, "mssql${var.settings.name}admin")
+  administrator_login_password = local.administrator_login_password
+  # administrator_login_password_wo         = try(var.settings.administrator_login_password_wo, null)
+  # administrator_login_password_wo_version = try(var.settings.administrator_login_password_wo_version, null)
 
 
   dynamic "identity" {
@@ -74,6 +74,6 @@ resource "random_password" "admin" {
 resource "azurerm_key_vault_secret" "admin_password" {
   count        = try(length(trimspace(var.settings.key_vault_ref)) > 0, false) ? 1 : 0
   name         = try(var.settings.custom_secret_name, "${var.settings.name}-${var.settings.administrator_login}")
-  value        = random_password.admin.result
+  value        = random_password.admin[0].result
   key_vault_id = local.key_vault_id
 }
