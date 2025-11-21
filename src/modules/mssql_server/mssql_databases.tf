@@ -9,4 +9,8 @@ module "mssql_databases" {
   global_settings = var.global_settings
   resources       = var.resources
   client_config   = var.client_config
+  elastic_pool_id = try(
+    module.mssql_elasticpools[each.value.elasticpool_ref].id,
+    null
+  )
 }

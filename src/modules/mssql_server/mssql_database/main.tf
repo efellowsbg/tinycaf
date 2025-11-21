@@ -27,7 +27,7 @@ resource "azurerm_mssql_database" "main" {
   restore_dropped_database_id                                = try(var.databases.restore_dropped_database_id, null)
   restore_long_term_retention_backup_id                      = try(var.databases.restore_long_term_retention_backup_id, null)
   recover_database_id                                        = try(var.databases.recover_database_id, null)
-  elastic_pool_id                                            = try(var.databases.elastic_pool_id, null)
+  elastic_pool_id                                            = try(var.elastic_pool_id, var.databases.elastic_pool_id, null)
   tags                                                       = try(var.databases.tags, local.tags)
 
   dynamic "import" {

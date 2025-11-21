@@ -14,6 +14,10 @@ variable "mssql_server_id" {
   description = "Id of the mssql server"
 }
 
+variable "elastic_pool_id" {
+  description = "Id of the elastic pool"
+}
+
 variable "database_name" {
   description = "Database name as the key value"
 }
