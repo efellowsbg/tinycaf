@@ -90,6 +90,10 @@ output "container_registries" {
   value = module.container_registries
 }
 
+output "mssql_servers" {
+  value = module.mssql_servers
+}
+
 output "function_apps" {
   value = module.function_apps
 }
