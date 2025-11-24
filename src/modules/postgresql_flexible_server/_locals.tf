@@ -42,7 +42,8 @@ locals {
       ].key_vault_keys[
       var.settings.customer_managed_key.geo_kvkey_ref
     ].versionless_id,
-    var.settings.customer_managed_key.geo_backup_key_vault_key_id
+    var.settings.customer_managed_key.geo_backup_key_vault_key_id,
+    null
   )
 
   primary_user_assigned_identity_id = try(
@@ -51,7 +52,8 @@ locals {
       ].managed_identities[
       var.settings.customer_managed_key.prime_mi_ref
     ].id,
-    var.settings.customer_managed_key.primary_user_assigned_identity_id
+    var.settings.customer_managed_key.primary_user_assigned_identity_id,
+    null
   )
 
   geo_backup_user_assigned_identity_id = try(
@@ -60,7 +62,8 @@ locals {
       ].managed_identities[
       var.settings.customer_managed_key.geo_mi_ref
     ].id,
-    var.settings.customer_managed_key.geo_backup_user_assigned_identity_id
+    var.settings.customer_managed_key.geo_backup_user_assigned_identity_id,
+    null
   )
 
   identity_ids = [

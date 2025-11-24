@@ -42,9 +42,9 @@ resource "azurerm_postgresql_flexible_server" "main" {
     for_each = can(var.settings.customer_managed_key) ? [1] : []
     content {
       key_vault_key_id                     = local.key_vault_key_id
-      primary_user_assigned_identity_id    = try(local.primary_user_assigned_identity_id, null)
-      geo_backup_user_assigned_identity_id = try(local.geo_backup_user_assigned_identity_id, null)
-      geo_backup_key_vault_key_id          = try(local.geo_backup_key_vault_key_id, null)
+      primary_user_assigned_identity_id    = local.primary_user_assigned_identity_id
+      geo_backup_user_assigned_identity_id = local.geo_backup_user_assigned_identity_id
+      geo_backup_key_vault_key_id          = local.geo_backup_key_vault_key_id
     }
   }
 
