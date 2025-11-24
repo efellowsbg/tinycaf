@@ -19,9 +19,9 @@ locals {
 
   private_dns_zone_id = try(
     var.resources[
-      try(var.settings.pdns_lz_key, var.client_config.landingzone_key)
+      try(var.settings.dnszone_lz_key, var.client_config.landingzone_key)
       ].private_dns_zones[
-      var.settings.pdns_ref
+      var.settings.dnszone_ref
     ].id,
     var.settings.private_dns_zone_id,
     null
