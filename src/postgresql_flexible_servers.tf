@@ -1,4 +1,4 @@
-module "postgresql_flexible_server" {
+module "postgresql_flexible_servers" {
   source          = "./modules/postgresql_flexible_server"
   for_each        = var.postgresql_flexible_servers
   settings        = each.value
