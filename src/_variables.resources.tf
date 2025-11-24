@@ -40,6 +40,8 @@ variable "public_ips" { default = {} }
 
 variable "postgres" { default = {} }
 
+variable "postgresql_flexible_servers" { default = {} }
+
 variable "keyvaults" { default = {} }
 
 variable "storage_accounts" { default = {} }
