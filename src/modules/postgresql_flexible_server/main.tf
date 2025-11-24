@@ -68,7 +68,7 @@ resource "azurerm_postgresql_flexible_server" "main" {
 
 resource "random_password" "admin" {
   count            = try(length(trimspace(var.settings.key_vault_ref)) > 0, false) ? 1 : 0
-  length           = try(var.settings.password_settings.length, 123)
+  length           = try(var.settings.password_settings.length, 20)
   min_upper        = try(var.settings.password_settings.min_upper, 2)
   min_lower        = try(var.settings.password_settings.min_lower, 2)
   min_special      = try(var.settings.password_settings.min_special, 2)
