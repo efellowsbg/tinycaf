@@ -5,8 +5,8 @@ resource "azurerm_postgresql_flexible_server" "main" {
   tags                              = local.tags
   delegated_subnet_id               = local.delegated_subnet_id
   private_dns_zone_id               = local.private_dns_zone_id
-  administrator_login               = try(var.settings.administrator_login, null)
-  administrator_password            = try(var.settings.administrator_password, null)
+  administrator_login               = try(var.settings.administrator_login, "${var.settings.name}-pgadim")
+  administrator_password            = local.administrator_password
   backup_retention_days             = try(var.settings.backup_retention_days, null)
   geo_redundant_backup_enabled      = try(var.settings.geo_redundant_backup_enabled, null)
   create_mode                       = try(var.settings.create_mode, null)
@@ -64,4 +64,22 @@ resource "azurerm_postgresql_flexible_server" "main" {
       start_minute = try(var.settings.maintenance_window.start_minute, null)
     }
   }
+}
+
+resource "random_password" "admin" {
+  count            = try(length(trimspace(var.settings.key_vault_ref)) > 0, false) ? 1 : 0
+  length           = try(var.settings.password_settings.length, 123)
+  min_upper        = try(var.settings.password_settings.min_upper, 2)
+  min_lower        = try(var.settings.password_settings.min_lower, 2)
+  min_special      = try(var.settings.password_settings.min_special, 2)
+  numeric          = try(var.settings.password_settings.numeric, true)
+  special          = try(var.settings.password_settings.special, true)
+  override_special = try(var.settings.password_settings.override_special, "!@#$%&")
+}
+
+resource "azurerm_key_vault_secret" "admin_password" {
+  count        = try(length(trimspace(var.settings.key_vault_ref)) > 0, false) ? 1 : 0
+  name         = try(var.settings.custom_secret_name, "${var.settings.name}-${var.settings.administrator_login}")
+  value        = random_password.admin[0].result
+  key_vault_id = local.key_vault_id
 }

@@ -73,6 +73,24 @@ locals {
     ].managed_identities[id_ref].id
   ]
 
+  administrator_password = try(
+    (
+      try(length(trimspace(var.settings.key_vault_ref)) > 0, false)
+      ? random_password.admin[0].result
+      : try(var.settings.administrator_password, random_password.admin[0].result)
+    ),
+    null
+  )
+
+  key_vault_id = try(
+    var.resources[
+      try(var.settings.key_vault_lz_key, var.client_config.landingzone_key)
+      ].keyvaults[
+      var.settings.key_vault_ref
+    ].id,
+    null
+  )
+
   tags = merge(
     var.global_settings.tags,
     var.global_settings.inherit_resource_group_tags ? local.resource_group.tags : {},

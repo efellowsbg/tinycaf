@@ -12,6 +12,7 @@ module "postgresql_flexible_servers" {
         virtual_networks   = module.virtual_networks
         private_dns_zones  = module.private_dns_zones
         key_vault_keys     = module.key_vault_keys
+        keyvaults          = module.keyvaults
       }
     },
     {
