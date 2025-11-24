@@ -7,11 +7,11 @@ module "postgresql_flexible_servers" {
   resources = merge(
     {
       (var.landingzone.key) = {
-        resource_groups         = module.resource_groups
-        managed_identities      = module.managed_identities
-        virtual_networks        = module.virtual_networks
-        private_dns_zones       = module.private_dns_zones
-        keyvkey_vault_keysaults = module.key_vault_keys
+        resource_groups    = module.resource_groups
+        managed_identities = module.managed_identities
+        virtual_networks   = module.virtual_networks
+        private_dns_zones  = module.private_dns_zones
+        key_vault_keys     = module.key_vault_keys
       }
     },
     {
