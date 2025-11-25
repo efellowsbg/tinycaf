@@ -46,7 +46,7 @@ module "subscription_assignments" {
     try(var.subscription_assignments.built_in_roles, [])
   ) > 0 ? 1 : 0
 
-  subscription_assignments = var.subscription_assignments.built_in_roles
+  subscription_assignments = var.subscription_assignments
   global_settings          = local.global_settings
 
 }
