@@ -10,34 +10,35 @@ variable "global_settings" {
 data "azurerm_client_config" "current" {}
 
 locals {
-  # Build a flat list: "<role>_<identifier>" => { role = "...", user = "..." }
+  # Build a flat list: "<role>_<principal>" => { role = "...", principal = "..." }
   flat_assignments = merge([
-    for role, users in var.subscription_assignments : {
-      for user in users : "${role}_${user}" => {
-        role = role
-        user = user
+    for role, principals in var.subscription_assignments : {
+      for principal in principals :
+      "${role}_${principal}" => {
+        role      = role
+        principal = principal
       }
     }
   ]...)
 }
 
-# Lookup Azure AD user by UPN only (skip GUIDs)
+# Lookup Azure AD users (UPNs)
 data "azuread_user" "users" {
   for_each = {
-    for assignment in local.flat_assignments :
-    assignment.user => assignment.user
-    if !can(regex("^[0-9a-fA-F-]{36}$", assignment.user))
+    for _, assignment in local.flat_assignments :
+    assignment.principal => assignment.principal
+    if !can(regex("^[0-9a-fA-F-]{36}$", assignment.principal))
   }
 
   user_principal_name = each.value
 }
 
-# Lookup service principal by GUID
+# Lookup service principals (GUIDs)
 data "azuread_service_principal" "sps" {
   for_each = {
-    for assignment in local.flat_assignments :
-    assignment.user => assignment.user
-    if can(regex("^[0-9a-fA-F-]{36}$", assignment.user))
+    for _, assignment in local.flat_assignments :
+    assignment.principal => assignment.principal
+    if can(regex("^[0-9a-fA-F-]{36}$", assignment.principal))
   }
 
   object_id = each.value
@@ -47,8 +48,8 @@ resource "azurerm_role_assignment" "assignments" {
   for_each = local.flat_assignments
 
   principal_id = try(
-    data.azuread_user.users[each.value.user].object_id,
-    data.azuread_service_principal.sps[each.value.user].object_id
+    data.azuread_user.users[each.value.principal].object_id,
+    data.azuread_service_principal.sps[each.value.principal].object_id
   )
 
   role_definition_name = each.value.role
