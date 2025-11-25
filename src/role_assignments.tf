@@ -43,7 +43,7 @@ module "role_assignments" {
 module "subscription_assignments" {
   source = "./modules/role_assignments/subscription"
   count = length(
-    try(var.subscription_assignments.built_in_roles, [])
+    try(var.subscription_assignments, [])
   ) > 0 ? 1 : 0
 
   subscription_assignments = var.subscription_assignments
