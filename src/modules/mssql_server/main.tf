@@ -58,6 +58,9 @@ resource "azurerm_mssql_server" "main" {
       delete = try(var.settings.timeouts.delete, null)
     }
   }
+  lifecycle {
+    ignore_changes = local.use_lifecycle ? [administrator_login_password] : []
+  }
 }
 
 resource "random_password" "admin" {

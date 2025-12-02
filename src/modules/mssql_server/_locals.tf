@@ -34,7 +34,7 @@ locals {
     ].id,
     null
   )
-
+  use_lifecycle = try(var.settings.use_lifecycle, false)
   administrator_login_password = try(
     (
       try(length(trimspace(var.settings.key_vault_ref)) > 0, false)
