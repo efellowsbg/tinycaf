@@ -26,6 +26,7 @@ resource "azurerm_web_application_firewall_policy" "main" {
       priority  = custom_rules.value.priority
       rule_type = custom_rules.value.rule_type
       action    = custom_rules.value.action
+      enabled   = try(custom_rules.value.enabled, true)
 
       dynamic "match_conditions" {
         for_each = try(custom_rules.value.match_conditions, [])
