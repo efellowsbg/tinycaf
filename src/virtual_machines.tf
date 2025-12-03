@@ -17,6 +17,7 @@ module "virtual_machines" {
         public_ips              = module.public_ips
         network_security_groups = module.network_security_groups
         storage_accounts        = module.storage_accounts
+        managed_identities      = module.managed_identities
       }
     },
     {
