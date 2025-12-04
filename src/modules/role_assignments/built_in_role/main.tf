@@ -40,3 +40,13 @@ resource "azurerm_role_assignment" "main" {
 
   role_definition_name = each.value.role_definition_name
 }
+
+data "azuread_user" "users" {
+  for_each            = local.users_email
+  user_principal_name = each.value
+}
+
+data "azuread_group" "groups" {
+  for_each     = local.group_names
+  display_name = each.value
+}
