@@ -4,6 +4,7 @@ resource "azurerm_role_assignment" "main" {
     "${item.role_definition_name}-${item.resource_key}-${item.principal_type}-${item.principal}" => item
   })
 
+  # ⬇️ Your scope logic – unchanged, gets the ID from var.resources
   scope = try(
     var.resources[
       try(var.settings.lz_key, var.client_config.landingzone_key)
@@ -25,13 +26,13 @@ resource "azurerm_role_assignment" "main" {
 
     # 2) NEW: users resolved from email/UPN
     : each.value.principal_type == "users_email"
-    ? data.azuread_user.users[each.value.principal].id
+    ? data.azuread_user.users[each.value.principal].object_id
 
     # 3) NEW: groups resolved from display_name
     : each.value.principal_type == "group_name"
-    ? data.azuread_group.groups[each.value.principal].id
+    ? data.azuread_group.groups[each.value.principal].object_id
 
-    # 4) Existing: resolve from var.resources (managed identities, etc.)
+    # 4) Existing: resolve from var.resources (managed_identities, etc.)
     : var.resources[
       try(var.settings.lz_key, var.client_config.landingzone_key)
     ][each.value.principal_type][each.value.principal].principal_id,

@@ -1,4 +1,5 @@
 locals {
+  # Exactly your original flatten logic – NO var.resources, NO filtering
   flat_assignments = flatten([
     for role_definition_name, resources in var.settings : [
       for resource_key, resource_details in resources : [
@@ -16,9 +17,8 @@ locals {
       ]
     ]
   ])
-}
 
-locals {
+  # Distinct user emails (UPNs)
   users_email = {
     for a in local.flat_assignments :
     a.principal => a.principal
@@ -26,6 +26,7 @@ locals {
     && !can(regex("^[0-9a-fA-F-]{36}$", a.principal))
   }
 
+  # Distinct group display names
   group_names = {
     for a in local.flat_assignments :
     a.principal => a.principal
