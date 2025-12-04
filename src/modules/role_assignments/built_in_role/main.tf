@@ -4,7 +4,6 @@ resource "azurerm_role_assignment" "main" {
     "${item.role_definition_name}-${item.resource_key}-${item.principal_type}-${item.principal}" => item
   })
 
-  # ⬇️ Your scope logic – unchanged, gets the ID from var.resources
   scope = try(
     var.resources[
       try(var.settings.lz_key, var.client_config.landingzone_key)
@@ -20,31 +19,23 @@ resource "azurerm_role_assignment" "main" {
   )
 
   principal_id = try(
-    # 1) Existing: direct object IDs
     each.value.principal_type == "object_ids"
     ? each.value.principal
 
-    # 2) NEW: users resolved from email/UPN
     : each.value.principal_type == "users_email"
     ? data.azuread_user.users[each.value.principal].object_id
 
-    # 3) NEW: groups resolved from display_name
     : each.value.principal_type == "group_name"
     ? data.azuread_group.groups[each.value.principal].object_id
 
-    # 4) Fallback: resolve from var.resources (managed_identities etc.),
-    #    with optional "lz_key/principal_name" syntax in principal.
+
     : var.resources[
       can(regex("/", each.value.principal))
-      # if there is a "/", use the part before it as LZ key
       ? split("/", each.value.principal)[0]
-      # otherwise use the default landing zone key
       : try(var.settings.lz_key, var.client_config.landingzone_key)
       ][each.value.principal_type][
       can(regex("/", each.value.principal))
-      # if there is a "/", use the part after it as principal key
       ? split("/", each.value.principal)[1]
-      # otherwise use the whole principal as key (current behavior)
       : each.value.principal
     ].principal_id,
     null
