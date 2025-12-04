@@ -26,18 +26,30 @@ resource "azurerm_role_assignment" "main" {
 
     # 2) NEW: users resolved from email/UPN
     : each.value.principal_type == "users_email"
-    ? data.azuread_user.users[each.value.principal].object_id
+    ? data.azuread_user.users[each.value.principal].id
 
     # 3) NEW: groups resolved from display_name
     : each.value.principal_type == "group_name"
-    ? data.azuread_group.groups[each.value.principal].object_id
+    ? data.azuread_group.groups[each.value.principal].id
 
-    # 4) Existing: resolve from var.resources (managed_identities, etc.)
+    # 4) Fallback: resolve from var.resources (managed_identities etc.),
+    #    with optional "lz_key/principal_name" syntax in principal.
     : var.resources[
-      try(var.settings.lz_key, var.client_config.landingzone_key)
-    ][each.value.principal_type][each.value.principal].principal_id,
+      can(regex("/", each.value.principal))
+      # if there is a "/", use the part before it as LZ key
+      ? split("/", each.value.principal)[0]
+      # otherwise use the default landing zone key
+      : try(var.settings.lz_key, var.client_config.landingzone_key)
+      ][each.value.principal_type][
+      can(regex("/", each.value.principal))
+      # if there is a "/", use the part after it as principal key
+      ? split("/", each.value.principal)[1]
+      # otherwise use the whole principal as key (current behavior)
+      : each.value.principal
+    ].principal_id,
     null
   )
+
 
   role_definition_name = each.value.role_definition_name
 }
