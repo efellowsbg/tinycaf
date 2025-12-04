@@ -26,11 +26,11 @@ resource "azurerm_role_assignment" "main" {
 
     # 2) NEW: users resolved from email/UPN
     : each.value.principal_type == "users_email"
-    ? data.azuread_user.users[each.value.principal].id
+    ? data.azuread_user.users[each.value.principal].object_id
 
     # 3) NEW: groups resolved from display_name
     : each.value.principal_type == "group_name"
-    ? data.azuread_group.groups[each.value.principal].id
+    ? data.azuread_group.groups[each.value.principal].object_id
 
     # 4) Fallback: resolve from var.resources (managed_identities etc.),
     #    with optional "lz_key/principal_name" syntax in principal.
