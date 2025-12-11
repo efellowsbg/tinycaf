@@ -24,4 +24,12 @@ resource "azurerm_kubernetes_cluster_node_pool" "main" {
   kubelet_disk_type       = try(var.settings.kubelet_disk_type, "OS")
   node_public_ip_enabled  = try(var.settings.node_public_ip_enabled, false)
   orchestrator_version    = try(var.settings.orchestrator_version, null)
+  dynamic "upgrade_settings" {
+    for_each = try(var.settings.upgrade_settings, null) == null ? [] : [var.settings.upgrade_settings]
+    content {
+      max_surge = try(upgrade_settings.value.max_surge, null)
+      node_soak_duration_in_minutes = try(upgrade_settings.value.node_soak_duration_in_minutes, null)
+      drain_timeout_in_minutes = try(upgrade_settings.value.drain_timeout_in_minutes, null)
+    }
+  }
 }
