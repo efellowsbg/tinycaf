@@ -29,9 +29,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "main" {
     content {
       max_surge = try(upgrade_settings.value.max_surge, null)
       node_soak_duration_in_minutes = try(upgrade_settings.value.node_soak_duration_in_minutes, null)
-      max_unavailable = try(upgrade_settings.value.max_unavailable, null)
       drain_timeout_in_minutes = try(upgrade_settings.value.drain_timeout_in_minutes, null)
-      undrainable_node_behavior = try(upgrade_settings.value.undrainable_node_behavior, null)
     }
   }
 }
