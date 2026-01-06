@@ -1,15 +1,21 @@
 resource "azurerm_virtual_network_gateway" "main" {
-  name                = var.settings.name
-  resource_group_name = local.resource_group_name
-  location            = local.location
-  tags                = local.tags
-
-  sku           = try(var.settings.sku, "VpnGw1")
-  type          = try(var.settings.type, "Vpn")
-  active_active = try(var.settings.active_active, false)
-  generation    = try(var.settings.generation, null)
-  vpn_type      = try(var.settings.vpn_type, null)
-  enable_bgp    = try(var.settings.enable_bgp, null)
+  name                                  = var.settings.name
+  resource_group_name                   = local.resource_group_name
+  location                              = local.location
+  tags                                  = local.tags
+  sku                                   = try(var.settings.sku, "VpnGw1")
+  type                                  = try(var.settings.type, "Vpn")
+  active_active                         = try(var.settings.active_active, false)
+  generation                            = try(var.settings.generation, null)
+  vpn_type                              = try(var.settings.vpn_type, null)
+  enable_bgp                            = try(var.settings.enable_bgp, null)
+  bgp_route_translation_for_nat_enabled = try(var.settings.bgp_route_translation_for_nat_enabled, null)
+  edge_zone                             = try(var.settings.edge_zone, null)
+  private_ip_address_enabled            = try(var.settings.private_ip_address_enabled, null)
+  dns_forwarding_enabled                = try(var.settings.dns_forwarding_enabled, null)
+  ip_sec_replay_protection_enabled      = try(var.settings.ip_sec_replay_protection_enabled, null)
+  remote_vnet_traffic_enabled           = try(var.settings.remote_vnet_traffic_enabled, null)
+  virtual_wan_traffic_enabled           = try(var.settings.virtual_wan_traffic_enabled, null)
 
   dynamic "ip_configuration" {
     for_each = var.settings.ip_configurations
@@ -45,4 +51,21 @@ resource "azurerm_virtual_network_gateway" "main" {
     }
   }
 
+  dynamic "bgp_settings" {
+    for_each = can(var.settings.bgp_settings) ? [1] : []
+
+    content {
+      asn         = try(var.settings.bgp_settings.asn, null)
+      peer_weight = try(var.settings.bgp_settings.peer_weight, null)
+
+      dynamic "peering_addresses" {
+        for_each = try(var.settings.bgp_settings.peering_addresses, [])
+
+        content {
+          ip_configuration_name = try(peering_addresses.value.ip_configuration_name, null)
+          apipa_addresses       = try(peering_addresses.value.apipa_addresses, null)
+        }
+      }
+    }
+  }
 }
