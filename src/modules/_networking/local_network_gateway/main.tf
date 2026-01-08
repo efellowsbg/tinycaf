@@ -8,7 +8,7 @@ resource "azurerm_local_network_gateway" "main" {
   gateway_fqdn    = try(var.settings.gateway_fqdn, null)
 
   dynamic "bgp_settings" {
-    for_each = can(var.settings.bgp_settings) && var.settings.bgp_settings != null ? [1] : []
+    for_each = can(var.settings.bgp_settings) ? [1] : []
 
     content {
       asn                 = var.settings.bgp_settings.asn
