@@ -22,7 +22,14 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
     ? data.azurerm_key_vault_secret.main[0].value
     : null
   )
+  dynamic "custom_bgp_addresses" {
+    for_each = can(var.settings.custom_bgp_addresses) ? [1] : []
 
+    content {
+      primary   = var.settings.custom_bgp_addresses.primary
+      secondary = try(var.settings.custom_bgp_addresses.secondary, null)
+    }
+  }
   dynamic "traffic_selector_policy" {
     for_each = try(var.settings.selectors, {})
 
