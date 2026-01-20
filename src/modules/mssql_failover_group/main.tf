@@ -12,13 +12,10 @@ resource "azurerm_mssql_failover_group" "main" {
     mode          = try(var.settings.read_write_endpoint_failover_policy.mode, "Automatic")
     grace_minutes = try(var.settings.read_write_endpoint_failover_policy.grace_minutes, 60)
   }
-
-  dynamic "readonly_endpoint_failover_policy" {
-    for_each = can(var.settings.readonly_endpoint_failover_policy) ? [1] : []
-    content {
-      mode = try(var.settings.readonly_endpoint_failover_policy.mode, "Enabled")
-    }
-  }
+  readonly_endpoint_failover_policy_enabled = try(
+    var.settings.readonly_endpoint_failover_policy.enabled,
+    false
+  )
 
   tags = local.tags
 
