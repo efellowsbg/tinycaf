@@ -12,6 +12,8 @@ variable "network_interfaces" { default = {} }
 
 variable "nat_gateway_public_ip_association" { default = {} }
 
+variable "mssql_failover_groups" { default = {} }
+
 variable "network_interface_security_group_associations" { default = {} }
 
 variable "mssql_virtual_machines" { default = {} }
