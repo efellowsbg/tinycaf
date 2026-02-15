@@ -72,7 +72,7 @@ resource "azurerm_kubernetes_cluster" "main" {
       }
     }
   }
-
+  node_os_upgrade_channel = try(var.settings.node_os_upgrade_channel, null)
   identity {
     type         = try(var.settings.identity.type, "SystemAssigned")
     identity_ids = try(var.settings.identity.type == "UserAssigned" ? [local.managed_identity.id] : null, null)
