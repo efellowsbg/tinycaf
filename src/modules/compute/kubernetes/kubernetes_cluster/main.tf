@@ -39,6 +39,7 @@ resource "azurerm_kubernetes_cluster" "main" {
     temporary_name_for_rotation = try(var.settings.default_node_pool.temporary_name_for_rotation, null)
     host_encryption_enabled     = try(var.settings.default_node_pool.host_encryption_enabled, false)
     fips_enabled                = try(var.settings.default_node_pool.fips_enabled, false)
+    orchestrator_version        = try(var.settings.default_node_pool.orchestrator_version, null)
 
     dynamic "upgrade_settings" {
       for_each = try(var.settings.default_node_pool.upgrade_settings[*], {})
