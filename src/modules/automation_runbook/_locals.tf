@@ -27,11 +27,11 @@ locals {
     for js_key, js in try(var.settings.job_schedules, {}) :
 
     js_key => merge(
-      # 1. Resolve all parameters (including _ref)
+      # 1. Resolve all parameters (keep original keys)
       {
         for p_key, p_val in try(js.parameters, {}) :
-        lower(replace(p_key, "_ref", "")) => (
-          # CASE 1: resolve reference
+        p_key => (
+          # CASE 1: resolve reference if ends with _ref
           endswith(p_key, "_ref") && length(trimspace(p_val)) > 0 ?
           try(
             lookup(
