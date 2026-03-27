@@ -11,10 +11,10 @@ module "automation_runbooks" {
   resources = merge(
     {
       (var.landingzone.key) = {
-        automation_accounts       = module.automation_accounts
-        resource_groups           = module.resource_groups
-        managed_identities        = module.managed_identities
-        automation_jobs_schedules = module.automation_jobs_schedules
+        automation_accounts  = module.automation_accounts
+        resource_groups      = module.resource_groups
+        managed_identities   = module.managed_identities
+        automation_schedules = module.automation_schedules
         linux_virtual_machines = {
           for key, vm in module.virtual_machines :
           key => vm.linux_virtual_machines[0]
