@@ -6,15 +6,9 @@ automation_accounts = {
     public_network_access_enabled = true
 
     python_packages = {
-      azure-common = {
-        version     = "1.1.28"
-        content_uri = "https://files.pythonhosted.org/packages/py2.py3/a/azure-common/azure_common-1.1.28-py2.py3-none-any.whl"
-      }
-
-      azure-mgmt-compute = {
-        version         = "25.0.0"
-        content_uri     = "https://files.pythonhosted.org/packages/py3/a/azure_mgmt_compute/azure_mgmt_compute-25.0.0-py3-none-any.whl"
-        depends_on_refs = ["azure-common"]
+      requests = {
+        content_uri     = "https://files.pythonhosted.org/packages/source/r/requests/requests-2.32.3.tar.gz"
+        content_version = "2.32.3"
       }
     }
 

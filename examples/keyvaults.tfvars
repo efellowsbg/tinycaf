@@ -47,16 +47,6 @@ virtual_networks = {
   }
 }
 
-
-log_analytics_workspaces = {
-  testw1 = {
-    name               = "testw1-tc66"
-    resource_group_ref = "rg_test"
-    retention_in_days  = 30
-  }
-}
-
-
 resource_groups = {
   rg_test = {
     name     = "rg-test-dv-ne-01"
