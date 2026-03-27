@@ -13,6 +13,17 @@ module "automation_runbooks" {
       (var.landingzone.key) = {
         automation_accounts = module.automation_accounts
         resource_groups     = module.resource_groups
+        managed_identities  = module.managed_identities
+        linux_virtual_machines = {
+          for key, vm in module.virtual_machines :
+          key => vm.linux_virtual_machines[0]
+          if length(vm.linux_virtual_machines) > 0
+        }
+        windows_virtual_machines = {
+          for key, vm in module.virtual_machines :
+          key => vm.windows_virtual_machines[0]
+          if length(vm.windows_virtual_machines) > 0
+        }
       }
     },
     {

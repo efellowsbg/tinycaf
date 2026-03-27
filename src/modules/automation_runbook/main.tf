@@ -62,14 +62,22 @@ resource "azurerm_automation_runbook" "main" {
     }
   }
 
+  # dynamic "job_schedule" {
+  #   for_each = try(var.settings.job_schedules, {})
+  #   content {
+  #     schedule_name = job_schedule.value.schedule_name
+  #     parameters = tomap({
+  #       for k, v in try(job_schedule.value.parameters, {}) :
+  #       lower(k) => v
+  #     })
+  #   }
+  # }
+
   dynamic "job_schedule" {
     for_each = try(var.settings.job_schedules, {})
     content {
       schedule_name = job_schedule.value.schedule_name
-      parameters = tomap({
-        for k, v in try(job_schedule.value.parameters, {}) :
-        lower(k) => v
-      })
+      parameters    = local.job_schedule_parameters[job_schedule.key]
     }
   }
 }
