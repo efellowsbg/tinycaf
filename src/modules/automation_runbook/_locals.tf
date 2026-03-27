@@ -32,7 +32,7 @@ locals {
         for p_key, p_val in try(js.parameters, {}) :
         lower(replace(p_key, "_ref", "")) => (
           # CASE 1: resolve reference
-          endswith(p_key, "_ref") && length(trim(p_val)) > 0 ?
+          endswith(p_key, "_ref") && length(trimspace(p_val)) > 0 ?
           try(
             lookup(
               lookup(
@@ -50,7 +50,7 @@ locals {
         )
       },
 
-      # 2. Always set subscriptionid
+      # 2. Always set subscription_id
       {
         subscription_id = try(js.parameters.subscription_id, var.global_settings.subscription_id)
       }
