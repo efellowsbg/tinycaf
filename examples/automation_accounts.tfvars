@@ -5,6 +5,13 @@ automation_accounts = {
     local_authentication_enabled  = true
     public_network_access_enabled = true
 
+    python_packages = {
+      requests = {
+        content_uri     = "https://files.pythonhosted.org/packages/source/r/requests/requests-2.32.3.tar.gz"
+        content_version = "2.32.3"
+      }
+    }
+
     tags = {
       Env = "Test"
     }
