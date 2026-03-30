@@ -13,3 +13,11 @@ output "linux_virtual_machines" {
     if length(vm) > 0
   } : {}
 }
+
+output "virtual_machines_default" {
+  value = length(module.virtual_machines_default) > 0 ? {
+    for key, vm in module.virtual_machines_default :
+    key => vm
+    if length(vm) > 0
+  } : {}
+}
