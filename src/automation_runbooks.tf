@@ -25,6 +25,11 @@ module "automation_runbooks" {
           key => vm.windows_virtual_machines[0]
           if length(vm.windows_virtual_machines) > 0
         }
+        virtual_machines_default = {
+          for key, vm in module.virtual_machines :
+          key => vm.virtual_machines_default[0]
+          if length(vm.virtual_machines_default) > 0
+        }
       }
     },
     {
