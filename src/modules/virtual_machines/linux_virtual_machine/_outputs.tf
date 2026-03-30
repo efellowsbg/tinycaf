@@ -2,6 +2,10 @@ output "id" {
   value = azurerm_linux_virtual_machine.main.id
 }
 
+output "name" {
+  value = azurerm_linux_virtual_machine.main.name
+}
+
 output "private_ip_addresses" {
   value = azurerm_linux_virtual_machine.main.private_ip_addresses
 }

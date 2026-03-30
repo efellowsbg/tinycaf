@@ -39,7 +39,7 @@ module "mssql_failover_group" {
   resources = merge(
     {
       (var.landingzone.key) = {
-        mssql_servers      = module.mssql_servers
+        mssql_servers = module.mssql_servers
       }
     },
     {
@@ -47,5 +47,3 @@ module "mssql_failover_group" {
     }
   )
 }
-
-

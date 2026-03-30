@@ -65,11 +65,12 @@ resource "azurerm_automation_runbook" "main" {
   dynamic "job_schedule" {
     for_each = try(var.settings.job_schedules, {})
     content {
-      schedule_name = job_schedule.value.schedule_name
-      parameters = tomap({
-        for k, v in try(job_schedule.value.parameters, {}) :
-        lower(k) => v
-      })
+      schedule_name = try(
+        var.resources[try(job_schedule.value.job_lz_key, var.client_config.landingzone_key)]
+        .automation_schedules[job_schedule.value.schedule_ref].name,
+        job_schedule.value.schedule_name
+      )
+      parameters = local.job_schedule_parameters[job_schedule.key]
     }
   }
 }
