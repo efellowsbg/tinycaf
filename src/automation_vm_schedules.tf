@@ -2,7 +2,6 @@ module "automation_vm_schedules" {
   source          = "./modules/automation_vm_schedule"
   for_each        = var.automation_vm_schedules
   settings        = each.value
-  vm_key          = each.key
   global_settings = local.global_settings
 
   client_config = {

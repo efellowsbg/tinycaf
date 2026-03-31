@@ -6,11 +6,6 @@ variable "settings" {
   description = "All the configuration for this resource"
 }
 
-variable "vm_key" {
-  description = "The map key identifying the VM in virtual_machines_default"
-  type        = string
-}
-
 variable "resources" {
   description = "All required resources"
 }

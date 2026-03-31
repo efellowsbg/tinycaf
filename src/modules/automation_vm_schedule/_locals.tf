@@ -9,10 +9,6 @@ locals {
     try(var.settings.acc_lz_key, local.lz_key)
   ].automation_accounts[var.settings.acc_ref].name
 
-  vm = var.resources[
-    try(var.settings.vm_lz_key, local.lz_key)
-  ].virtual_machines_default[var.vm_key]
-
   vm_rg_name = var.resources[
     try(var.settings.vm_rg_lz_key, local.lz_key)
   ].resource_groups[var.settings.vm_rg_ref].name
@@ -27,11 +23,23 @@ locals {
     try(var.settings.tags, {})
   )
 
+  # Build a map of VM ref -> resolved VM object
+  vms = {
+    for vm_ref in var.settings.vm_refs :
+    vm_ref => var.resources[
+      try(var.settings.vm_lz_key, local.lz_key)
+    ].virtual_machines_default[vm_ref]
+  }
+
+  # Per-VM job parameters
   job_parameters = {
-    rg_name         = local.vm_rg_name
-    vm_name         = local.vm.name
-    subscription_id = var.global_settings.subscription_id
-    mi_client_id    = local.mi_client_id
+    for vm_ref, vm in local.vms :
+    vm_ref => {
+      rg_name         = local.vm_rg_name
+      vm_name         = vm.name
+      subscription_id = var.global_settings.subscription_id
+      mi_client_id    = local.mi_client_id
+    }
   }
 
   start_content = <<-PS
