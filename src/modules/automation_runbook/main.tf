@@ -1,8 +1,8 @@
 resource "azurerm_automation_runbook" "main" {
   name                     = var.settings.name
-  runbook_type             = var.settings.runbook_type
-  log_progress             = var.settings.log_progress
-  log_verbose              = var.settings.log_verbose
+  runbook_type             = try(var.settings.runbook_type, "PowerShell")
+  log_progress             = try(var.settings.log_progress, false)
+  log_verbose              = try(var.settings.log_verbose, false)
   resource_group_name      = try(local.resource_group_name, var.settings.resource_group_name)
   location                 = try(local.location, var.settings.location)
   automation_account_name  = try(local.automation_account_name, var.settings.automation_account_name)

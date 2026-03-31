@@ -120,6 +120,8 @@ variable "automation_schedules" { default = {} }
 
 variable "automation_jobs_schedules" { default = {} }
 
+variable "automation_vm_schedules" { default = {} }
+
 variable "azuread_administrative_units" { default = {} }
 
 variable "mssql_servers" { default = {} }
