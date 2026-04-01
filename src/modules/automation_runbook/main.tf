@@ -63,7 +63,7 @@ resource "azurerm_automation_runbook" "main" {
   }
 
   dynamic "job_schedule" {
-    for_each = try(var.settings.job_schedules, {})
+    for_each = local.merged_job_schedules
     content {
       schedule_name = try(
         var.resources[try(job_schedule.value.job_lz_key, var.client_config.landingzone_key)]

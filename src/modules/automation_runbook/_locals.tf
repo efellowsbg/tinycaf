@@ -16,22 +16,40 @@ locals {
     try(var.settings.tags, {})
   )
 
-  # Resolve landing zone per job schedule
+  generated_job_schedules = merge(
+    [
+      for schedule_key, schedule_list in try(var.settings.schedule_map, {}) : {
+        for schedule_ref in schedule_list :
+        "${schedule_key}-${schedule_ref}" => {
+          schedule_ref = schedule_ref
+          parameters = merge(
+            try(var.settings.default_job_parameters, {}),
+            {
+              for p_key, p_val in try(var.settings.dynamic_job_parameters, {}) :
+              p_key => replace(p_val, "{schedule_key}", schedule_key)
+            }
+          )
+        }
+      }
+    ]...
+  )
+
+  merged_job_schedules = merge(
+    local.generated_job_schedules,
+    try(var.settings.job_schedules, {})
+  )
+
   job_lzkeys = {
-    for js_key, js in try(var.settings.job_schedules, {}) :
+    for js_key, js in local.merged_job_schedules :
     js_key => try(js.parameters.lzkey, var.client_config.landingzone_key)
   }
 
-  # Resolve parameters
   job_schedule_parameters = {
-    for js_key, js in try(var.settings.job_schedules, {}) :
-
+    for js_key, js in local.merged_job_schedules :
     js_key => merge(
-      # 1. Resolve all parameters (keep original keys)
       {
         for p_key, p_val in try(js.parameters, {}) :
         p_key => (
-          # CASE 1: resolve reference if ends with _ref
           endswith(p_key, "_ref") && length(trimspace(p_val)) > 0 ?
           try(
             lookup(
@@ -45,12 +63,9 @@ locals {
             )[split("/", p_val)[2]],
             null
           )
-          # CASE 2: direct value
           : p_val
         )
       },
-
-      # 2. Always set subscription_id
       {
         subscription_id = try(js.parameters.subscription_id, var.global_settings.subscription_id)
       }
