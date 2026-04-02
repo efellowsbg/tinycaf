@@ -171,4 +171,4 @@ network_subnets = {
 
 - No remote state pattern implemented yet (can be added following the Azure CAF pattern with `module.remote_states`)
 - Landing zone cross-references work within the same state; multi-state references require the remote state pattern
-- Provider version pinned to 1.49.1; update in `_provider.tf` as needed
+- Provider version pinned to 1.60.1; update in `_provider.tf` as needed

@@ -1,7 +1,3 @@
-output "id" {
-  value = hcloud_zone_record.main.id
-}
-
 output "zone" {
   value = hcloud_zone_record.main.zone
 }

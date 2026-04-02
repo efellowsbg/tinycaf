@@ -8,11 +8,10 @@ resource "hcloud_zone_rrset" "main" {
 
   change_protection = try(var.settings.change_protection, false)
 
-  dynamic "records" {
-    for_each = var.settings.records
-    content {
-      value   = records.value.value
-      comment = try(records.value.comment, null)
+  records = [
+    for r in var.settings.records : {
+      value   = r.value
+      comment = try(r.comment, null)
     }
-  }
+  ]
 }

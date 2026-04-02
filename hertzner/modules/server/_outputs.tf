@@ -41,7 +41,3 @@ output "placement_group_id" {
 output "primary_disk_size" {
   value = hcloud_server.main.primary_disk_size
 }
-
-output "backup_window" {
-  value = hcloud_server.main.backup_window
-}
