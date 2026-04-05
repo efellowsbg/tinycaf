@@ -3,11 +3,11 @@ resource "azurerm_linux_function_app" "linux_function_app" {
   resource_group_name = local.resource_group_name
   location            = local.location
 
-  storage_account_name          = try(var.resources.storage_accounts[var.settings.storage_account_ref].name, null)
-  storage_account_access_key    = try(var.resources.storage_accounts[var.settings.storage_account_ref].primary_access_key, null)
+  storage_account_name          = try(var.resources[try(var.settings.storage_account_lz_key, var.client_config.landingzone_key)].storage_accounts[var.settings.storage_account_ref].name, null)
+  storage_account_access_key    = try(var.resources[try(var.settings.storage_account_lz_key, var.client_config.landingzone_key)].storage_accounts[var.settings.storage_account_ref].primary_access_key, null)
   public_network_access_enabled = try(var.settings.public_network_access_enabled, true)
   https_only                    = try(var.settings.https_only, true)
-  service_plan_id               = var.resources.app_service_plans[var.settings.app_service_plan_ref].id
+  service_plan_id               = var.resources[try(var.settings.app_service_plan_lz_key, var.client_config.landingzone_key)].app_service_plans[var.settings.app_service_plan_ref].id
   app_settings                  = try(var.settings.app_settings, {})
   site_config {
     always_on                              = try(var.settings.site_config.always_on, false)
