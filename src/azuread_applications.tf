@@ -47,17 +47,45 @@ module "azuread_application_passwords" {
   )
 }
 
-module "ad_app_fed_idy_credentials" {
-  source = "./modules/azuread_application/ad_app_fed_idy_credential"
-  for_each = {
+locals {
+  azuread_application_federated_identity_credentials_primary = {
     for instance, cfg in var.azuread_applications :
-    instance => cfg
+    instance => {
+      application_key = instance
+      settings        = cfg
+    }
     if try(cfg.create_fed_credentials, null) != null
   }
-  settings         = each.value
+
+  azuread_application_federated_identity_credentials_additional = merge(concat(
+    [{}],
+    [
+      for instance, cfg in var.azuread_applications : {
+        for credential_key, credential in try(cfg.create_fed_credentials_additional, {}) :
+        "${instance}.${credential_key}" => {
+          application_key = instance
+          settings = merge(cfg, {
+            create_fed_credentials = credential
+          })
+        }
+      }
+    ]
+  )...)
+
+  azuread_application_federated_identity_credentials = merge(
+    local.azuread_application_federated_identity_credentials_primary,
+    local.azuread_application_federated_identity_credentials_additional
+  )
+}
+
+module "ad_app_fed_idy_credentials" {
+  source   = "./modules/azuread_application/ad_app_fed_idy_credential"
+  for_each = local.azuread_application_federated_identity_credentials
+
+  settings         = each.value.settings
   global_settings  = local.global_settings
-  application_id   = module.azuread_applications[each.key].id
-  application_name = module.azuread_applications[each.key].display_name
+  application_id   = module.azuread_applications[each.value.application_key].id
+  application_name = module.azuread_applications[each.value.application_key].display_name
 
   client_config = {
     landingzone_key = var.landingzone.key

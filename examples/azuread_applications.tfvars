@@ -18,6 +18,17 @@ azuread_applications = {
       issuer      = "https://token.actions.githubusercontent.com"
       subject     = "repo:my-organization/my-repo:environment:prod"
     }
+
+    # Optional additional azuread_application_federated_identity_credential resources
+    # on the same Azure AD application.
+    create_fed_credentials_additional = {
+      pull_requests = {
+        description = "Pull request validation for my-repo"
+        audiences   = ["api://AzureADTokenExchange"]
+        issuer      = "https://token.actions.githubusercontent.com"
+        subject     = "repo:my-organization/my-repo:pull_request"
+      }
+    }
     # ===========================================================================
     # ===========================================================================
     api = {
