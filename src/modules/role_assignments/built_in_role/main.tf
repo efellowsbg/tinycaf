@@ -28,6 +28,27 @@ resource "azurerm_role_assignment" "main" {
     : each.value.principal_type == "group_name"
     ? data.azuread_group.groups[each.value.principal].object_id
 
+    : each.value.principal_type == "aks_kubelet_identities"
+    ? var.resources[
+      can(regex("/", each.value.principal))
+      ? split("/", each.value.principal)[0]
+      : try(var.settings.lz_key, var.client_config.landingzone_key)
+      ].kubernetes_clusters[
+      can(regex("/", each.value.principal))
+      ? split("/", each.value.principal)[1]
+      : each.value.principal
+    ].kubelet_identity[0].object_id
+
+    : each.value.principal_type == "aks_cluster_identities"
+    ? var.resources[
+      can(regex("/", each.value.principal))
+      ? split("/", each.value.principal)[0]
+      : try(var.settings.lz_key, var.client_config.landingzone_key)
+      ].kubernetes_clusters[
+      can(regex("/", each.value.principal))
+      ? split("/", each.value.principal)[1]
+      : each.value.principal
+    ].identity[0].principal_id
 
     : var.resources[
       can(regex("/", each.value.principal))
