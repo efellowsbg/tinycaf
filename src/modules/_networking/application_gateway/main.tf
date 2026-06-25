@@ -17,6 +17,14 @@ resource "azurerm_application_gateway" "main" {
     true
   )
 
+  dynamic "global" {
+    for_each = can(var.settings.global) ? [1] : []
+    content {
+      request_buffering_enabled  = try(var.settings.global.request_buffering_enabled, null)
+      response_buffering_enabled = try(var.settings.global.response_buffering_enabled, null)
+    }
+  }
+
   dynamic "identity" {
     for_each = can(var.settings.identity) ? [1] : []
     content {
