@@ -17,6 +17,14 @@ resource "azurerm_virtual_network_gateway_connection" "main" {
   express_route_gateway_bypass       = try(var.settings.express_route_gateway_bypass, false)
   local_azure_ip_address_enabled     = try(var.settings.local_azure_ip_address_enabled, false)
 
+  dynamic "custom_bgp_addresses" {
+    for_each = can(var.settings.custom_bgp_addresses) ? [1] : []
+    content {
+      primary   = try(var.settings.custom_bgp_addresses.primary, null)
+      secondary = try(var.settings.custom_bgp_addresses.secondary, null)
+    }
+  }
+
   shared_key = try(var.settings.shared_key, null) != null ? var.settings.shared_key : (
     try(var.settings.shared_key_secret, null) != null && length(data.azurerm_key_vault_secret.main) > 0
     ? data.azurerm_key_vault_secret.main[0].value
