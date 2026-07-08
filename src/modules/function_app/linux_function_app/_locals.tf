@@ -25,11 +25,4 @@ locals {
     ].id,
     null
   )
-
-  # key vault key
-  key_vault_key_id = var.resources[
-    try(var.settings.key_vault_key_lz_key, var.client_config.landingzone_key)
-    ].key_vault_keys[
-    var.settings.key_vault_key_ref
-  ].versionless_id
 }
