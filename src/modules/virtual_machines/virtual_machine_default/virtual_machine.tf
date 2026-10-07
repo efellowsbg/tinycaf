@@ -145,6 +145,8 @@ resource "azurerm_virtual_machine" "main" {
       identity_ids = try(local.identity_ids, null)
     }
   }
+
+  depends_on = [azapi_update_resource.disk_controller]
 }
 
 data "azurerm_managed_disk" "data" {
