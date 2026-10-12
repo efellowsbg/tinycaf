@@ -9,6 +9,16 @@ resource "azurerm_virtual_machine" "main" {
   delete_data_disks_on_termination = try(var.settings.delete_data_disks_on_termination, null)
   primary_network_interface_id     = try(var.settings.primary_network_interface_id, module.network_interface.ids[0])
   license_type                     = try(var.settings.license_type, null)
+
+  dynamic "boot_diagnostics" {
+    for_each = try(var.settings.boot_diagnostics, null) == null ? [] : [var.settings.boot_diagnostics]
+    content {
+      enabled = coalesce(try(boot_diagnostics.value.enabled, null), true)
+      # The legacy provider requires this field; an empty URI uses managed storage.
+      storage_uri = try(boot_diagnostics.value.storage_uri, null) == null ? "" : boot_diagnostics.value.storage_uri
+    }
+  }
+
   dynamic "os_profile" {
     for_each = can(var.settings.os_profile) ? [1] : []
     content {
