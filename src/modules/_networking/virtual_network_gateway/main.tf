@@ -17,6 +17,14 @@ resource "azurerm_virtual_network_gateway" "main" {
   remote_vnet_traffic_enabled           = try(var.settings.remote_vnet_traffic_enabled, null)
   virtual_wan_traffic_enabled           = try(var.settings.virtual_wan_traffic_enabled, null)
 
+  dynamic "custom_route" {
+    for_each = try(var.settings.custom_route, null) == null ? [] : [var.settings.custom_route]
+
+    content {
+      address_prefixes = custom_route.value.address_prefixes
+    }
+  }
+
   dynamic "ip_configuration" {
     for_each = var.settings.ip_configurations
 

@@ -6,6 +6,12 @@ virtual_network_gateways = {
     # generation = "Generation1" # defaults to None
     # sku        = "Basic"
 
+    # Optional routes advertised to P2S VPN clients. Configure onward routing
+    # and outbound SNAT separately when the destination is on the internet.
+    # custom_route = {
+    #   address_prefixes = ["203.0.113.24/32"]
+    # }
+
     ip_configurations = {
       conf_01 = {
         name = "default"
