@@ -215,6 +215,18 @@ resource "azurerm_application_gateway" "main" {
     }
   }
 
+  dynamic "redirect_configuration" {
+    for_each = try(var.settings.redirect_configurations, {})
+    content {
+      name                 = redirect_configuration.value.name
+      redirect_type        = redirect_configuration.value.redirect_type
+      target_listener_name = try(redirect_configuration.value.target_listener_name, null)
+      target_url           = try(redirect_configuration.value.target_url, null)
+      include_path         = try(redirect_configuration.value.include_path, null)
+      include_query_string = try(redirect_configuration.value.include_query_string, null)
+    }
+  }
+
   dynamic "request_routing_rule" {
     for_each = try(var.settings.request_routing_rules, {})
     content {
